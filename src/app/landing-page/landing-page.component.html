@@ -1,1 +1,3 @@
-<app-header></app-header>
+<app-header (searchTermChanged)="propogateSearchTerm($event)"></app-header>
+
+<div><h5><strong>Search Term :</strong>{{keyword}}</h5></div>
