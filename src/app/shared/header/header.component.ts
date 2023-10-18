@@ -7,4 +7,8 @@ import { Component, Input } from '@angular/core';
 })
 export class HeaderComponent {
   @Input() title: { titleValue: string; } | undefined;
+  
+  onSearchClick(searchTerm: string) {
+    console.log("Search Term is : ", searchTerm);
+  }
 }
