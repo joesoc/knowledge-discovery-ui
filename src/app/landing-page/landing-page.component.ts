@@ -9,12 +9,12 @@ import { IQMSModelEncodeResponse } from '../interfaces/Iqmsmodel';
 })
 
 export class LandingPageComponent {
-  keyword: string = "";
+  searchkeyword: string = "";
   constructor(private svcQms:QmsService){}
 
   propogateSearchTerm(valueEmitted:any){
-    this.keyword  = valueEmitted;
-    this.svcQms.encodeQMS(this.keyword).subscribe((data:IQMSModelEncodeResponse)=>{
+    this.searchkeyword  = valueEmitted;
+    this.svcQms.encodeQMS(this.searchkeyword).subscribe((data:IQMSModelEncodeResponse)=>{
       let autnresponse = data.autnresponse;
       let responsedata = autnresponse.responsedata;
       let embeddings = responsedata.embeddings;

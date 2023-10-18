@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-results-count',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./results-count.component.css']
 })
 export class ResultsCountComponent {
-
+  @Input() keyword:string = "";
 }
