@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { QmsService } from '../services/qms.service';
+import { IQMSModelEncodeResponse } from '../interfaces/Iqmsmodel';
 
 @Component({
   selector: 'app-landing-page',
@@ -8,9 +10,12 @@ import { Component } from '@angular/core';
 
 export class LandingPageComponent {
   keyword: string = "";
+  constructor(private svcQms:QmsService){}
+
   propogateSearchTerm(valueEmitted:any){
     this.keyword  = valueEmitted;
-    console.log("Search Term is : ", this.keyword);
-    console.log("Message from Landing Page Component")
+    this.svcQms.encodeQMS(this.keyword).subscribe((data:IQMSModelEncodeResponse)=>{
+      console.log(data);
+    });
   }
 }
