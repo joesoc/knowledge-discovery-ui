@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto"> <!-- Added mr-auto to push the search bar to the right -->
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/home']"> <!-- your SVG here --> </a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/category']">IDOL Vector Search</a>
+        </li>
+      </ul>
+      <!-- Search bar and button -->
+      <form class="form-inline search-box d-flex my-2 my-lg-0 justify-content-center">
+        <div class="input-group">
+          <input class="form-control form-control search" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-link" type="button" style="border: none; outline: none;">
+              <i class="fas fa-search" style="color: black;"></i> <!-- Font Awesome icon -->
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </nav>
+  

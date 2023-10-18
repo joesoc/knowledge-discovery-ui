@@ -1,0 +1,17 @@
+
+/* Your other global styles go here */
+.navbar {
+    background: lightgray !important;
+    padding-left: 10px;
+    font-size: large;
+}
+
+.active a {
+    font-weight: bold;
+}
+.search{
+    width: 600px;
+}
+.search-box{
+    margin-left: 300px;
+}
