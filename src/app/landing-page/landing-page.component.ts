@@ -15,7 +15,12 @@ export class LandingPageComponent {
   propogateSearchTerm(valueEmitted:any){
     this.keyword  = valueEmitted;
     this.svcQms.encodeQMS(this.keyword).subscribe((data:IQMSModelEncodeResponse)=>{
-      console.log(data);
+      let autnresponse = data.autnresponse;
+      let responsedata = autnresponse.responsedata;
+      let embeddings = responsedata.embeddings;
+      let num_vectors = embeddings.num_vectors;
+      let vector = embeddings.vector[0];
+      console.table(vector);
     });
   }
 }
