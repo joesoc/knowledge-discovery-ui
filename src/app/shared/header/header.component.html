@@ -15,9 +15,9 @@
       <!-- Search bar and button -->
       <form class="form-inline search-box d-flex my-2 my-lg-0 justify-content-center">
         <div class="input-group">
-          <input #searchInput class="form-control form-control search" type="search" placeholder="Search" aria-label="Search" (keydown.enter)="onSearchClick(searchInput.value)">
+          <input #searchInput class="form-control form-control search" type="search" placeholder="Search" aria-label="Search" (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()">
           <div class="input-group-append">
-            <button class="btn btn-link" type="button" style="border: none; outline: none;" (click)="onSearchClick(searchInput.value)">
+            <button class="btn btn-link" type="button" style="border: none; outline: none;" (click)="propogateSearchTerm(searchInput.value); $event.preventDefault()">
               <i class="fas fa-search" style="color: black;"></i> <!-- Font Awesome icon -->
             </button>
           </div>
