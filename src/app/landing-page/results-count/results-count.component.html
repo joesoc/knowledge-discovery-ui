@@ -1,1 +1,3 @@
-<div class="searchTerm"><strong>Search Term : </strong> <i>{{keyword}}</i></div>
+<ng-container *ngIf="keyword && resultsSummary.totalhits && resultsSummary.numhits">
+    <div class="resultsSummary">Showing <strong>{{resultsSummary.numhits}}</strong> of <strong>{{resultsSummary.totalhits}} results</strong> for the term <i>{{keyword}}</i></div>
+</ng-container>

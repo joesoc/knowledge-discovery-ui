@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { IResultSummary } from 'src/app/interfaces/IsearchResultsSummary';
 
 @Component({
   selector: 'app-results-count',
@@ -7,4 +8,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ResultsCountComponent {
   @Input() keyword:string = "";
+  @Input() resultsSummary:IResultSummary = {} as IResultSummary;
 }
