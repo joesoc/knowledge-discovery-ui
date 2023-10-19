@@ -8,6 +8,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { HomeComponent } from './home/home.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ResultsCountComponent } from './landing-page/results-count/results-count.component';
+import { SearchResultsComponent } from './landing-page/search-results/search-results.component';
+import { SearchResultItemComponent } from './landing-page/search-result-item/search-result-item.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { ResultsCountComponent } from './landing-page/results-count/results-coun
     HeaderComponent,
     HomeComponent,
     LandingPageComponent,
-    ResultsCountComponent
+    ResultsCountComponent,
+    SearchResultsComponent,
+    SearchResultItemComponent
   ],
   imports: [
     BrowserModule,
