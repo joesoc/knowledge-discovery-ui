@@ -1,0 +1,13 @@
+/* Create a flex container */
+.flex-container {
+    display: flex;
+    justify-content: space-between; /* Distributes items evenly */
+  }
+  
+  /* Flex items */
+  .searchresultsVector,
+  .searchresultsIDOL {
+    flex: 1;  /* Grow and shrink */
+    margin: 10px; /* Optional: Add some margin */
+  }
+  

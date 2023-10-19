@@ -1,3 +1,11 @@
 <app-header (searchTermChanged)="propogateSearchTerm($event)"></app-header>
-<app-results-count [keyword]="searchkeyword" [resultsSummary]="resultsSummary"></app-results-count>
-<app-search-results [searchResults]="resultItems"></app-search-results>
+<div class="flex-container">
+  <div class="searchresultsVector">
+      <app-results-count [keyword]="searchkeyword" [resultsSummary]="resultsSummary"></app-results-count>
+      <app-search-results [searchResults]="resultItems"></app-search-results>    
+  </div>
+  <div class="searchresultsIDOL">
+      <app-results-count [keyword]="searchkeyword" [resultsSummary]="idolresultsSummary"></app-results-count>
+      <app-search-results [searchResults]="idolresultsItems"></app-search-results>    
+  </div>
+</div>
