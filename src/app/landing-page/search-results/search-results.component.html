@@ -1,4 +1,4 @@
-<div class="main-search-result">
+<div class="main-search-result" *ngIf="searchResults">
     <div class="result-item" *ngFor="let result of searchResults; let i = index">
         <app-search-result-item [resultitem]="result"></app-search-result-item>
     </div>
