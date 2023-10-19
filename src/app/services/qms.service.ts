@@ -27,6 +27,34 @@ export class QmsService {
       })
     );;
   }
+  returnResponse(url:string, params:HttpParams): Observable<IContentResponse> {
+    return this.http.get<IContentResponse>(url, { params }).pipe(
+      catchError(error => {
+        console.error('Error fetching data', error);
+        return throwError('Error fetching data');
+      })
+    );
+  }
+  getVectorResults(vector:string): Observable<IContentResponse> {
+    let params = new HttpParams()
+      .set('action', 'query')
+      .set('text', 'VECTOR{' + vector + '}:VECTOR')
+      .set('outputencoding', 'UTF8')
+      .set('xmlmeta', 'true')
+      .set('databasematch', 'Wikipedia')
+      .set('sort', 'relevance')
+      .set('anylanguage', 'true')
+      .set('print', 'fields')
+      .set('printfields', 'DREREFERENCE,WIKIPEDIA_CATEGORY,WIKIPEDIA_TOPIC,DRETITLE')
+      .set('maxresults', '10')
+      .set('totalresults', 'true')
+      .set('summary', 'Context')
+      .set('characters', '250')
+      .set('highlight', 'SummaryTerms')
+      .set('ResponseFormat', 'simplejson');
+      const url = `https://${environment.qms_fqdn}:${environment.qms_port}/`;
+      return this.returnResponse(url, params);
+  }
   getResults(query:string): Observable<IContentResponse> {
     let params = new HttpParams()
       .set('action', 'query')
@@ -38,18 +66,13 @@ export class QmsService {
       .set('anylanguage', 'true')
       .set('print', 'fields')
       .set('printfields', 'DREREFERENCE,WIKIPEDIA_CATEGORY,WIKIPEDIA_TOPIC,DRETITLE')
-      .set('maxresults', '3')
+      .set('maxresults', '10')
       .set('totalresults', 'true')
       .set('summary', 'Context')
       .set('characters', '250')
       .set('highlight', 'SummaryTerms')
       .set('ResponseFormat', 'simplejson');
     const url = `https://${environment.qms_fqdn}:${environment.qms_port}/`;
-    return this.http.get<IContentResponse>(url, { params }).pipe(
-      catchError(error => {
-        console.error('Error fetching data', error);
-        return throwError('Error fetching data');
-      })
-    );
+    return this.returnResponse(url, params);
   }
 }
