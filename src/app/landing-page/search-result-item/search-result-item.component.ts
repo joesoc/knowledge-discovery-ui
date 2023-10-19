@@ -1,11 +1,15 @@
 import { Component, Input } from '@angular/core';
 import { ISearchResultItem } from 'src/app/interfaces/IsearchResultItem';
-
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 @Component({
   selector: 'app-search-result-item',
   templateUrl: './search-result-item.component.html',
   styleUrls: ['./search-result-item.component.css']
 })
 export class SearchResultItemComponent {
+  constructor(private sanitizer: DomSanitizer) { }
+  getSanitizedHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
   @Input() resultitem: ISearchResultItem = {} as ISearchResultItem;
 }

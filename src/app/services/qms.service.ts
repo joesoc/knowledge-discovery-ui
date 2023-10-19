@@ -51,6 +51,7 @@ export class QmsService {
       .set('summary', 'Context')
       .set('characters', '250')
       .set('highlight', 'SummaryTerms')
+      .set('StartTag', '<span style="color: black; font-weight:bold;">')
       .set('ResponseFormat', 'simplejson');
       const url = `https://${environment.qms_fqdn}:${environment.qms_port}/`;
       return this.returnResponse(url, params);
@@ -71,6 +72,7 @@ export class QmsService {
       .set('summary', 'Context')
       .set('characters', '250')
       .set('highlight', 'SummaryTerms')
+      .set('StartTag', '<span style="color: black; font-weight:bold;">')
       .set('ResponseFormat', 'simplejson');
     const url = `https://${environment.qms_fqdn}:${environment.qms_port}/`;
     return this.returnResponse(url, params);

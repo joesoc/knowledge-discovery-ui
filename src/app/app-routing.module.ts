@@ -5,10 +5,10 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 
 const routes: Routes = [
   {
-    path: '', redirectTo: 'home', pathMatch: 'full'
+    path: '', redirectTo: 'search', pathMatch: 'full'
   },
   {
-    path: 'home', component: HomeComponent
+    path: 'home', component: LandingPageComponent
   },
   {
     path: 'search', component: LandingPageComponent
