@@ -19,6 +19,8 @@ export class LandingPageComponent {
   idolresultsItems: ISearchResultItem[] = [];
   idolresultsSummary: IResultSummary = {} as IResultSummary;
   selectedDatabase: string[] = [];
+  hideVectorResults: boolean = false;
+  hideStandardResults: boolean = false;
   propogateDatabaseSelection(valueEmitted:any){
     this.selectedDatabase = [];
     valueEmitted.forEach((database: string) => {
@@ -27,6 +29,12 @@ export class LandingPageComponent {
   }
   getDatabaseSelection(){
     return this.selectedDatabase.join(',');
+  }
+  hideVector(valueEmitted: any){
+    this.hideVectorResults = valueEmitted;
+  }
+  hideNormalIDOL(valueEmitted: any){
+    this.hideStandardResults = valueEmitted;
   }
   propogateSearchTerm(valueEmitted:any){
     this.resultsSummary = {} as IResultSummary;

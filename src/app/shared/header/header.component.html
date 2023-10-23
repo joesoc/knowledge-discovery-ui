@@ -38,5 +38,14 @@
         </div>
       </div>
     </form>
+    <!-- ... existing code ... -->
+    <button type="button" class="btn btn-light ml-2" [ngClass]="{'active-icon': hideLeft}" (click)="toggleLeft()">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    <button type="button" class="btn btn-light ml-2" [ngClass]="{'active-icon': hideRight}" (click)="toggleRight()">
+      <i class="fas fa-arrow-right"></i>
+    </button>
+<!-- ... existing code ... -->
+    
   </div>
 </nav>
