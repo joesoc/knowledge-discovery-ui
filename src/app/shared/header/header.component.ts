@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { parseString } from 'xml2js';
 import { IGetStatus, Database } from '../../interfaces/IgetStatus';
 import { Store } from '@ngrx/store';
 import { addSelectedDatabases } from '../../actions/headeractions';
 import { Observable } from 'rxjs';
 import { getSelectedDatabases } from '../../reducers/headerreducer';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -35,12 +35,11 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-      console.log("NGonInit");
         // Subscribe to state changes for selected databases
         this.selectedDatabases$.subscribe((databases) => {
           this.selectedOptions = databases;
         });
-    this.http.get<IGetStatus>('https://dah.idoldemos.net:9060/a=getstatus&responseformat=simplejson').subscribe(
+    this.http.get<IGetStatus>(`https://${environment.dah_fqdb}:${environment.dah_port}/a=getstatus&responseformat=simplejson`).subscribe(
       (data: any) => {
         // Note: The type of 'data' is set to 'any' above; consider defining an interface for it.
 
@@ -64,7 +63,6 @@ export class HeaderComponent {
       // Create a new array without the removed option
       newSelectedOptions = [...this.selectedOptions.slice(0, index), ...this.selectedOptions.slice(index + 1)];
     }
-    console.table(newSelectedOptions);
     // Update the store
     this.updateSelectedDatabases(newSelectedOptions);
   }
