@@ -115,4 +115,6 @@
 
   .multi-select-dropdown.idol-indexes {
     border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+    padding: 5px 5px 5px 5px;
   }
