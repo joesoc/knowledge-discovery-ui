@@ -15,12 +15,11 @@
     <form class="form-inline search-box d-flex my-2 my-lg-0 justify-content-center">
       <div class="input-group idol-input">
         <input #searchInput class="form-control form-control search" type="search" placeholder="Search" aria-label="Search" (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()">
-        <div class="input-group-append">
-          <span class="input-group-text">
-            <i class="fas fa-search"></i>
-          </span>
-        </div>
       </div>
+      <!-- Separate Search Button -->
+      <button type="button" class="btn btn-light ml-2" (click)="propogateSearchTerm(searchInput.value)">
+        <i class="fas fa-search"></i>
+      </button>
       <button type="button" class="btn btn-light ml-2 dropdown-container" (click)="showDropdown = !showDropdown">
         <i class="fas fa-database"></i>
       </button>

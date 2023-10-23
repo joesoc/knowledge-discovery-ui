@@ -35,13 +35,13 @@ export class QmsService {
       })
     );
   }
-  getVectorResults(vector:string): Observable<IContentResponse> {
+  getVectorResults(vector:string, databases:string): Observable<IContentResponse> {
     let params = new HttpParams()
       .set('action', 'query')
       .set('text', 'VECTOR{' + vector + '}:VECTOR')
       .set('outputencoding', 'UTF8')
       .set('xmlmeta', 'true')
-      .set('databasematch', 'Wikipedia')
+      .set('databasematch', databases)
       .set('sort', 'relevance')
       .set('anylanguage', 'true')
       .set('print', 'fields')
@@ -56,13 +56,13 @@ export class QmsService {
       const url = `https://${environment.qms_fqdn}:${environment.qms_port}/`;
       return this.returnResponse(url, params);
   }
-  getResults(query:string): Observable<IContentResponse> {
+  getResults(query:string, databases:string): Observable<IContentResponse> {
     let params = new HttpParams()
       .set('action', 'query')
       .set('text', query)
       .set('outputencoding', 'UTF8')
       .set('xmlmeta', 'true')
-      .set('databasematch', 'Wikipedia')
+      .set('databasematch', databases)
       .set('sort', 'relevance')
       .set('anylanguage', 'true')
       .set('print', 'fields')
