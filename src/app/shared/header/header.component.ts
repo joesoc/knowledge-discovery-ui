@@ -15,15 +15,16 @@ import { environment } from 'src/environments/environment';
 export class HeaderComponent {
   @Input() title: { titleValue: string; } | undefined;
   @Output() searchTermChanged = new EventEmitter<string>();
+  @Output() selectedDatabasesChanged = new EventEmitter<string[]>();  // <-- New Output property
 
   propogateSearchTerm(value: string) {
     this.searchTermChanged.emit(value);
   }
+  
   showDropdown = false;
   dropdownOptions = [];
   selectedOptions: string[] = [];
   selectedDatabases$!: Observable<string[]>;
-
 
   constructor(private http: HttpClient, private store: Store<{selectedDatabases: string[]}>) {
     this.selectedDatabases$ = this.store.select(getSelectedDatabases);
@@ -35,14 +36,13 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-        // Subscribe to state changes for selected databases
-        this.selectedDatabases$.subscribe((databases) => {
-          this.selectedOptions = databases;
-        });
+    // Subscribe to state changes for selected databases
+    this.selectedDatabases$.subscribe((databases) => {
+      this.selectedOptions = databases;
+    });
+
     this.http.get<IGetStatus>(`https://${environment.dah_fqdb}:${environment.dah_port}/a=getstatus&responseformat=simplejson`).subscribe(
       (data: any) => {
-        // Note: The type of 'data' is set to 'any' above; consider defining an interface for it.
-
         const databases = data.autnresponse.responsedata.databases.database;
         this.dropdownOptions = databases.map((db: Database) => db.name);
       },
@@ -51,21 +51,21 @@ export class HeaderComponent {
       }
     );
   }
+
   toggleSelection(option: string) {
     let newSelectedOptions: string[];
-
     const index = this.selectedOptions.indexOf(option);
     
     if (index === -1) {
-      // Create a new array with the additional option
       newSelectedOptions = [...this.selectedOptions, option];
     } else {
-      // Create a new array without the removed option
       newSelectedOptions = [...this.selectedOptions.slice(0, index), ...this.selectedOptions.slice(index + 1)];
     }
+
     // Update the store
     this.updateSelectedDatabases(newSelectedOptions);
-  }
-  
 
+    // Emit the new selected databases list to the parent component
+    this.selectedDatabasesChanged.emit(newSelectedOptions);  // <-- Emitting new selected databases
+  }
 }

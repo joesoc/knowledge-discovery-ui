@@ -9,5 +9,6 @@
   .searchresultsIDOL {
     flex: 1;  /* Grow and shrink */
     margin: 10px; /* Optional: Add some margin */
+    width: 50%;
   }
   

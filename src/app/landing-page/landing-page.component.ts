@@ -18,6 +18,16 @@ export class LandingPageComponent {
   resultItems: ISearchResultItem[] = [];
   idolresultsItems: ISearchResultItem[] = [];
   idolresultsSummary: IResultSummary = {} as IResultSummary;
+  selectedDatabase: string[] = [];
+  propogateDatabaseSelection(valueEmitted:any){
+    this.selectedDatabase = [];
+    valueEmitted.forEach((database: string) => {
+      this.selectedDatabase.push(database);
+    });
+  }
+  getDatabaseSelection(){
+    return this.selectedDatabase.join(',');
+  }
   propogateSearchTerm(valueEmitted:any){
     this.resultsSummary = {} as IResultSummary;
     this.resultItems = [];
@@ -31,7 +41,7 @@ export class LandingPageComponent {
       let num_vectors = parseInt(embeddings.num_vectors);
       let vector = embeddings.vector[0];
 
-      this.svcQms.getResults(this.searchkeyword).subscribe((data)=>{
+      this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection()).subscribe((data)=>{
         this.idolresultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
         this.idolresultsSummary.predicted = data.autnresponse.responsedata.predicted;
         this.idolresultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
@@ -46,7 +56,7 @@ export class LandingPageComponent {
           });
         });
       });
-      this.svcQms.getVectorResults(vector).subscribe((data)=>{
+      this.svcQms.getVectorResults(vector, this.getDatabaseSelection()).subscribe((data)=>{
         this.resultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
         this.resultsSummary.predicted = data.autnresponse.responsedata.predicted;
         this.resultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);

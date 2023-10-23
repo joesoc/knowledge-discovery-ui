@@ -1,4 +1,6 @@
-<app-header (searchTermChanged)="propogateSearchTerm($event)"></app-header>
+<app-header (searchTermChanged)="propogateSearchTerm($event)"
+            (selectedDatabasesChanged)="propogateDatabaseSelection($event)">
+</app-header>
 <div class="flex-container">
   <div class="searchresultsVector">
       <app-results-count [keyword]="searchkeyword" [resultsSummary]="resultsSummary"></app-results-count>
