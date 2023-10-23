@@ -68,4 +68,22 @@ export class HeaderComponent {
     // Emit the new selected databases list to the parent component
     this.selectedDatabasesChanged.emit(newSelectedOptions);  // <-- Emitting new selected databases
   }
+
+  @Output() hideLeftChanged = new EventEmitter<boolean>();
+  @Output() hideRightChanged = new EventEmitter<boolean>();
+
+  hideLeft = false; // State variable for left-hand side
+  hideRight = false; // State variable for right-hand side
+
+  // ... existing methods ...
+
+  toggleLeft() {
+    this.hideLeft = !this.hideLeft;
+    this.hideLeftChanged.emit(this.hideLeft);
+  }
+
+  toggleRight() {
+    this.hideRight = !this.hideRight;
+    this.hideRightChanged.emit(this.hideRight);
+  }
 }
