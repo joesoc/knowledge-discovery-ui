@@ -10,6 +10,8 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ResultsCountComponent } from './landing-page/results-count/results-count.component';
 import { SearchResultsComponent } from './landing-page/search-results/search-results.component';
 import { SearchResultItemComponent } from './landing-page/search-result-item/search-result-item.component';
+import { StoreModule } from '@ngrx/store';
+import { selectedDatabaseReducer } from './reducers/headerreducer';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { SearchResultItemComponent } from './landing-page/search-result-item/sea
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot({selectedDatabases: selectedDatabaseReducer}, {})
   ],
   providers: [],
   bootstrap: [AppComponent]
