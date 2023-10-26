@@ -12,6 +12,7 @@ import { SearchResultsComponent } from './landing-page/search-results/search-res
 import { SearchResultItemComponent } from './landing-page/search-result-item/search-result-item.component';
 import { StoreModule } from '@ngrx/store';
 import { selectedDatabaseReducer } from './reducers/headerreducer';
+import { SettingsDialogComponent } from './shared/header/settings-dialog/settings-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { selectedDatabaseReducer } from './reducers/headerreducer';
     LandingPageComponent,
     ResultsCountComponent,
     SearchResultsComponent,
-    SearchResultItemComponent
+    SearchResultItemComponent,
+    SettingsDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,64 @@
+.dialog-container {
+    width: 380px; /* or whatever width you want */
+    position: absolute; /* positions it relative to the closest positioned ancestor */
+    top: calc(100% + 3px); /* 5px below the parent element */
+    right: 5px; /* aligned to the right of the parent element */
+    z-index: 1000; /* should be above other elements */
+    height: auto; /* adjust based on content */
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    background-color: #fff; /* background color */
+    border: 1px solid #ccc; /* add a border if you want */
+    border-radius: 4px; /* rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* shadow for better UI */
+    padding:5px 5px 5px 5px;
+}
+/* Close button */
+.dialog-container .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+  /* Arrow buttons */
+  .dialog-container .btn {
+    margin: 5px; /* add some space around buttons */
+  }
+  /* First flex-row (to balance the padding) */
+.dialog-container .flex-row:first-child {
+    padding-top: 20px; /* Adjust as needed */
+  }
+  
+  
+  /* Active icon styling */
+  .dialog-container .active-icon {
+    background-color: #007bff; /* change to whatever active color you want */
+    color: white;
+  }
+
+  /* Existing styles for dialog-container and buttons */
+
+/* New styles for flex-row */
+.flex-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align buttons to the left */
+    margin-bottom: 2px; /* Add some vertical space between rows */
+}
+  
+/* Text next to buttons */
+.flex-row span {
+    margin-left: 5px;  /* Space between the button and the text */
+    font-size: 14px;  /* Smaller font size */
+  }
+
+  /* Dialog title */
+.dialog-title {
+    text-align: center;  /* Center the text horizontally */
+    padding: 10px;  /* Add some padding */
+    font-size: 15px;  /* Set the font size */
+    font-weight: bold;  /* Make it bold */
+  }
+  

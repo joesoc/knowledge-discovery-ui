@@ -1,6 +1,6 @@
 // reducer.ts
 import { Action, createReducer, on } from '@ngrx/store';
-import { addSelectedDatabases } from '../actions/headeractions';
+import { addSelectedDatabases, showIDOLResults, showVectorResults } from '../actions/headeractions';
 import { createSelector } from '@ngrx/store';
 
 export const initialState: string[] = [];
@@ -9,6 +9,7 @@ const _selectedDatabaseReducer = createReducer(
   initialState,
   on(addSelectedDatabases, (state, { databases }) => [...databases])
 );
+
 
 export function selectedDatabaseReducer(state: string[] | undefined, action: Action) {
   return _selectedDatabaseReducer(state, action);

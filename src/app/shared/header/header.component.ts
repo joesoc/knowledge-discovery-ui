@@ -15,7 +15,9 @@ import { environment } from 'src/environments/environment';
 export class HeaderComponent {
   @Input() title: { titleValue: string; } | undefined;
   @Output() searchTermChanged = new EventEmitter<string>();
-  @Output() selectedDatabasesChanged = new EventEmitter<string[]>();  // <-- New Output property
+  @Output() selectedDatabasesChanged = new EventEmitter<string[]>(); 
+  @Output() showVectorResultsChanged = new EventEmitter<boolean>();
+  @Output() showIDOLResultsChanged = new EventEmitter<boolean>();
 
   propogateSearchTerm(value: string) {
     this.searchTermChanged.emit(value);
@@ -69,21 +71,27 @@ export class HeaderComponent {
     this.selectedDatabasesChanged.emit(newSelectedOptions);  // <-- Emitting new selected databases
   }
 
-  @Output() hideLeftChanged = new EventEmitter<boolean>();
-  @Output() hideRightChanged = new EventEmitter<boolean>();
 
-  hideLeft = false; // State variable for left-hand side
-  hideRight = false; // State variable for right-hand side
-
-  // ... existing methods ...
-
-  toggleLeft() {
-    this.hideLeft = !this.hideLeft;
-    this.hideLeftChanged.emit(this.hideLeft);
+  handleToggleLeft(EmittedValue: any) {
+    // Your logic for toggling left panel
+    let booleanValueToEmit: boolean = !!EmittedValue;
+    this.showVectorResultsChanged.emit(EmittedValue);
   }
 
-  toggleRight() {
-    this.hideRight = !this.hideRight;
-    this.hideRightChanged.emit(this.hideRight);
+  handleToggleRight(EmittedValue: any) {
+    // Your logic for toggling right panel
+    let booleanValueToEmit: boolean = !!EmittedValue;
+    this.showIDOLResultsChanged.emit(EmittedValue);
   }
+    // Add this to your existing TypeScript class
+  public showSettingsDialog = false;
+
+  public openSettingsDialog() {
+    this.showSettingsDialog = true;
+  }
+
+  public closeSettingsDialog() {
+    this.showSettingsDialog = false;
+  }
+
 }
