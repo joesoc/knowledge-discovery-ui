@@ -1,7 +1,7 @@
 <app-header (searchTermChanged)="propogateSearchTerm($event)"
             (selectedDatabasesChanged)="propogateDatabaseSelection($event)"
-            (hideLeftChanged)="hideVector($event)"
-            (hideRightChanged)="hideNormalIDOL($event)">
+            (showVectorResultsChanged)="hideVector($event)"
+            (showIDOLResultsChanged)="hideNormalIDOL($event)">
 </app-header>
 <div class="flex-container">
   <div class="searchresultsVector" 

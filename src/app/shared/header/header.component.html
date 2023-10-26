@@ -3,49 +3,58 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['/home']"></a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['/category']">IDOL Vector Search</a>
-      </li>
-    </ul>
-    <form class="form-inline search-box d-flex my-2 my-lg-0 justify-content-center">
-      <div class="input-group idol-input">
-        <input #searchInput class="form-control form-control search" type="search" placeholder="Search" aria-label="Search" (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()">
-      </div>
-      <!-- Separate Search Button -->
-      <button type="button" class="btn btn-light ml-2" (click)="propogateSearchTerm(searchInput.value)">
-        <i class="fas fa-search"></i>
-      </button>
-      <button type="button" class="btn btn-light ml-2 dropdown-container" (click)="showDropdown = !showDropdown">
-        <i class="fas fa-database"></i>
-      </button>
-      <div *ngIf="showDropdown" class="multi-select-dropdown idol-indexes">
-        <div class="dropdown-header">
-          <span>Select Databases</span>
-          <button type="button" class="close-btn" (click)="showDropdown = false">
-            <i class="fas fa-times"></i>
-          </button>
+  <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
+    <div class="d-flex justify-content-start">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/home']"></a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/category']">IDOL Vector Search</a>
+        </li>
+      </ul>
+      <form class="form-inline search-box d-flex my-2 my-lg-0 justify-content-center align-items-center">
+        <div class="input-group idol-input">
+          <input #searchInput class="form-control form-control search custom-height" type="search" placeholder="Search" aria-label="Search" (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()">
         </div>
-        <div *ngFor="let option of dropdownOptions" class="dropdown-item">
-          <input type="checkbox" 
-                 [value]="option" 
-                 [checked]="selectedOptions.includes(option)"
-                 (change)="toggleSelection(option)" /> {{ option }}
+        <!-- Separate Search Button -->
+        <button type="button" class="btn btn-light ml-2 custom-height" (click)="propogateSearchTerm(searchInput.value)">
+          <i class="fas fa-search"></i>
+        </button>
+        <button type="button" class="btn btn-light ml-2 dropdown-container custom-height" (click)="showDropdown = !showDropdown">
+          <i class="fas fa-database"></i>
+        </button>
+        <div *ngIf="showDropdown" class="multi-select-dropdown idol-indexes">
+          <div class="dropdown-header">
+            <span>Select Databases</span>
+            <button type="button" class="close-btn" (click)="showDropdown = false">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div *ngFor="let option of dropdownOptions" class="dropdown-item d-flex align-items-center">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" 
+                     type="checkbox" 
+                     [value]="option" 
+                     [checked]="selectedOptions.includes(option)"
+                     (change)="toggleSelection(option)" />
+              <label class="form-check-label" for="inlineCheckbox1">{{ option }}</label>
+            </div>
+          </div>
+          
         </div>
-      </div>
-    </form>
-    <!-- ... existing code ... -->
-    <button type="button" class="btn btn-light ml-2" [ngClass]="{'active-icon': hideLeft}" (click)="toggleLeft()">
-      <i class="fas fa-arrow-left"></i>
-    </button>
-    <button type="button" class="btn btn-light ml-2" [ngClass]="{'active-icon': hideRight}" (click)="toggleRight()">
-      <i class="fas fa-arrow-right"></i>
-    </button>
-<!-- ... existing code ... -->
-    
+      </form>
+    </div>
+    <div class="gear-container">
+      <button type="button" class="btn btn-light ml-auto custom-height" (click)="openSettingsDialog()" style="margin-right: 5px;">
+        <i class="fas fa-cog"></i>
+      </button>
+      <app-settings-dialog 
+        *ngIf="showSettingsDialog" 
+        (hideLeftChanged)="handleToggleLeft($event)" 
+        (hideRightChanged)="handleToggleRight($event)" 
+        (close)="closeSettingsDialog()">
+      </app-settings-dialog>
+    </div>
   </div>
 </nav>

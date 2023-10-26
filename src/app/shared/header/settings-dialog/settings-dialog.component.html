@@ -1,0 +1,21 @@
+<div class="dialog-container">
+    <div class="dialog-title">
+        Settings
+    </div>
+    <button type="button" class="close" (click)="closeDialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="flex-row">
+      <button type="button" class="btn btn-light" [ngClass]="{'active-icon': hideLeft}" (click)="toggleLeft()">
+        <i class="fas fa-align-left"></i>
+      </button>
+      <span>Show Vector Search Results on the left</span>
+    </div>
+    <div class="flex-row">
+      <button type="button" class="btn btn-light" [ngClass]="{'active-icon': hideRight}" (click)="toggleRight()">
+        <i class="fas fa-align-right"></i>
+      </button>
+      <span>Show IDOL Search Results on the right</span>
+    </div>
+</div>
+  
