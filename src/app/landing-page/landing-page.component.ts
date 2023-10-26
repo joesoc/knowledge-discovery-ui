@@ -4,6 +4,8 @@ import { IQMSModelEncodeResponse } from '../interfaces/Iqmsmodel';
 import { IResultSummary } from '../interfaces/IsearchResultsSummary';
 import { ISearchResultItem } from '../interfaces/IsearchResultItem';
 import { Hit } from '../interfaces/IcontentResponse';
+import { AnswerService } from '../services/answer.service';
+import { Answer, IAnswerServerAskResponse } from '../interfaces/IAnswerServerResponse';
 
 @Component({
   selector: 'app-landing-page',
@@ -13,7 +15,20 @@ import { Hit } from '../interfaces/IcontentResponse';
 
 export class LandingPageComponent {
   searchkeyword: string = "";
-  constructor(private svcQms:QmsService){}
+  answers: Answer[] = []; // Add your answers here  
+  question: string = "";
+  ngOnInit(): void {
+  }
+  
+  fetchAnswer(question:string){
+      this.answerService.ask(question).subscribe((data)=>{
+        const response: IAnswerServerAskResponse = data;
+        console.table(data);
+        this.answers = response.autnresponse.responsedata.answers.answer;
+      });
+    }
+
+  constructor(private svcQms:QmsService, private answerService: AnswerService){}
   resultsSummary: IResultSummary = {} as IResultSummary;
   resultItems: ISearchResultItem[] = [];
   idolresultsItems: ISearchResultItem[] = [];
@@ -37,6 +52,8 @@ export class LandingPageComponent {
     this.hideStandardResults = valueEmitted;
   }
   propogateSearchTerm(valueEmitted:any){
+    this.question = valueEmitted;
+    this.fetchAnswer(this.question);
     this.resultsSummary = {} as IResultSummary;
     this.resultItems = [];
     this.idolresultsItems = [];

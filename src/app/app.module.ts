@@ -13,6 +13,7 @@ import { SearchResultItemComponent } from './landing-page/search-result-item/sea
 import { StoreModule } from '@ngrx/store';
 import { selectedDatabaseReducer } from './reducers/headerreducer';
 import { SettingsDialogComponent } from './shared/header/settings-dialog/settings-dialog.component';
+import { AnswerpaneComponent } from './landing-page/answerpane/answerpane.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SettingsDialogComponent } from './shared/header/settings-dialog/setting
     ResultsCountComponent,
     SearchResultsComponent,
     SearchResultItemComponent,
-    SettingsDialogComponent
+    SettingsDialogComponent,
+    AnswerpaneComponent
   ],
   imports: [
     BrowserModule,
