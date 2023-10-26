@@ -3,3 +3,6 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
 
+body{
+    overflow-y: scroll;
+}
