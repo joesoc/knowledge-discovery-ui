@@ -1,0 +1,22 @@
+<div class="answers" *ngIf="totalAnswers > 0">
+    <div class="answer-header">
+      <span class="found-answers">Found {{totalAnswers}} answers to "{{question}}?" from {{currentAnswer["@answer_type"]}}</span>
+    </div>
+    <div class="answer-content">
+      <div *ngIf="currentAnswer">
+        <strong>{{question}}?</strong><br>
+        {{currentAnswer.text}}<br>
+        <span class="score">Score: {{currentAnswer.score}}</span><br>
+        <a href="{{currentAnswer.source}}">{{currentAnswer.source}}</a>
+      </div>
+    </div>
+    <div class="answer-footer">
+      <button class="btn btn-sm btn-outline-secondary" [disabled]="isPrevDisabled" (click)="prevAnswer()">
+        &larr; Previous
+      </button>
+      <button class="btn btn-sm btn-outline-secondary" [disabled]="isNextDisabled" (click)="nextAnswer()">
+        Next &rarr;
+      </button>
+    </div>
+  </div>
+  

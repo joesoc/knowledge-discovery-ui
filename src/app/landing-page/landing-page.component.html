@@ -3,6 +3,9 @@
             (showVectorResultsChanged)="hideVector($event)"
             (showIDOLResultsChanged)="hideNormalIDOL($event)">
 </app-header>
+<div class="answerpane-container">
+  <app-answerpane [answers]="answers" [question]="question"></app-answerpane>
+</div>
 <div class="flex-container">
   <div class="searchresultsVector" 
       [ngStyle]="{'width': hideStandardResults ? '50%' : '50%'}" 
