@@ -21,7 +21,7 @@
         <button type="button" class="btn btn-light ml-2 custom-height" (click)="propogateSearchTerm(searchInput.value)">
           <i class="fas fa-search"></i>
         </button>
-        <button type="button" class="btn btn-light ml-2 dropdown-container custom-height" (click)="showDropdown = !showDropdown">
+        <button type="button" class="btn btn-light ml-2 dropdown-container custom-height" (click)="toggleDatabaseSelection()">
           <i class="fas fa-database"></i>
         </button>
         <div *ngIf="showDropdown" class="multi-select-dropdown idol-indexes">

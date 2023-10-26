@@ -20,6 +20,7 @@ export class HeaderComponent {
   @Output() showIDOLResultsChanged = new EventEmitter<boolean>();
 
   propogateSearchTerm(value: string) {
+    this.hideDatabaseSelectionDropDown()
     this.searchTermChanged.emit(value);
   }
   
@@ -86,8 +87,16 @@ export class HeaderComponent {
     // Add this to your existing TypeScript class
   public showSettingsDialog = false;
 
+  public toggleDatabaseSelection(){
+    this.showDropdown = ! this.showDropdown;
+    this.showSettingsDialog = !this.showDropdown;
+  }
+  public hideDatabaseSelectionDropDown(){
+    this.showDropdown = false;
+  }
   public openSettingsDialog() {
     this.showSettingsDialog = true;
+    this.showDropdown = false;
   }
 
   public closeSettingsDialog() {
