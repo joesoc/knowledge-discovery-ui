@@ -21,6 +21,8 @@ export class LandingPageComponent {
   }
   
   fetchAnswer(question:string){
+      this.answers = [];
+      this.question = question
       this.answerService.ask(question).subscribe((data)=>{
         const response: IAnswerServerAskResponse = data;
         console.table(data);
