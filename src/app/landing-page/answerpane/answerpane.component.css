@@ -28,6 +28,7 @@
   
   .answer-content {
     min-height: 100px;
+    font-size: smaller;
   }
   
   .answer-footer {
