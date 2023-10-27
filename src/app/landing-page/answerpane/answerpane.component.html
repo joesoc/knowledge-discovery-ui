@@ -5,10 +5,11 @@
     <div class="answer-content">
       <div *ngIf="currentAnswer">
         <strong>{{question}}</strong><br>
-        {{currentAnswer.text}}<br>
+        <div [innerHTML]="currentAnswer.text"></div><br>
         <span class="score">Score: {{currentAnswer.score}}</span><br>
         <a href="{{currentAnswer.source}}">{{currentAnswer.source}}</a>
       </div>
+      
     </div>
     <div class="answer-footer">
       <button class="btn btn-sm btn-outline-secondary" [disabled]="isPrevDisabled" (click)="prevAnswer()">
