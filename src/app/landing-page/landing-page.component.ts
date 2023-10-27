@@ -21,6 +21,10 @@ export class LandingPageComponent {
   }
   
   fetchAnswer(question:string){
+      // Add a question mark to the query if it doesn't have one
+      if (!question.endsWith('?')) {
+        question += '?';
+      }
       this.answers = [];
       this.question = question
       this.answerService.ask(question).subscribe((data)=>{
