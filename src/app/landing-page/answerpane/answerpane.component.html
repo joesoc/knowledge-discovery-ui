@@ -5,7 +5,7 @@
     <div class="answer-content">
       <div *ngIf="currentAnswer">
         <strong>{{question}}</strong><br>
-        <div [innerHTML]="currentAnswer.text"></div><br>
+        <div class="answerhtml" [innerHTML]="currentAnswer.text"></div><br>
         <span class="score">Score: {{currentAnswer.score}}</span><br>
         <a href="{{currentAnswer.source}}">{{currentAnswer.source}}</a>
       </div>

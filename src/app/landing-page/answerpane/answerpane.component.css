@@ -25,7 +25,9 @@
     font-size: 12px;
     font-style: italic;
   }
-  
+  .answerhtml{
+    margin-bottom: -20px;
+  }
   .answer-content {
     min-height: 100px;
     font-size: smaller;
