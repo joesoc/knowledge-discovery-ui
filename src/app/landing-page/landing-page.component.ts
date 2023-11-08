@@ -58,21 +58,17 @@ export class LandingPageComponent {
   }
 // Method to generate the title based on the hit title or the filename in the URL
 generateTitle(existingTitle: string, url: string): string {
-  console.log(`generateTitle called with existingTitle: ${existingTitle}, url: ${url}`);
 
   // If existingTitle is not empty, return it
   if (existingTitle) {
-    console.log(`Existing title is not empty, using the existing title: ${existingTitle}`);
     return existingTitle;
   } else {
-    console.log(`Existing title is empty, attempting to extract title from URL.`);
   }
 
   // If the title is empty, extract the filename from the URL
   const match = /[^/]*$/.exec(url);
   const generatedTitle = match ? decodeURIComponent(match[0]) : '';
   
-  console.log(`Generated title from URL is: ${generatedTitle}`);
 
   // If there's a match, return it; otherwise, return an empty string
   return generatedTitle;
