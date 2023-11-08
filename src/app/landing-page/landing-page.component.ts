@@ -29,8 +29,7 @@ export class LandingPageComponent {
       this.question = question
       this.answerService.ask(question).subscribe((data)=>{
         const response: IAnswerServerAskResponse = data;
-        console.table(data);
-        this.answers = response.autnresponse.responsedata.answers.answer;
+        this.answers = response.autnresponse.responsedata.answers ? response.autnresponse.responsedata.answers.answer : [];
       });
     }
 
@@ -57,6 +56,28 @@ export class LandingPageComponent {
   hideNormalIDOL(valueEmitted: any){
     this.hideStandardResults = valueEmitted;
   }
+// Method to generate the title based on the hit title or the filename in the URL
+generateTitle(existingTitle: string, url: string): string {
+  console.log(`generateTitle called with existingTitle: ${existingTitle}, url: ${url}`);
+
+  // If existingTitle is not empty, return it
+  if (existingTitle) {
+    console.log(`Existing title is not empty, using the existing title: ${existingTitle}`);
+    return existingTitle;
+  } else {
+    console.log(`Existing title is empty, attempting to extract title from URL.`);
+  }
+
+  // If the title is empty, extract the filename from the URL
+  const match = /[^/]*$/.exec(url);
+  const generatedTitle = match ? decodeURIComponent(match[0]) : '';
+  
+  console.log(`Generated title from URL is: ${generatedTitle}`);
+
+  // If there's a match, return it; otherwise, return an empty string
+  return generatedTitle;
+}
+
   propogateSearchTerm(valueEmitted:any){
     this.question = valueEmitted;
     this.fetchAnswer(this.question);
@@ -80,7 +101,7 @@ export class LandingPageComponent {
         this.idolresultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
         data.autnresponse.responsedata.hit.forEach((hit: Hit)=>{
           this.idolresultsItems.push({
-            title: hit.title,
+            title: this.generateTitle(hit.title, hit.reference),
             reference: hit.reference,
             summary: hit.summary,
             autnrank: hit.weight // Add the autnrank property here
@@ -95,7 +116,7 @@ export class LandingPageComponent {
         this.resultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
         data.autnresponse.responsedata.hit.forEach((hit: Hit)=>{
           this.resultItems.push({
-            title: hit.title,
+            title: this.generateTitle(hit.title, hit.reference),
             reference: hit.reference,
             summary: hit.summary,
             autnrank: hit.weight // Add the autnrank property here
