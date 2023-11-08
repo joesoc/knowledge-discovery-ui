@@ -10,13 +10,13 @@
   <div class="searchresultsVector" 
       [ngStyle]="{'width': hideStandardResults ? '50%' : '50%'}" 
       *ngIf="hideVectorResults">
-      <app-results-count [keyword]="searchkeyword" [resultsSummary]="resultsSummary"></app-results-count>
+      <app-results-count [keyword]="searchkeyword" [resultsSummary]="resultsSummary" [resultType]="'IDOL Vector Search'"></app-results-count>
       <app-search-results [searchResults]="resultItems"></app-search-results>    
   </div>
   <div class="searchresultsIDOL" 
       [ngStyle]="{'width': hideVectorResults ? '50%' : '50%'}" 
       *ngIf="hideStandardResults">
-      <app-results-count [keyword]="searchkeyword" [resultsSummary]="idolresultsSummary"></app-results-count>
+      <app-results-count [keyword]="searchkeyword" [resultsSummary]="idolresultsSummary" [resultType]="'IDOL Search'"></app-results-count>
       <app-search-results [searchResults]="idolresultsItems"></app-search-results>    
   </div>
 </div>

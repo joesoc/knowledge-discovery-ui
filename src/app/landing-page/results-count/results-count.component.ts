@@ -9,4 +9,5 @@ import { IResultSummary } from 'src/app/interfaces/IsearchResultsSummary';
 export class ResultsCountComponent {
   @Input() keyword:string = "";
   @Input() resultsSummary:IResultSummary = {} as IResultSummary;
+  @Input() resultType:string = "";
 }
