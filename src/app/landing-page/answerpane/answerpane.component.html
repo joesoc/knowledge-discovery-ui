@@ -6,12 +6,13 @@
       <div *ngIf="currentAnswer">
         <strong>{{question}}</strong><br>
         <div class="answerhtml" [innerHTML]="currentAnswer.text"></div><br>
+        <div class="answerhtml" [innerHTML]="currentAnswer.metadata.paragraph"></div><br>
         <span class="score">Score: {{currentAnswer.score}}</span><br>
         <a class="linkref" href="{{currentAnswer.source}}">{{currentAnswer.source}}</a>
       </div>
       
     </div>
-    <div class="answer-footer">
+    <div class="answer-footer" *ngIf="!isPrevDisabled || !isNextDisabled">
       <button class="btn btn-sm btn-outline-secondary" [disabled]="isPrevDisabled" (click)="prevAnswer()">
         &larr; Previous
       </button>
