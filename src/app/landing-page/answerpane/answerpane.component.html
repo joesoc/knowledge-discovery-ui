@@ -7,6 +7,15 @@
         <div class="answerparagraph" [innerHTML]="currentAnswer.metadata.paragraph"></div><br>
         <!--<span class="score">Score: {{currentAnswer.score}}</span><br>-->
         <a class="linkref" href="{{currentAnswer.source}}">{{currentAnswer.source}}</a>
+        <div>Verified Response : 
+          <strong>
+              <i *ngIf="currentAnswer.metadata.verified_response; else notVerified" class="fas fa-check" style="color: green;"></i>
+              <ng-template #notVerified>
+                  <i class="fas fa-times" style="color: red;"></i>
+              </ng-template>
+          </strong>
+      </div>
+      
       </div>
       <div *ngIf="gotAnswers == false">
         <p>I am fetching the answer for you. Please do not refresh this page.</p>

@@ -40,8 +40,12 @@ export interface IAnswerServerAskResponse {
     windows: Windows
     classifications: Classifications
     context: Context
+    verified_response: VerifiedResponse
   }
   
+  export interface VerifiedResponse {
+    $: string 
+  }
   export interface Paragraph {
     $: string
   }
