@@ -16,11 +16,13 @@ import { Answer, IAnswerServerAskResponse } from '../interfaces/IAnswerServerRes
 export class LandingPageComponent {
   searchkeyword: string = "";
   answers: Answer[] = []; // Add your answers here  
+  gotAnswers: boolean = false;
   question: string = "";
   ngOnInit(): void {
   }
   
   fetchAnswer(question:string){
+      this.gotAnswers = false;
       // Add a question mark to the query if it doesn't have one
       if (!question.endsWith('?')) {
         question += '?';
@@ -30,6 +32,7 @@ export class LandingPageComponent {
       this.answerService.ask(question).subscribe((data)=>{
         const response: IAnswerServerAskResponse = data;
         this.answers = response.autnresponse.responsedata.answers ? response.autnresponse.responsedata.answers.answer : [];
+        this.gotAnswers = true;
       });
     }
 
@@ -95,6 +98,7 @@ generateTitle(existingTitle: string, url: string): string {
         this.idolresultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
         this.idolresultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
         this.idolresultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
+        console.table(data.autnresponse.responsedata);
         data.autnresponse.responsedata.hit.forEach((hit: Hit)=>{
           this.idolresultsItems.push({
             title: this.generateTitle(hit.title, hit.reference),

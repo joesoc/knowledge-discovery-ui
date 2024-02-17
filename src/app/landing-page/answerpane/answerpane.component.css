@@ -19,13 +19,18 @@
     font-size: smaller;
   }
   .answer-header {
-    position: absolute;
     top: 10px;
     right: 10px;
     font-size: 12px;
     font-style: italic;
   }
   .answerhtml{
+    margin-bottom: -20px;
+    font-weight: bold;
+    display: block;
+    clear: both;
+  }
+  .answerparagraph {
     margin-bottom: -20px;
   }
   .answer-content {
