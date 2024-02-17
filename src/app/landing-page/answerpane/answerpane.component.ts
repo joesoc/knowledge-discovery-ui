@@ -10,9 +10,9 @@ export class AnswerpaneComponent {
   currentIndex: number = 0;
   @Input() question:string = "";
   @Input()answers: Answer[] = []; // Add your answers here
-
+  @Input() gotAnswers: boolean = false;
   ngOnInit(): void {
-
+    this.gotAnswers = false;
   }
 
   ngAfterViewInit(): void {
