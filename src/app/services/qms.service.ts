@@ -36,6 +36,7 @@ export class QmsService {
     );
   }
   getVectorResults(vector:string, databases:string): Observable<IContentResponse> {
+    console.log(vector);
     let params = new HttpParams()
       .set('action', 'query')
       .set('text', 'VECTOR{' + vector + '}:VECTOR')
