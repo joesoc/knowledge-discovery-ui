@@ -15,7 +15,7 @@
       </ul>
       <form class="form-inline search-box d-flex my-2 my-lg-0 justify-content-center align-items-center">
         <div class="input-group idol-input">
-          <input #searchInput class="form-control form-control search custom-height" type="search" placeholder="Search" aria-label="Search" (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()">
+          <input #searchInput class="form-control form-control search custom-height" type="search" placeholder="Search" aria-label="Search" (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()" (focus)="hideDatabaseAndSettings()">
         </div>
         <!-- Separate Search Button -->
         <button type="button" class="btn btn-light ml-2 custom-height" (click)="propogateSearchTerm(searchInput.value)">

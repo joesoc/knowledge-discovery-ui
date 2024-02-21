@@ -91,6 +91,10 @@ export class HeaderComponent {
     this.showDropdown = ! this.showDropdown;
     this.showSettingsDialog = !this.showDropdown;
   }
+  public hideDatabaseAndSettings(){
+    this.hideDatabaseSelectionDropDown();
+    this.closeSettingsDialog();
+  }
   public hideDatabaseSelectionDropDown(){
     this.showDropdown = false;
   }
