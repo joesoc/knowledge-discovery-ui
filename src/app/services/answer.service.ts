@@ -31,7 +31,6 @@ export class AnswerService {
     const queryParams = `action=ManageResources&SystemName=Conversation&Data=${btoa(JSON.stringify(operation))}&ResponseFormat=simplejson`;
   
     this._url = `${baseUrl}/${queryParams}`;
-    console.log(this._url);
     return this._http.get<IManageResourcesResponse>(this._url, { headers });
   }
   
