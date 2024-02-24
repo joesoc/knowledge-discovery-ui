@@ -27,7 +27,6 @@ export class ChatComponent {
     // Replace 'variables' with any required session variables
         this.answerService.getSessionID().subscribe((response: IManageResourcesResponse) => {
           this.sessionID = response.autnresponse.responsedata.result.managed_resources.id;
-          console.log('Session ID: ' + this.sessionID);
           this.answerService.converse(this.sessionID, '').subscribe((response) => {
             let prompts:Prompt[] = response.autnresponse.responsedata.prompts;
             prompts.forEach((prompt) => {
