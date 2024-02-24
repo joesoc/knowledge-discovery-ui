@@ -1,0 +1,33 @@
+<div class="chat-container">
+    <!-- Chat Header with Close Button -->
+    <div class="chat-header">
+        <h5>Chat</h5>
+        <!-- Close Button -->
+        <button class="close-btn" (click)="onCloseButtonClick()">
+            <i class="fas fa-times"></i> <!-- Font Awesome Close Icon -->
+        </button>
+    </div>
+    
+    <div class="chat-messages">
+        
+        <div *ngFor="let message of messages" 
+             [ngClass]="{'user-message': message.fromUser, 'bot-message': !message.fromUser}">
+            <div class="message-info">
+                <span class="username"><strong>{{message.username}}</strong></span><br>
+                <span class="timestamp" style="font-size: small;">{{message.timestamp }}</span>
+            </div>
+            <div class="message-text">
+                {{message.text}}
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <!-- Message Input Area -->
+    <div class="input-area">
+        <input type="text" class="form-control" [(ngModel)]="newMessage.text" (keyup.enter)="sendMessage()" placeholder="Type a message">
+
+        <button type="button" class="btn btn-primary" (click)="sendMessage()">Send</button>
+    </div>
+</div>

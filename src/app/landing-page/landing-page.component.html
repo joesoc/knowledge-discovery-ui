@@ -3,6 +3,13 @@
             (showVectorResultsChanged)="hideVector($event)"
             (showIDOLResultsChanged)="hideNormalIDOL($event)">
 </app-header>
+<button *ngIf="!isChatOpen" class="start-chat-btn" (click)="toggleChat()">
+  <i class="fas fa-comments"></i>
+</button>
+
+<app-chat *ngIf="isChatOpen" (closeChat)="toggleChat()"></app-chat>
+
+
 <div class="answerpane-container">
   <app-answerpane [answers]="answers" [question]="question" [gotAnswers]="gotAnswers"></app-answerpane>
 </div>
