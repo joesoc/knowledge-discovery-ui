@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 import { IQMSModelEncodeResponse } from '../interfaces/Iqmsmodel';
 import { IContentResponse } from '../interfaces/IcontentResponse';
 import { catchError, throwError } from 'rxjs';
@@ -36,7 +36,6 @@ export class QmsService {
     );
   }
   getVectorResults(vector:string, databases:string): Observable<IContentResponse> {
-    console.log(vector);
     let params = new HttpParams()
       .set('action', 'query')
       .set('text', 'VECTOR{' + vector + '}:VECTOR')

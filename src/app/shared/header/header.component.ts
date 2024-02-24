@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { addSelectedDatabases } from '../../actions/headeractions';
 import { Observable } from 'rxjs';
 import { getSelectedDatabases } from '../../reducers/headerreducer';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-header',

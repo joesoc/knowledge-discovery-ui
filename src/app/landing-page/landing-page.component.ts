@@ -18,9 +18,12 @@ export class LandingPageComponent {
   answers: Answer[] = []; // Add your answers here  
   gotAnswers: boolean = false;
   question: string = "";
+  isChatOpen: boolean = false;
   ngOnInit(): void {
   }
-  
+  toggleChat() {
+    this.isChatOpen = !this.isChatOpen;
+  }
   fetchAnswer(question:string){
       this.gotAnswers = false;
       // Add a question mark to the query if it doesn't have one

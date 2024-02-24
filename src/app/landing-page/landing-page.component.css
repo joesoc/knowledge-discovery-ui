@@ -8,4 +8,31 @@
 .searchresultsIDOL {
   margin: 10px; /* Optional: Add some margin */
 }
-  
+
+.start-chat-btn {
+  position: fixed; /* Keep the button fixed relative to the viewport */
+  bottom: 20px; /* 20px from the bottom */
+  right: 20px; /* 20px from the right */
+  background-color: rgba(0, 123, 255, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 0; /* Square shape */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px; /* Adjust width as needed */
+  height: 50px; /* Adjust height as needed */
+}
+
+.start-chat-btn:hover {
+  background-color: rgba(0, 123, 255, 0.8);
+}
+.chat-container {
+  position: fixed;
+  bottom: 60px; /* Adjust based on the button's position and chat UI size */
+  right: 20px;
+  z-index: 1000; /* Ensure it's above other content */
+}
