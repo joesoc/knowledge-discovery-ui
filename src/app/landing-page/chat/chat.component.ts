@@ -24,7 +24,7 @@ export class ChatComponent {
   }
   initializeChatbot(): void {
     // Replace 'variables' with any required session variables
-    this.answerService.startConversation().subscribe((response: IManageResourcesResponse) => {
+    this.answerService.getSessionID().subscribe((response: IManageResourcesResponse) => {
       this.sessionID = response.autnresponse.responsedata.result.managed_resources.id;
       console.log('Session ID: ' + this.sessionID);
       this.addMessage('Hello! How can I help you today?'+this.sessionID, false);

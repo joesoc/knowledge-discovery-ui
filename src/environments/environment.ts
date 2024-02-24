@@ -1,7 +1,9 @@
 export const environment = {
     production: false,
-    answerserver_fqdn: 'answerserver.idoldemos.net',
-    answerserver_port: '12000',
+    answerserver_fqdn: 'localhost',
+    answerserver_port: '4200',
+    answerserver_scheme: 'https',
+    api:'api',
     qms_fqdn: 'qms.idoldemos.net',
     qms_port: '16000',
     dah_fqdb: 'dah.idoldemos.net',

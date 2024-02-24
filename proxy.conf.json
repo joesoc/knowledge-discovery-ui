@@ -1,8 +1,0 @@
-{
-  "https://localhost:4200/api/": {
-    "target": "https://answerserver.idoldemos.net:12000/",
-    "secure": false,
-    "changeOrigin": false,
-    "logLevel": "debug" 
-  }
-}
