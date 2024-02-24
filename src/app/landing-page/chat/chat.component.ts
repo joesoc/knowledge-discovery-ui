@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Prompt } from 'src/app/interfaces/IAnswerServerConversationPrompts';
 import { IManageResourcesResponse } from 'src/app/interfaces/IAnswerServerConversationResponse';
 import { AnswerService } from 'src/app/services/answer.service';
 
@@ -24,16 +25,22 @@ export class ChatComponent {
   }
   initializeChatbot(): void {
     // Replace 'variables' with any required session variables
-    this.answerService.getSessionID().subscribe((response: IManageResourcesResponse) => {
-      this.sessionID = response.autnresponse.responsedata.result.managed_resources.id;
-      console.log('Session ID: ' + this.sessionID);
-      this.addMessage('Hello! How can I help you today?'+this.sessionID, false);
-    });
-  }
-    // Example method to add a message
-  addMessage(text: string, fromUser: boolean) {
+        this.answerService.getSessionID().subscribe((response: IManageResourcesResponse) => {
+          this.sessionID = response.autnresponse.responsedata.result.managed_resources.id;
+          console.log('Session ID: ' + this.sessionID);
+          this.answerService.converse(this.sessionID, '').subscribe((response) => {
+            let prompts:Prompt[] = response.autnresponse.responsedata.prompts;
+            prompts.forEach((prompt) => {
+              this.addMessage("Conversation Server", prompt.prompt, false);
+            });
+          });
+          //this.addMessage('Hello! How can I help you today?'+this.sessionID, false);
+        });
+      }
+        // Example method to add a message
+      addMessage(username:string, text: string, fromUser: boolean) {
     const message = {
-      username: 'ExampleUser',
+      username: username,
       timestamp: new Date().toLocaleTimeString(),
       text: text,
       fromUser: fromUser
@@ -47,7 +54,7 @@ export class ChatComponent {
     this.messages.push(userMessage);
     
     // Reset newMessage
-    this.newMessage = { username: 'User1', timestamp: new Date(), text: '' };
+    this.newMessage = { username: 'User', timestamp: new Date(), text: '' };
   
     // Simulate a bot response
     setTimeout(() => {
