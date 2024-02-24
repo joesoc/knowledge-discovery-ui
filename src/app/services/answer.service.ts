@@ -15,20 +15,25 @@ export class AnswerService {
   constructor(private _http: HttpClient) { 
 
   }
-  startConversation(): Observable<IManageResourcesResponse> {
+  getSessionID(): Observable<IManageResourcesResponse> {
     const operation = {
       "operation": "add",
       "type": "conversation_session"
     };
-
+  
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       // Include other headers as required by your server
     });
-
-    this._url = `${this.scheme}://${environment.answerserver_fqdn}:${environment.answerserver_port}/action=ManageResources&SystemName=Conversation&Data=${btoa(JSON.stringify(operation))}&ResponseFormat=simplejson`;
+  
+    const baseUrl = `${environment.api}`;
+    const queryParams = `action=ManageResources&SystemName=Conversation&Data=${btoa(JSON.stringify(operation))}&ResponseFormat=simplejson`;
+  
+    this._url = `${baseUrl}/${queryParams}`;
+    console.log(this._url);
     return this._http.get<IManageResourcesResponse>(this._url, { headers });
   }
+  
 
   ask(question:string){
     let params = new HttpParams()
