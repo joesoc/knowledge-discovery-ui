@@ -11,7 +11,7 @@ import { IAnswerServerConversationPrompts } from '../interfaces/IAnswerServerCon
 })
 export class AnswerService {
 
-  private _url:string = "";
+  private _url:string = `${environment.answerserver_api}`;
   private scheme:string = "https";
   constructor(private _http: HttpClient) { 
 
@@ -53,8 +53,10 @@ export class AnswerService {
     let params = new HttpParams()
       .set('action', 'ask')
       .set('text', question)
+      .set('SystemNames','PassageExtractorLLMVector')
       .set('ResponseFormat', 'simplejson');
-    return this._http.get<IAnswerServerAskResponse>(this._url, { params }).pipe(
+      const baseUrl = `${environment.answerserver_api}`;
+    return this._http.get<IAnswerServerAskResponse>(baseUrl, { params }).pipe(
       catchError(error => {
         console.error('Error fetching data', error);
         return throwError('Error fetching data');
