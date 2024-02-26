@@ -19,6 +19,17 @@
     border-radius: 0;
     
   }
+
+  
+  .chat-container.minimized {
+    height: 40px; /* Adjust based on your header height */
+    /* Additional styles for minimized state */
+  }
+  
+  /* Hide content when minimized */
+  .chat-container.minimized .chat-content {
+    display: none;
+  }
   
   .chat-header {
     /* ... existing styles ... */
@@ -26,7 +37,17 @@
     justify-content: space-between;
     align-items: center;
   }
-  
+  .btn-group {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.control-btn, .close-btn {
+    margin: 0 2px; /* Provides spacing between buttons */
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
   .close-btn {
     background: none;
     border: none;
@@ -85,6 +106,12 @@
     margin: 4px;
     border-radius: 4px;
     width: auto;
+  }
+
+  .responsetime{
+    font-size: smaller;
+    color: rgba(128, 128, 128, 0.601);
+    font-style: italic;
   }
   .bot-message, .user-message {
     display: inline-block; /* Ensures messages appear one below the other */
