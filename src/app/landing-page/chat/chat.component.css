@@ -42,6 +42,9 @@
     justify-content: flex-end;
 }
 
+.controls-chat{
+  padding-bottom: 10px;
+}
 .control-btn, .close-btn {
     margin: 0 2px; /* Provides spacing between buttons */
     border: none;
@@ -64,6 +67,17 @@
     flex-direction: column; /* Stack the messages on top of each other */
     width: auto;
 }
+
+::ng-deep .responded-time {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.chat-message {
+  width: fit-content;
+  min-width: 300px;
+}
+
   .input-area {
     display: flex; /* Aligns children inline */
     align-items: center; /* Centers children vertically */
@@ -94,7 +108,7 @@
     padding: 8px;
     margin: 4px;
     border-radius: 4px;
-    width: auto;
+    /* width: auto; */
   }
   
   .user-message {
@@ -105,7 +119,8 @@
     padding: 8px;
     margin: 4px;
     border-radius: 4px;
-    width: auto;
+    align-self: flex-end;
+    /* width: auto; */
   }
 
   .responsetime{
@@ -118,8 +133,8 @@
     /* Other styles remain the same */
     float: none; /* Removes any floating, ensuring normal document flow */
     flex-direction: row;
-    min-width: 200px;
-    width: auto;
+    /* min-width: 200px; */
+    /* width: auto; */
   }
   
   .message-info .username {
