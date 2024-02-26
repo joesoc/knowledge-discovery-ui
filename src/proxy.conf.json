@@ -1,8 +1,8 @@
 {
-  "/api": {
+  "/api/answerserver": {
     "target": "https://answerserver.idoldemos.net:12000",
     "secure": false,
-    "pathRewrite": {"^/api" : ""},
+    "pathRewrite": {"^/api/answerserver" : ""},
     "changeOrigin": true, 
     "logLevel": "debug"
   }

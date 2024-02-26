@@ -27,7 +27,7 @@ export class AnswerService {
       // Include other headers as required by your server
     });
   
-    const baseUrl = `${environment.api}`;
+    const baseUrl = `${environment.answerserver_api}`;
     const queryParams = `action=ManageResources&SystemName=Conversation&Data=${btoa(JSON.stringify(operation))}&ResponseFormat=simplejson`;
   
     this._url = `${baseUrl}/${queryParams}`;
@@ -41,7 +41,7 @@ export class AnswerService {
       .set('SystemName','Conversation')
       .set('text', text)
       .set('ResponseFormat', 'simplejson');
-      const baseUrl = `${environment.api}`;
+      const baseUrl = `${environment.answerserver_api}`;
     return this._http.get<IAnswerServerConversationPrompts>(baseUrl, { params }).pipe(
       catchError(error => {
         console.error('Error fetching data', error);

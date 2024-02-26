@@ -9,7 +9,7 @@ import { AnswerService } from 'src/app/services/answer.service';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent {
-  sessionID: string | undefined;
+  sessionID: string = "";
   messages: Array<{ username: string; timestamp: string ; text: string; fromUser: boolean }> = [];
 
   @Output() closeChat = new EventEmitter<void>();
@@ -17,9 +17,22 @@ export class ChatComponent {
     this.closeChat.emit();
   }
   showChat = true;
+  isMinimized =false;
   newMessage = {username: 'User1', timestamp: new Date(), text: ''};
   constructor(private answerService: AnswerService) { }
 
+
+  minimizeChat() {
+    this.isMinimized = true;
+    // Additional logic to only show the chat header
+  }
+
+  maximizeChat() {
+    this.isMinimized = false;
+    // Logic to show the entire chat window
+  }
+
+  
   ngOnInit(): void {
     this.initializeChatbot();
   }
@@ -47,25 +60,32 @@ export class ChatComponent {
     this.messages.push(message);
   }
   sendMessage() {
-    // Assuming this method is triggered when the user sends a message
-    // First, add the user's message
-    const userMessage = { ...this.newMessage, fromUser: true, timestamp: new Date().toLocaleTimeString() };
-    this.messages.push(userMessage);
-    
-    // Reset newMessage
-    this.newMessage = { username: 'User', timestamp: new Date(), text: '' };
-  
-    // Simulate a bot response
-    setTimeout(() => {
-      const botMessage = {
-        username: 'Bot',
-        timestamp: new Date().toLocaleTimeString(), // Convert the timestamp to a Date object
-        text: 'This is a simulated response from the bot.',
-        fromUser: false // Indicating this message is from the bot
-      };
-      this.messages.push(botMessage);
-    }, 1000); // Delay the bot response by 1 second for effect
+    const startTime = Date.now(); // Capture start time
+    const userMessage = { username: 'User', timestamp: new Date().toLocaleTimeString(), text: this.newMessage.text, fromUser: true };
+    this.addMessage("User", this.newMessage.text, true);
+    this.newMessage.text = "";
+
+    const messagesToCheck = ['What is your question?', 
+                             'Did that answer your question?', 
+                             'Message 3']; // Add your messages here
+
+    this.answerService.converse(this.sessionID, userMessage.text).subscribe((response) => {
+      let prompts: Prompt[] = response.autnresponse.responsedata.prompts;
+      
+      prompts.forEach((prompt) => {
+        const endTime = Date.now(); // Capture end time
+        const duration = (endTime - startTime) / 1000; // Calculate duration in seconds
+
+        if (!messagesToCheck.includes(prompt.prompt)) {
+          this.addMessage("Conversation Server", prompt.prompt + "<br><span style='font-size:5px;'>Responded in " +duration + " seconds</span>", false);
+        }
+        else {
+          this.addMessage("Conversation Server", prompt.prompt, false);
+        }
+      });
+    });
   }
+  
   
   
   

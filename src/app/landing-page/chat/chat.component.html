@@ -1,12 +1,23 @@
-<div class="chat-container">
+<div class="chat-container" [ngClass]="{'minimized':isMinimized}">
     <!-- Chat Header with Close Button -->
     <div class="chat-header">
         <h5>Chat</h5>
-        <!-- Close Button -->
-        <button class="close-btn" (click)="onCloseButtonClick()">
-            <i class="fas fa-times"></i> <!-- Font Awesome Close Icon -->
-        </button>
+        <div class="btn-group">
+            <!-- Minimize Button -->
+            <button class="control-btn" (click)="minimizeChat()" *ngIf="!isMinimized" title="Minimize">
+                <i class="fas fa-window-minimize"></i>
+            </button>
+            <!-- Maximize Button, shown only when minimized -->
+            <button class="control-btn" (click)="maximizeChat()" *ngIf="isMinimized" title="Maximize">
+                <i class="fas fa-window-maximize"></i>
+            </button>
+            <!-- Close Button -->
+            <button class="control-btn" (click)="onCloseButtonClick()" title="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
     </div>
+    
     
     <div class="chat-messages">
         
@@ -16,8 +27,7 @@
                 <span class="username"><strong>{{message.username}}</strong></span><br>
                 <span class="timestamp" style="font-size: small;">{{message.timestamp }}</span>
             </div>
-            <div class="message-text">
-                {{message.text}}
+            <div class="message-text" [innerHTML]="message.text">
             </div>
         </div>
     </div>
