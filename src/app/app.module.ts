@@ -15,6 +15,8 @@ import { selectedDatabaseReducer } from './reducers/headerreducer';
 import { SettingsDialogComponent } from './shared/header/settings-dialog/settings-dialog.component';
 import { AnswerpaneComponent } from './landing-page/answerpane/answerpane.component';
 import { ChatComponent } from './landing-page/chat/chat.component';
+import { DynamicValidChoicesComponent } from './landing-page/chat/dynamic-valid-choices/dynamic-valid-choices.component';
+import { DynamicHostDirective } from './landing-page/chat/dynamic-host.directive';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { ChatComponent } from './landing-page/chat/chat.component';
     SearchResultItemComponent,
     SettingsDialogComponent,
     AnswerpaneComponent,
-    ChatComponent
+    ChatComponent,
+    DynamicValidChoicesComponent,
+    DynamicHostDirective
   ],
   imports: [
     BrowserModule,

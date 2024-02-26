@@ -2,7 +2,7 @@
     <!-- Chat Header with Close Button -->
     <div class="chat-header">
         <h5>Chat</h5>
-        <div class="btn-group">
+        <div class="btn-group controls-chat">
             <!-- Minimize Button -->
             <button class="control-btn" (click)="minimizeChat()" *ngIf="!isMinimized" title="Minimize">
                 <i class="fas fa-window-minimize"></i>
@@ -22,13 +22,17 @@
     <div class="chat-messages">
         
         <div *ngFor="let message of messages" 
+            #chatMessage
+            class="chat-message"
              [ngClass]="{'user-message': message.fromUser, 'bot-message': !message.fromUser}">
             <div class="message-info">
                 <span class="username"><strong>{{message.username}}</strong></span><br>
                 <span class="timestamp" style="font-size: small;">{{message.timestamp }}</span>
             </div>
             <div class="message-text" [innerHTML]="message.text">
+                
             </div>
+            <app-dynamic-valid-choices *ngIf="message.choices.length" [validChoices]="message.choices" (choiceSelected)="selectChoice($event)"></app-dynamic-valid-choices>
         </div>
     </div>
     
