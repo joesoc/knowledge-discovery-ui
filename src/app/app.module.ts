@@ -16,7 +16,6 @@ import { SettingsDialogComponent } from './shared/header/settings-dialog/setting
 import { AnswerpaneComponent } from './landing-page/answerpane/answerpane.component';
 import { ChatComponent } from './landing-page/chat/chat.component';
 import { DynamicValidChoicesComponent } from './landing-page/chat/dynamic-valid-choices/dynamic-valid-choices.component';
-import { DynamicHostDirective } from './landing-page/chat/dynamic-host.directive';
 
 @NgModule({
   declarations: [
@@ -30,8 +29,7 @@ import { DynamicHostDirective } from './landing-page/chat/dynamic-host.directive
     SettingsDialogComponent,
     AnswerpaneComponent,
     ChatComponent,
-    DynamicValidChoicesComponent,
-    DynamicHostDirective
+    DynamicValidChoicesComponent
   ],
   imports: [
     BrowserModule,
