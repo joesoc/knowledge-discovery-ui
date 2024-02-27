@@ -101,33 +101,39 @@ export class ChatComponent {
 
     const messagesToCheck = ['What is your question?', 
                              'Did that answer your question?', 
+                             'Whats next?',
+                             '<p>I don\'t have any answers</p>',
+                             'OK, let\'s cancel that.',
+                             'Welcome to Virtual Agent',
+                             'Thank you and have a nice day...',
                              'Let me look up other answers for you']; // Add your messages here
 
     this.answerService.converse(this.sessionID, userMessage.text).subscribe((response) => {
       let prompts: Prompt[] = response.autnresponse.responsedata.prompts;
       console.table(prompts);
       prompts.forEach((prompt) => {
+
         const endTime = Date.now(); // Capture end time
         const duration = (endTime - startTime) / 1000; // Calculate duration in seconds
 
         if (!messagesToCheck.includes(prompt.prompt)) {
+
           const safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(this.decodeHtml(prompt.prompt) + "<br><span class=\"responded-time\">Responded in " + duration + " seconds</span>");
           this.addMessage("Conversation Server", safeMessage, false);
-
+          console.log("Line 118");
         }
         
         else {
           if (prompt.valid_choices) {
+            console.log("Line 123");
             let response = prompt.prompt;
-            let choicesHTML = prompt.valid_choices.valid_choice.map(choice => `<button class='btn btn-primary btn-sm' value='${choice}' style='margin: 5px;'>${choice}</button>`);
             // this.loadValidChoices(prompt.valid_choices.valid_choice);
             let responseHTML = `${response}<br>`;
-
-            console.table(responseHTML);
             let safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(responseHTML);
             this.addMessage("Conversation Server", safeMessage, false, prompt.valid_choices.valid_choice);
           }
           else{
+            console.log("Line 130");
             let safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(prompt.prompt);
             this.addMessage("Conversation Server", safeMessage, false);
           }

@@ -26,8 +26,7 @@
             class="chat-message"
              [ngClass]="{'user-message': message.fromUser, 'bot-message': !message.fromUser}">
             <div class="message-info">
-                <span class="username"><strong>{{message.username}}</strong></span><br>
-                <span class="timestamp" style="font-size: small;">{{message.timestamp }}</span>
+                <span class="username"><strong>{{message.username}}</strong></span><span class="timestamp" style="font-size: small;">{{message.timestamp }}</span>
             </div>
             <div class="message-text" [innerHTML]="message.text">
                 
