@@ -164,4 +164,9 @@
     min-width: 20%; /* Ensures messages are at least a certain width */
     margin: 4px auto; /* Centers messages within the chat UI */
   }
-  
+  .send{
+    background-color: blue;
+    color: white;
+    border-color: blue;
+    border-width: 0px;
+  }
