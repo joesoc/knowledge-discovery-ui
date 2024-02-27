@@ -93,7 +93,6 @@ generateTitle(existingTitle: string, url: string): string {
       let responsedata = autnresponse.responsedata;
       let embeddings = responsedata.embeddings;
       let num_vectors = parseInt(embeddings.num_vectors);
-      console.table(embeddings);
       let vector = embeddings.vector[0];
 
       this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection()).subscribe((data)=>{
@@ -118,9 +117,6 @@ generateTitle(existingTitle: string, url: string): string {
         this.resultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
         this.resultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
         this.resultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
-        console.log("Outputting the results of Responsedata");
-        console.table(data.autnresponse.responsedata);
-        console.log("Vector data : " + vector);
         data.autnresponse.responsedata.hit.forEach((hit: Hit)=>{
           this.resultItems.push({
             title: this.generateTitle(hit.title, hit.reference),

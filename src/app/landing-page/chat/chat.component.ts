@@ -3,8 +3,6 @@ import { Prompt } from 'src/app/interfaces/IAnswerServerConversationPrompts';
 import { IManageResourcesResponse } from 'src/app/interfaces/IAnswerServerConversationResponse';
 import { AnswerService } from 'src/app/services/answer.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { DynamicHostDirective } from './dynamic-host.directive';
-import { DynamicValidChoicesComponent } from './dynamic-valid-choices/dynamic-valid-choices.component';
 
 
 @Component({
@@ -18,8 +16,6 @@ export class ChatComponent {
   messages: Array<{ username: string; timestamp: string ; text: SafeHtml; fromUser: boolean, choices: string[] }> = [];
 
   @Output() closeChat = new EventEmitter<void>();
-  @ViewChild(DynamicHostDirective, { static: false })
-  dynamicHost!: DynamicHostDirective;
 
   @ViewChildren('chatMessage') chatMessages!: QueryList<ElementRef<HTMLElement>>;
 
@@ -49,6 +45,7 @@ export class ChatComponent {
   initializeChatbot(): void {
     // Replace 'variables' with any required session variables
         this.answerService.getSessionID().subscribe((response: IManageResourcesResponse) => {
+          console.table(response.autnresponse.responsedata);
           this.sessionID = response.autnresponse.responsedata.result.managed_resources.id;
           this.answerService.converse(this.sessionID, '').subscribe((response) => {
             let prompts:Prompt[] = response.autnresponse.responsedata.prompts;
@@ -110,22 +107,23 @@ export class ChatComponent {
 
     this.answerService.converse(this.sessionID, userMessage.text).subscribe((response) => {
       let prompts: Prompt[] = response.autnresponse.responsedata.prompts;
-      console.table(prompts);
       prompts.forEach((prompt) => {
 
         const endTime = Date.now(); // Capture end time
         const duration = (endTime - startTime) / 1000; // Calculate duration in seconds
 
         if (!messagesToCheck.includes(prompt.prompt)) {
-
+          const doc = new DOMParser().parseFromString(prompt.prompt, 'text/html');
+          const hiddenValue = doc.querySelector('input[type="hidden"]') as HTMLInputElement;
+          if (hiddenValue !== null) {
+            console.log(hiddenValue.value);
+          }
           const safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(this.decodeHtml(prompt.prompt) + "<br><span class=\"responded-time\">Responded in " + duration + " seconds</span>");
           this.addMessage("Conversation Server", safeMessage, false);
-          console.log("Line 118");
         }
         
         else {
           if (prompt.valid_choices) {
-            console.log("Line 123");
             let response = prompt.prompt;
             // this.loadValidChoices(prompt.valid_choices.valid_choice);
             let responseHTML = `${response}<br>`;
@@ -133,7 +131,6 @@ export class ChatComponent {
             this.addMessage("Conversation Server", safeMessage, false, prompt.valid_choices.valid_choice);
           }
           else{
-            console.log("Line 130");
             let safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(prompt.prompt);
             this.addMessage("Conversation Server", safeMessage, false);
           }
