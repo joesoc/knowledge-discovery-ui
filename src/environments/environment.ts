@@ -4,6 +4,7 @@ export const environment = {
     answerserver_port: '4200',
     answerserver_scheme: 'https',
     answerserver_api:'api/answerserver',
+    qms_api: 'api/qms',
     qms_fqdn: 'qms.idoldemos.net',
     qms_port: '16000',
     dah_fqdb: 'dah.idoldemos.net',

@@ -5,5 +5,12 @@
     "pathRewrite": {"^/api/answerserver" : ""},
     "changeOrigin": true, 
     "logLevel": "debug"
+  },
+  "/api/qms": {
+    "target": "https://qms.idoldemos.net:16000",
+    "secure": false,
+    "pathRewrite": {"^/api/qms" : ""},
+    "changeOrigin": true, 
+    "logLevel": "debug"
   }
 }
