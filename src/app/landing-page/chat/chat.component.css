@@ -107,8 +107,8 @@
     font-size: 12px; /* Smaller font size */
   }
   .bot-message {
-    background-color: darkgrey;
-    color: white;
+    background-color: rgb(236, 236, 236);
+    color: black;
     text-align: left;
     font-size: small;
     padding: 8px;
@@ -118,17 +118,17 @@
   }
   
   .user-message {
-    background-color: blue;
-    color: white;
-    text-align: right;
+    color: black;
+    text-align: left;
     font-size: small;
     padding: 8px;
     margin: 4px;
     border-radius: 4px;
     align-self: flex-end;
-    /* width: auto; */
+    /* Gradient background from a lighter neon green to a deeper neon green */
+    background: rgb(224, 255, 224); /* Adjust colors as needed */
   }
-
+  
   .responsetime{
     font-size: smaller;
     color: rgba(128, 128, 128, 0.601);
@@ -147,11 +147,15 @@
     font-weight: bold;
   }
   
-  .message-info .timestamp {
+  .message-info {
     font-size: small;
     display: block; /* Ensures it appears on a new line */
   }
-  
+  .timestamp {
+    font-size: small;
+    align-items: end;
+    float: right;
+  }
   .message-text {
     font-weight: normal;
   }
