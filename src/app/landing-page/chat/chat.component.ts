@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, Eve
 import { Prompt } from 'src/app/interfaces/IAnswerServerConversationPrompts';
 import { IManageResourcesResponse } from 'src/app/interfaces/IAnswerServerConversationResponse';
 import { AnswerService } from 'src/app/services/answer.service';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 
 
 @Component({
@@ -14,6 +14,8 @@ export class ChatComponent {
   private changeDetector = inject(ChangeDetectorRef);
   sessionID: string = "";
   messages: Array<{ username: string; timestamp: string ; text: SafeHtml; fromUser: boolean, choices: string[] }> = [];
+  previewUrl?: SafeUrl;
+  rawUrl?: string;
 
   @Output() closeChat = new EventEmitter<void>();
 
@@ -25,7 +27,8 @@ export class ChatComponent {
   showChat = true;
   isMinimized =false;
   newMessage = {username: 'User1', timestamp: new Date(), text: ''};
-  constructor(private answerService: AnswerService, private sanitizer: DomSanitizer, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private answerService: AnswerService, private sanitizer: DomSanitizer, private componentFactoryResolver: ComponentFactoryResolver) { 
+  }
 
 
   minimizeChat() {
@@ -147,4 +150,15 @@ export class ChatComponent {
     this.sendMessage();
   }
   
+  showPreview(url: string) {
+    this.rawUrl = url;
+    // TODO: remove this hard coded url
+    url = `/Action=View&NoACI=true&Reference=${encodeURIComponent(url)}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links=in%20writing&StartTag=%3Cspan%20class%3D%27haven%2Dsearch%2Dview%2Ddocument%2Dhighlighting%27%3E&EndTag=%3C%2Fspan%3E&Boolean=true&OutputType=HTML`;
+    this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`/api/view${url}`);
+  }    
+  
+  closePreview() {
+    this.rawUrl = undefined;
+    this.previewUrl = undefined;
+  }
 }
