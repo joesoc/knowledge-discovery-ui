@@ -12,5 +12,12 @@
     "pathRewrite": {"^/api/qms" : ""},
     "changeOrigin": true, 
     "logLevel": "debug"
+  },
+  "/api/view":{
+    "target": "https://view.idoldemos.net:9080",
+    "secure": false,
+    "pathRewrite": {"^/api/view" : ""},
+    "changeOrigin": true, 
+    "logLevel": "debug"
   }
 }

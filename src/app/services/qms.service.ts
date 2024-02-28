@@ -19,7 +19,7 @@ export class QmsService {
       .set('model', 'SentenceTransformer')
       .set('text', query)
       .set('ResponseFormat', 'simplejson');
-    const url = `${environment.qms_api}`;
+    const url = `${environment.qms_api}/`;
     return this.http.get<IQMSModelEncodeResponse>(url, { params }).pipe(
       catchError(error => {
         console.error('Error fetching data', error);
@@ -53,7 +53,7 @@ export class QmsService {
       .set('highlight', 'SummaryTerms')
       .set('StartTag', '<span style="color: black; font-weight:bold;">')
       .set('ResponseFormat', 'simplejson');
-      const url = `${environment.qms_api}`;
+      const url = `${environment.qms_api}/`;
       return this.returnResponse(url, params);
   }
   getResults(query:string, databases:string): Observable<IContentResponse> {
@@ -74,7 +74,7 @@ export class QmsService {
       .set('highlight', 'SummaryTerms')
       .set('StartTag', '<span style="color: black; font-weight:bold;">')
       .set('ResponseFormat', 'simplejson');
-    const url = `${environment.qms_api}`;
+    const url = `${environment.qms_api}/`;
     return this.returnResponse(url, params);
   }
 }
