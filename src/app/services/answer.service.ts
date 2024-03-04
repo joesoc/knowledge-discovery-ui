@@ -5,6 +5,10 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { IManageResourcesResponse } from '../interfaces/IAnswerServerConversationResponse';
 import { IAnswerServerConversationPrompts } from '../interfaces/IAnswerServerConversationPrompts';
+import { IAnswerServerGetStatusResponse, System } from '../interfaces/IAnswerServerGetStatusResponse';
+import { filter } from 'rxjs/operators';
+import { IndexedDbService } from './indexed-db.service';
+import { Database } from '../interfaces/IgetStatus';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +17,8 @@ export class AnswerService {
 
   private _url:string = `${environment.answerserver_api}`;
   private scheme:string = "https";
-  constructor(private _http: HttpClient) { 
+  constructor(private _http: HttpClient, private _indexDBService: IndexedDbService) { 
+    
 
   }
   getSessionID(): Observable<IManageResourcesResponse> {
@@ -49,11 +54,15 @@ export class AnswerService {
       })
     );
   }
-  ask(question:string){
+  async ask(question:string, databaseMatch:string){
+    let answerSystem: any = await this._indexDBService.getItem('selectedAnswerSystem');
+    console.log("Database Match: ", databaseMatch);
+    console.log("Answer System: ", answerSystem.value);
     let params = new HttpParams()
       .set('action', 'ask')
       .set('text', question)
-      .set('SystemNames','PassageExtractorLLMVector')
+      .set('SystemNames', answerSystem.value)
+      .set('DatabaseMatch', databaseMatch)
       .set('ResponseFormat', 'simplejson');
       const baseUrl = `${environment.answerserver_api}`;
     return this._http.get<IAnswerServerAskResponse>(baseUrl, { params }).pipe(
@@ -62,5 +71,15 @@ export class AnswerService {
         return throwError('Error fetching data');
       })
     );;
+  }
+  getAnswerSystems(): Observable<System[]> {
+    const baseUrl = `${environment.answerserver_api}`;
+    let params = new HttpParams()
+      .set('action', 'getstatus')
+      .set('ResponseFormat', 'simplejson');
+    return this._http.get<IAnswerServerGetStatusResponse>(`${baseUrl}`, { params }).pipe(
+      map((response: IAnswerServerGetStatusResponse) => response.autnresponse.responsedata.systems.system)
+      
+    );
   }
 }

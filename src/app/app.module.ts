@@ -18,6 +18,7 @@ import { ChatComponent } from './landing-page/chat/chat.component';
 import { DynamicValidChoicesComponent } from './landing-page/chat/dynamic-valid-choices/dynamic-valid-choices.component';
 import { ChatUrlDirective } from './landing-page/chat/chat-url/chat-url.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChatSettingsComponent } from './landing-page/chat/chat-settings/chat-settings.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AnswerpaneComponent,
     ChatComponent,
     DynamicValidChoicesComponent,
-    ChatUrlDirective
+    ChatUrlDirective,
+    ChatSettingsComponent
   ],
   imports: [
     BrowserModule,
