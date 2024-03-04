@@ -1,9 +1,11 @@
-import { ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, EventEmitter, Output, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import { Prompt } from 'src/app/interfaces/IAnswerServerConversationPrompts';
 import { IManageResourcesResponse } from 'src/app/interfaces/IAnswerServerConversationResponse';
 import { AnswerService } from 'src/app/services/answer.service';
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment.prod';
+import { DataService } from 'src/app/services/data.service';
+import { IndexedDbService } from 'src/app/services/indexed-db.service';
 
 @Component({
   selector: 'app-chat',
@@ -29,7 +31,12 @@ export class ChatComponent {
   showChat = true;
   isMinimized =false;
   newMessage = {username: 'User1', timestamp: new Date(), text: ''};
-  constructor(private answerService: AnswerService, private sanitizer: DomSanitizer, private componentFactoryResolver: ComponentFactoryResolver) { 
+  constructor(private answerService: AnswerService, 
+              private sanitizer: DomSanitizer, 
+              private redisService: DataService,
+              private indexDBService: IndexedDbService,
+              private componentFactoryResolver: ComponentFactoryResolver) { 
+
   }
   toggleChatSettings(): void {
     this.showChatSettings = !this.showChatSettings;
@@ -55,8 +62,11 @@ export class ChatComponent {
   
   initializeChatbot(): void {
     // Replace 'variables' with any required session variables
-        this.answerService.getSessionID().subscribe((response: IManageResourcesResponse) => {
+        this.answerService.getSessionID().subscribe(async (response: IManageResourcesResponse) => {
           this.sessionID = response.autnresponse.responsedata.result.managed_resources.id;
+          let database = await this.indexDBService.getItem('selectedDatabase');
+          let answerServerSystem = await this.indexDBService.getItem('selectedAnswerSystem');
+          this.redisService.addDataToRedis(this.sessionID, database.value, answerServerSystem.value);
           this.answerService.converse(this.sessionID, '').subscribe((response) => {
             let prompts:Prompt[] = response.autnresponse.responsedata.prompts;
             prompts.forEach((prompt) => {
@@ -68,6 +78,7 @@ export class ChatComponent {
       }
         // Example method to add a message
   addMessage(username:string, text: SafeHtml, fromUser: boolean, choices: string[] = []) {
+
     const message = {
       username: username,
       timestamp: new Date().toLocaleTimeString(),
@@ -75,6 +86,7 @@ export class ChatComponent {
       fromUser: fromUser,
       choices: choices
     };
+
     this.messages.push(message);
     this.changeDetector.detectChanges();
     this.scrollToBottom();
@@ -102,6 +114,8 @@ export class ChatComponent {
 
   sendMessage() {
     const startTime = Date.now(); // Capture start time
+    const sessionIDInputHTML: SafeHtml = `<input type="hidden" name="sessionID" value="${this.sessionID}">`;
+
     const userMessage = { username: 'User', timestamp: new Date().toLocaleTimeString(), text: this.newMessage.text, fromUser: true };
     this.addMessage("User", this.newMessage.text, true);
     this.newMessage.text = "";
@@ -114,8 +128,16 @@ export class ChatComponent {
                              'Welcome to Virtual Agent',
                              'Thank you and have a nice day...',
                              'Let me look up other answers for you']; // Add your messages here
-
-    this.answerService.converse(this.sessionID, userMessage.text).subscribe((response) => {
+    const messageToAvoidAddingSessionID = ['Ask another question',
+  'Summarize the document','End'];
+    let usertext = "";
+    if (messageToAvoidAddingSessionID.includes(userMessage.text)) {
+      usertext = userMessage.text;
+    }
+    else{
+      usertext = userMessage.text + `|${this.sessionID}`;
+    }
+    this.answerService.converse(this.sessionID, usertext).subscribe((response) => {
       let prompts: Prompt[] = response.autnresponse.responsedata.prompts;
       prompts.forEach((prompt) => {
 
