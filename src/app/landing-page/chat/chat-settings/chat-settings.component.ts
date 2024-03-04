@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Data } from '@angular/router';
 import { System } from 'src/app/interfaces/IAnswerServerGetStatusResponse';
 import { Database } from 'src/app/interfaces/IDahResponse';
 import { AnswerService } from 'src/app/services/answer.service';
 import { DahService } from 'src/app/services/dah.service';
+import { DataService } from 'src/app/services/data.service';
 import { IndexedDbService } from 'src/app/services/indexed-db.service';
 
 @Component({
@@ -20,7 +21,8 @@ export class ChatSettingsComponent {
   
   constructor(private dahService: DahService, 
               private answerService: AnswerService,
-              private indexDBService: IndexedDbService) { 
+              private indexDBService: IndexedDbService,
+              private dataService: DataService) { 
     this.dahService.getDatabases().subscribe((dbs: Database[]) => {
       this.databases = dbs;
     }, (err) => {
@@ -40,6 +42,8 @@ export class ChatSettingsComponent {
   saveSettings(): void {
     this.indexDBService.addItem({id: 'selectedDatabase', value: this.selectedDatabase});
     this.indexDBService.addItem({id: 'selectedAnswerSystem', value: this.selectedAnswerSystem});
+    this.dataService.addDataToRedis(this.sessionID, this.selectedDatabase, this.selectedAnswerSystem);
+    console.log("Session ID "+ this.sessionID);
     this.closeChatSettings.emit(false);
   }
   loadSettings(): void {
@@ -64,5 +68,6 @@ export class ChatSettingsComponent {
       this.answerSystems = systems.filter((system) => system.type !== "conversation");
     });
   }
+  @Input() sessionID: string = "";
   @Output() closeChatSettings = new EventEmitter<boolean>();
 }

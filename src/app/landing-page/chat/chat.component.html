@@ -36,7 +36,7 @@
         <div class="chat-messages">
             <div *ngIf="showChatSettings">
                 <!-- Place your chat-settings component here -->
-                <app-chat-settings *ngIf="showChatSettings" (closeChatSettings)="closeSettings()"></app-chat-settings>
+                <app-chat-settings *ngIf="showChatSettings" (closeChatSettings)="closeSettings()" [sessionID]="this.sessionID"></app-chat-settings>
             </div>
             <div *ngFor="let message of messages" 
                 #chatMessage
