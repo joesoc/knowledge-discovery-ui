@@ -45,13 +45,15 @@ export class QmsService {
       .set('sort', 'relevance')
       .set('anylanguage', 'true')
       .set('print', 'fields')
-      .set('printfields', 'DREREFERENCE,WIKIPEDIA_CATEGORY,WIKIPEDIA_TOPIC,DRETITLE')
+      .set('printfields', 'DREREFERENCE,DRETITLE')
       .set('maxresults', '10')
       .set('totalresults', 'true')
-      .set('summary', 'Context')
+      .set('summary', 'Concept')
       .set('characters', '250')
-      .set('highlight', 'SummaryTerms')
+      .set('highlight', 'terms')
+      .set('vectormetadata','true')
       .set('StartTag', '<span style="color: black; font-weight:bold;">')
+      .set('EndTag', '</span">')
       .set('ResponseFormat', 'simplejson');
       const url = `${environment.qms_api}/`;
       return this.returnResponse(url, params);

@@ -1,0 +1,16 @@
+<div class="chat-settings">
+    <p><strong>Chat Settings</strong></p>
+<div class="mb-3">
+    <label for="chat-settings__IDOLDB" class="form-label">IDOL DB</label>
+    <select id="chat-settings__IDOLDB" class="form-select" [(ngModel)]="selectedDatabase" name="selectedDatabase">
+        <option *ngFor="let db of databases" [value]="db.name">{{db.name}}</option>
+    </select>
+</div>
+<div class="mb-3">
+    <label for="chat-settings__answer-server" class="form-label">Answer Server System</label>
+    <select id="chat-settings__answer-server" class="form-select" [(ngModel)]="selectedAnswerSystem" name="selectedAnswerSystem">
+        <option *ngFor="let system of answerSystems" [value]="system.name">{{system.name}}</option>
+    </select>
+</div>
+<button class="btn btn-primary btn-sm float-end" (click)="saveSettings()" style="width: 50%;align-self: center;">Save and Close</button>
+</div>

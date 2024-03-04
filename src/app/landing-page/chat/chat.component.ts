@@ -16,7 +16,9 @@ export class ChatComponent {
   messages: Array<{ username: string; timestamp: string ; text: SafeHtml; fromUser: boolean, choices: string[] }> = [];
   previewUrl?: SafeUrl;
   rawUrl?: string;
-
+  showChatSettings: boolean = false;
+  answer_source: string = "";
+  answer_text: string = "";
   @Output() closeChat = new EventEmitter<void>();
 
   @ViewChildren('chatMessage') chatMessages!: QueryList<ElementRef<HTMLElement>>;
@@ -29,8 +31,13 @@ export class ChatComponent {
   newMessage = {username: 'User1', timestamp: new Date(), text: ''};
   constructor(private answerService: AnswerService, private sanitizer: DomSanitizer, private componentFactoryResolver: ComponentFactoryResolver) { 
   }
+  toggleChatSettings(): void {
+    this.showChatSettings = !this.showChatSettings;
+  }
 
-
+  closeSettings(): void {
+    this.showChatSettings = false;
+  }
   minimizeChat() {
     this.isMinimized = true;
     // Additional logic to only show the chat header
@@ -45,10 +52,10 @@ export class ChatComponent {
   ngOnInit(): void {
     this.initializeChatbot();
   }
+  
   initializeChatbot(): void {
     // Replace 'variables' with any required session variables
         this.answerService.getSessionID().subscribe((response: IManageResourcesResponse) => {
-          console.table(response.autnresponse.responsedata);
           this.sessionID = response.autnresponse.responsedata.result.managed_resources.id;
           this.answerService.converse(this.sessionID, '').subscribe((response) => {
             let prompts:Prompt[] = response.autnresponse.responsedata.prompts;
@@ -117,9 +124,15 @@ export class ChatComponent {
 
         if (!messagesToCheck.includes(prompt.prompt)) {
           const doc = new DOMParser().parseFromString(prompt.prompt, 'text/html');
-          const hiddenValue = doc.querySelector('input[type="hidden"]') as HTMLInputElement;
+          const hiddenValue = doc.querySelector('input[id="sourceHiddenField"]') as HTMLInputElement;
           if (hiddenValue !== null) {
             console.log(hiddenValue.value);
+            this.answer_source = hiddenValue.value;
+          }
+          const texthiddenValue = doc.querySelector('input[id="textHiddenField"]') as HTMLInputElement;
+          if (texthiddenValue !== null) {
+            console.log(texthiddenValue.value);
+            this.answer_text = texthiddenValue.value;
           }
           const safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(this.decodeHtml(prompt.prompt) + "<br><span class=\"responded-time\">Responded in " + duration + " seconds</span>");
           this.addMessage("Conversation Server", safeMessage, false);
@@ -153,9 +166,8 @@ export class ChatComponent {
   showPreview(url: string) {
     this.rawUrl = url;
     // TODO: remove this hard coded url
-    url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(url)}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links=in%20writing&StartTag=%3Cspan%20class%3D%27haven%2Dsearch%2Dview%2Ddocument%2Dhighlighting%27%3E&EndTag=%3C%2Fspan%3E&Boolean=true&OutputType=HTML`;
+    url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(url)}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links=${this.answer_text}&Boolean=true&OutputType=HTML#LinkMark`;
     this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${environment.view_api}${url}`);
-    console.log(this.previewUrl);
   }    
   
   closePreview() {

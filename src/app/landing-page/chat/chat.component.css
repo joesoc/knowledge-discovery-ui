@@ -207,6 +207,12 @@
     justify-content: space-between;
     padding: 4px;
   }
+
+  .chat-header .fas {
+    cursor: pointer;
+    /* Add any additional styling as needed */
+  }
+  
   
   .document-preview-title {
     font-size: 12px;

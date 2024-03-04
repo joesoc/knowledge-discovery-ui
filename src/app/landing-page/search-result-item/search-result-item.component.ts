@@ -7,9 +7,16 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./search-result-item.component.css']
 })
 export class SearchResultItemComponent {
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(private sanitizer: DomSanitizer) { 
+  }
   getSanitizedHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
+    
+
+  }
+
+  ngOnInit(): void {
+    console.log('Debug resultitem.summary:', this.resultitem.summary);
   }
   @Input() resultitem: ISearchResultItem = {} as ISearchResultItem;
 }

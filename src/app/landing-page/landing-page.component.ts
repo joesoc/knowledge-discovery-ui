@@ -6,6 +6,7 @@ import { ISearchResultItem } from '../interfaces/IsearchResultItem';
 import { Hit } from '../interfaces/IcontentResponse';
 import { AnswerService } from '../services/answer.service';
 import { Answer, IAnswerServerAskResponse } from '../interfaces/IAnswerServerResponse';
+import { IndexedDbService } from '../services/indexed-db.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -24,22 +25,28 @@ export class LandingPageComponent {
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
   }
-  fetchAnswer(question:string){
+  async fetchAnswer(question:string){
       this.gotAnswers = false;
       // Add a question mark to the query if it doesn't have one
       if (!question.endsWith('?')) {
         question += '?';
       }
       this.answers = [];
-      this.question = question
-      this.answerService.ask(question).subscribe((data)=>{
+      this.question = question;
+      console.log("Asking question: " + question);
+      (await this.answerService.ask(question, this.getDatabaseSelection())).subscribe((data)=>{
         const response: IAnswerServerAskResponse = data;
         this.answers = response.autnresponse.responsedata.answers ? response.autnresponse.responsedata.answers.answer : [];
         this.gotAnswers = true;
       });
     }
 
-  constructor(private svcQms:QmsService, private answerService: AnswerService){}
+  constructor(private svcQms:QmsService, private answerService: AnswerService, private indexDBService: IndexedDbService){
+    this.indexDBService.InitIndexDB().then(() => { 
+      console.log(" IndexedDB initialized");
+     });
+
+  }
   resultsSummary: IResultSummary = {} as IResultSummary;
   resultItems: ISearchResultItem[] = [];
   idolresultsItems: ISearchResultItem[] = [];

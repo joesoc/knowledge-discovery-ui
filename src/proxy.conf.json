@@ -19,5 +19,12 @@
     "pathRewrite": {"^/api/view" : ""},
     "changeOrigin": true, 
     "logLevel": "debug"
+  },
+  "/api/dah":{
+    "target": "https://dah.idoldemos.net:9060",
+    "secure": false,
+    "pathRewrite": {"^/api/dah" : ""},
+    "changeOrigin": true, 
+    "logLevel": "debug"
   }
 }
