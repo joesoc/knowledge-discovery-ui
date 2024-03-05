@@ -188,7 +188,7 @@ export class ChatComponent {
   showPreview(url: string) {
     this.rawUrl = url;
     // TODO: remove this hard coded url
-    url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(url)}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links=${this.answer_text}&Boolean=true&OutputType=HTML#LinkMark`;
+    url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(url)}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links="${this.answer_text}"&Boolean=true&OutputType=HTML#LinkMark`;
     this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${environment.view_api}${url}`);
   }    
   
