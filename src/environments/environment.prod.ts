@@ -1,14 +1,8 @@
 export const environment = {
-  production: false,
-  answerserver_fqdn: 'localhost',
-  answerserver_port: '4200',
-  answerserver_scheme: 'https',
+  production: true,
   answerserver_api:'api/answerserver',
   view_api: 'api/view',
   qms_api: 'api/qms',
-  qms_fqdn: 'qms.idoldemos.net',
-  qms_port: '16000',
-  dah_fqdb: 'dah.idoldemos.net',
-  dah_port: '9060',
-  dah_api: 'api/dah'
+  dah_api: 'api/dah',
+  mlmodels_api: 'api/mlmodels'
 };
