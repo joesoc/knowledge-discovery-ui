@@ -41,10 +41,10 @@ export class HeaderComponent {
   ngOnInit() {
     // Subscribe to state changes for selected databases
     this.selectedDatabases$.subscribe((databases) => {
-      this.selectedOptions = databases;
+      this.selectedOptions = databases; 
     });
 
-    this.http.get<IGetStatus>(`${environment.dah_api}}/?a=getstatus&responseformat=simplejson`).subscribe(
+    this.http.get<IGetStatus>(`${environment.dah_api}/?a=getstatus&responseformat=simplejson`).subscribe(
       (data: any) => {
         const databases = data.autnresponse.responsedata.databases.database;
         this.dropdownOptions = databases.map((db: Database) => db.name);
