@@ -44,7 +44,7 @@ export class HeaderComponent {
       this.selectedOptions = databases;
     });
 
-    this.http.get<IGetStatus>(`https://${environment.dah_fqdb}:${environment.dah_port}/a=getstatus&responseformat=simplejson`).subscribe(
+    this.http.get<IGetStatus>(`${environment.dah_api}}/a=getstatus&responseformat=simplejson`).subscribe(
       (data: any) => {
         const databases = data.autnresponse.responsedata.databases.database;
         this.dropdownOptions = databases.map((db: Database) => db.name);
