@@ -26,5 +26,12 @@
     "pathRewrite": {"^/api/dah" : ""},
     "changeOrigin": true, 
     "logLevel": "debug"
+  },
+  "/api/mlmodels":{
+    "target": "https://mlmodels.idoldemos.net:5000",
+    "secure": false,
+    "pathRewrite": {"^/api/mlmodels" : ""},
+    "changeOrigin": true, 
+    "logLevel": "debug"
   }
 }

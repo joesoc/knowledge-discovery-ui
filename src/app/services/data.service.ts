@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   addDataToRedis(sessionId: string, database: string, answerServerSystem: string) {
-    const url = 'https://mlmodels.idoldemos.net:5000/redis/add';  // Adjust the URL as necessary
+    const url = `${environment.mlmodels_api}/redis/add`;  // Adjust the URL as necessary
     const data = {
       sessionid: sessionId,
       database: database,

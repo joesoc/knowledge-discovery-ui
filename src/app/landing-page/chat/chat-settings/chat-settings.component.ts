@@ -43,7 +43,6 @@ export class ChatSettingsComponent {
     this.indexDBService.addItem({id: 'selectedDatabase', value: this.selectedDatabase});
     this.indexDBService.addItem({id: 'selectedAnswerSystem', value: this.selectedAnswerSystem});
     this.dataService.addDataToRedis(this.sessionID, this.selectedDatabase, this.selectedAnswerSystem);
-    console.log("Session ID "+ this.sessionID);
     this.closeChatSettings.emit(false);
   }
   loadSettings(): void {

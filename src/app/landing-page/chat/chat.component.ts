@@ -188,29 +188,10 @@ export class ChatComponent {
   showPreview(url: string) {
     this.rawUrl = url;
     // TODO: remove this hard coded url
-    console.log("Answer Text\n" + this.removeWordsAfterSpecialCharacter(this.answer_text));
     url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(url)}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links="${encodeURIComponent(this.answer_text)}"&Boolean=true&OutputType=HTML#LinkMark`;
     this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${environment.view_api}${url}`);
   }    
   
-  removeWordsAfterSpecialCharacter(sentence: string): string {
-    // Regular expression to match words with any character that is not a letter or whitespace
-    const regex = /\S*[^A-Za-z\s]\S*/;
-
-    // Split the sentence into words
-    const words = sentence.split(' ');
-
-    // Find the index of the first word containing a special character
-    const index = words.findIndex(word => regex.test(word));
-
-    // If no such word is found, return the original sentence
-    if (index === -1) {
-        return sentence;
-    }
-
-    // Return the sentence up to (but not including) the word containing a special character
-    return words.slice(0, index).join(' ');
-}
 
   closePreview() {
     this.rawUrl = undefined;
