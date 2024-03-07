@@ -1,9 +1,8 @@
 @tailwind base;
 @tailwind utilities;
-@import "~@fontsource-variable/inter/index.css";
-/* You can add global styles to this file, and also import other style files */
-/* You can add global styles to this file, and also import other style files */
-/* @import "~bootstrap/dist/css/bootstrap.min.css"; */
+@import '~@fontsource-variable/inter/index.css';
+@import '~@angular/cdk/a11y-prebuilt.css';
+@import '~@angular/cdk/overlay-prebuilt.css';
 
 body {
   overflow-y: scroll;

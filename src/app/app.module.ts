@@ -1,8 +1,8 @@
+import { OverlayModule } from '@angular/cdk/overlay';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgIconsModule } from '@ng-icons/core';
 import {
   lucideAlignLeft,
@@ -52,8 +52,8 @@ import { SettingsDialogComponent } from './shared/header/settings-dialog/setting
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
+    OverlayModule,
     HttpClientModule,
     FormsModule,
     StoreModule.forRoot({ selectedDatabases: selectedDatabaseReducer }, {}),
