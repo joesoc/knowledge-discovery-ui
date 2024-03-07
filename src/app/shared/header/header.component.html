@@ -39,11 +39,11 @@
         >
           <ng-icon name="lucideDatabase" />
 
-          @if (selectedOptions.length) {
+          @if (databaseCount$ | async; as count) {
             <span
               class="absolute -bottom-1 -right-1 rounded-full border border-blue-300 bg-blue-100 w-4 h-4 font-semibold text-blue-500 text-[10px] flex justify-center items-center"
             >
-              {{ selectedOptions.length }}
+              {{ count }}
             </span>
           }
         </button>
@@ -59,108 +59,6 @@
     >
       <ng-icon name="lucideSettings" />
     </button>
-  </div>
-
-  <div class="hidden">
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
-        <div class="d-flex justify-content-start">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" [routerLink]="['/home']"></a>
-            </li>
-            <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" [routerLink]="['/category']"></a>
-            </li>
-          </ul>
-          <form
-            class="form-inline search-box d-flex my-2 my-lg-0 justify-content-center align-items-center"
-          >
-            <div class="input-group idol-input">
-              <input
-                class="form-control form-control search custom-height"
-                #searchInputOld
-                (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()"
-                (focus)="hideDatabaseAndSettings()"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-            </div>
-            <!-- Separate Search Button -->
-            <button
-              class="btn btn-light ml-2 custom-height"
-              (click)="propogateSearchTerm(searchInput.value)"
-              type="button"
-            >
-              <i class="fas fa-search"></i>
-            </button>
-            <button
-              class="btn btn-light ml-2 dropdown-container custom-height"
-              (click)="toggleDatabaseSelection()"
-              type="button"
-            >
-              <i class="fas fa-database"></i>
-            </button>
-            <div class="multi-select-dropdown idol-indexes" *ngIf="showDropdown">
-              <div class="dropdown-header">
-                <span>Select Databases</span>
-                <button class="close-btn" (click)="showDropdown = false" type="button">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-              <div
-                class="dropdown-item d-flex align-items-center"
-                *ngFor="let option of dropdownOptions"
-              >
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    [value]="option"
-                    [checked]="selectedOptions.includes(option)"
-                    (change)="toggleSelection(option)"
-                    type="checkbox"
-                  />
-                  <label class="form-check-label" for="inlineCheckbox1">{{ option }}</label>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="gear-container">
-          <button
-            class="btn btn-light ml-auto custom-height"
-            (click)="openSettingsDialog()"
-            type="button"
-            style="margin-right: 5px"
-          >
-            <i class="fas fa-cog"></i>
-          </button>
-          <app-settings-dialog
-            *ngIf="showSettingsDialog"
-            (hideLeftChanged)="handleToggleLeft($event)"
-            (hideRightChanged)="handleToggleRight($event)"
-            (close)="closeSettingsDialog()"
-          >
-          </app-settings-dialog>
-        </div>
-      </div>
-    </nav>
   </div>
 
   <!-- Database Popover -->
@@ -209,30 +107,6 @@
     cdkConnectedOverlay
   >
     <!-- Settings Menu -->
-    <div
-      class="w-96 py-4 px-6 border bg-white shadow-md rounded-lg flex flex-col gap-y-3"
-      *ngIf="showSettingsDialog"
-    >
-      <h3 class="font-medium">Settings</h3>
-
-      <div class="flex items-center gap-x-3">
-        <button
-          class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
-          [class.bg-teal-500]=""
-        >
-          <ng-icon name="lucideAlignLeft" />
-        </button>
-        <span class="text-sm">Show Vector Search Results on the left</span>
-      </div>
-
-      <div class="flex items-center gap-x-3">
-        <button
-          class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
-        >
-          <ng-icon name="lucideAlignRight" />
-        </button>
-        <span class="text-sm">Show IDOL Search Results on the right</span>
-      </div>
-    </div>
+    <app-settings-dialog />
   </ng-template>
 </div>

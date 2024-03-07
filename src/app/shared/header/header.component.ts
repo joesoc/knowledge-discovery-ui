@@ -1,16 +1,15 @@
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIcon } from '@ng-icons/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { addSelectedDatabases } from '../../actions/headeractions';
 import { Database, IGetStatus } from '../../interfaces/IgetStatus';
-import { getSelectedDatabases } from '../../reducers/headerreducer';
+import { DatabaseActions } from '../../state/database/database.actions';
+import { selectDatabaseCount, selectDatabases } from '../../state/database/database.selectors';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 
 @Component({
@@ -29,35 +28,36 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     SettingsDialogComponent,
     CdkConnectedOverlay,
     NgClass,
+    AsyncPipe,
   ],
 })
 export class HeaderComponent {
+  private readonly store = inject(Store);
+  readonly selectedDatabases$ = this.store.select(selectDatabases);
+  readonly databaseCount$ = this.store.select(selectDatabaseCount);
+
   @Input() title: { titleValue: string } | undefined;
   @Output() searchTermChanged = new EventEmitter<string>();
   @Output() selectedDatabasesChanged = new EventEmitter<string[]>();
   @Output() showVectorResultsChanged = new EventEmitter<boolean>();
   @Output() showIDOLResultsChanged = new EventEmitter<boolean>();
 
+  // Add this to your existing TypeScript class
+  public showSettingsDialog = false;
+
   propogateSearchTerm(value: string) {
-    this.hideDatabaseSelectionDropDown();
     this.searchTermChanged.emit(value);
   }
 
   showDropdown = false;
   dropdownOptions = [];
   selectedOptions: string[] = [];
-  selectedDatabases$!: Observable<string[]>;
 
-  constructor(
-    private http: HttpClient,
-    private store: Store<{ selectedDatabases: string[] }>
-  ) {
-    this.selectedDatabases$ = this.store.select(getSelectedDatabases);
-  }
+  constructor(private http: HttpClient) {}
 
   // Call this function when you want to update the selected databases.
   updateSelectedDatabases(databases: string[]) {
-    this.store.dispatch(addSelectedDatabases({ databases }));
+    this.store.dispatch(DatabaseActions.selectDatabases({ databases }));
   }
 
   ngOnInit() {
@@ -97,39 +97,5 @@ export class HeaderComponent {
 
     // Emit the new selected databases list to the parent component
     this.selectedDatabasesChanged.emit(newSelectedOptions); // <-- Emitting new selected databases
-  }
-
-  handleToggleLeft(EmittedValue: any) {
-    // Your logic for toggling left panel
-    let booleanValueToEmit: boolean = !!EmittedValue;
-    this.showVectorResultsChanged.emit(EmittedValue);
-  }
-
-  handleToggleRight(EmittedValue: any) {
-    // Your logic for toggling right panel
-    let booleanValueToEmit: boolean = !!EmittedValue;
-    this.showIDOLResultsChanged.emit(EmittedValue);
-  }
-  // Add this to your existing TypeScript class
-  public showSettingsDialog = false;
-
-  public toggleDatabaseSelection() {
-    this.showDropdown = !this.showDropdown;
-    this.showSettingsDialog = !this.showDropdown;
-  }
-  public hideDatabaseAndSettings() {
-    this.hideDatabaseSelectionDropDown();
-    this.closeSettingsDialog();
-  }
-  public hideDatabaseSelectionDropDown() {
-    this.showDropdown = false;
-  }
-  public openSettingsDialog() {
-    this.showSettingsDialog = true;
-    this.showDropdown = false;
-  }
-
-  public closeSettingsDialog() {
-    this.showSettingsDialog = false;
   }
 }
