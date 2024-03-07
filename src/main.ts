@@ -1,8 +1,6 @@
-import { OverlayModule } from '@angular/cdk/overlay';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { importProvidersFrom } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { Routes, provideRouter } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
 import {
   lucideAlignLeft,
@@ -21,20 +19,31 @@ import {
   lucideX,
   lucideXCircle,
 } from '@ng-icons/lucide';
-import { StoreModule } from '@ngrx/store';
-import { AppRoutingModule } from './app/app-routing.module';
+import { provideStore } from '@ngrx/store';
 import { AppComponent } from './app/app.component';
+import { LandingPageComponent } from './app/landing-page/landing-page.component';
 import { selectedDatabaseReducer } from './app/reducers/headerreducer';
+
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'search',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
+    component: LandingPageComponent,
+  },
+  {
+    path: 'search',
+    component: LandingPageComponent,
+  },
+];
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(
-      BrowserModule,
-      AppRoutingModule,
-      OverlayModule,
-      FormsModule,
-      StoreModule.forRoot({ selectedDatabases: selectedDatabaseReducer }, {})
-    ),
+    provideRouter(routes),
+    provideStore({ selectedDatabases: selectedDatabaseReducer }),
     provideIcons({
       lucideSettings,
       lucideDatabase,
