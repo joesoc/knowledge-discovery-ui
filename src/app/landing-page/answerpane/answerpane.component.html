@@ -1,37 +1,57 @@
-<div class="answers" *ngIf="totalAnswers > 0">
-
+<div class="p-6">
+  <div class="rounded-lg border border-gray-200 p-4 bg-white shadow-sm" *ngIf="totalAnswers > 0">
     <div class="answer-content">
-      <div *ngIf="currentAnswer">
-        <strong>{{question}}</strong><br><br>
-        <div class="answerhtml" [innerHTML]="currentAnswer.text"></div><br>
-        <div class="answerparagraph" [innerHTML]="currentAnswer.metadata.paragraph"></div><br>
+      @if (currentAnswer) {
+        <span class="text-xs text-gray-500">Question:</span>
+        <h3 class="text-base font-medium mb-4">{{ question }}</h3>
+
+        <span class="text-xs text-gray-500">Answer:</span>
+        <div class="font-medium text-base mb-1" [innerHTML]="currentAnswer.text"></div>
+
+        <div
+          class="text-xs text-gray-700 leading-5 mb-1"
+          [innerHTML]="currentAnswer.metadata.paragraph"
+        ></div>
+
         <!--<span class="score">Score: {{currentAnswer.score}}</span><br>-->
-        <a class="linkref" href="{{currentAnswer.source}}">{{currentAnswer.source}}</a>
-        <div>Verified Response : 
-          <strong>
-              <i *ngIf="currentAnswer.metadata.verified_response; else notVerified" class="fas fa-check" style="color: green;"></i>
-              <ng-template #notVerified>
-                  <i class="fas fa-times" style="color: red;"></i>
-              </ng-template>
-          </strong>
-      </div>
-      
-      </div>
+        <a class="block text-blue-500 underline text-xs mb-4" [href]="currentAnswer.source">
+          {{ currentAnswer.source }}
+        </a>
+
+        <div class="flex gap-x-1 items-center mb-2">
+          @if (currentAnswer.metadata.verified_response) {
+            <ng-icon class="text-green-500 text-base" name="lucideCheckCircle2" />
+            <span class="text-xs">Verified Response</span>
+          } @else {
+            <ng-icon class="text-red-500 text-base" name="lucideXCircle" />
+            <span class="text-xs">Unverified Response</span>
+          }
+        </div>
+      }
       <div *ngIf="gotAnswers == false">
         <p>I am fetching the answer for you. Please do not refresh this page.</p>
       </div>
     </div>
-    <div class="answer-header">
-      <span class="found-answers">Found {{totalAnswers}} answers from {{currentAnswer["@answer_type"]}}</span>
+    <div class="text-xs text-gray-500 mb-4">
+      Found {{ totalAnswers }} answers from {{ currentAnswer['@answer_type'] }}
     </div>
     <div class="answer-footer" *ngIf="!isPrevDisabled || !isNextDisabled">
-      <button class="btn btn-sm btn-outline-secondary" [disabled]="isPrevDisabled" (click)="prevAnswer()">
-        &larr; Previous
+      <button
+        class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+        [disabled]="isPrevDisabled"
+        (click)="prevAnswer()"
+      >
+        <ng-icon class="text-xs" name="lucideArrowLeft" />
+        Previous
       </button>
-      <button class="btn btn-sm btn-outline-secondary" [disabled]="isNextDisabled" (click)="nextAnswer()">
-        Next &rarr;
+      <button
+        class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+        [disabled]="isNextDisabled"
+        (click)="nextAnswer()"
+      >
+        Next
+        <ng-icon class="text-xs" name="lucideArrowRight" />
       </button>
     </div>
-
   </div>
-  
+</div>

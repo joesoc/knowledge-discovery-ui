@@ -7,7 +7,10 @@ import { NgIconsModule } from '@ng-icons/core';
 import {
   lucideAlignLeft,
   lucideAlignRight,
+  lucideArrowLeft,
+  lucideArrowRight,
   lucideCheck,
+  lucideCheckCircle2,
   lucideDatabase,
   lucideMaximize2,
   lucideMessageCircle,
@@ -16,6 +19,7 @@ import {
   lucideSend,
   lucideSettings,
   lucideX,
+  lucideXCircle,
 } from '@ng-icons/lucide';
 import { StoreModule } from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
@@ -69,6 +73,10 @@ import { SettingsDialogComponent } from './shared/header/settings-dialog/setting
       lucideX,
       lucideMessageCircle,
       lucideSend,
+      lucideCheckCircle2,
+      lucideXCircle,
+      lucideArrowLeft,
+      lucideArrowRight,
     }),
   ],
   providers: [],
