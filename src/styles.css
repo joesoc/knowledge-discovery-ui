@@ -3,9 +3,8 @@
 @import "~@fontsource-variable/inter/index.css";
 /* You can add global styles to this file, and also import other style files */
 /* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/dist/css/bootstrap.min.css";
+/* @import "~bootstrap/dist/css/bootstrap.min.css"; */
 
-
-body{
-overflow-y: scroll;
+body {
+  overflow-y: scroll;
 }

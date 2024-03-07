@@ -19,6 +19,8 @@
     "@angular/platform-browser-dynamic": "^16.1.0",
     "@angular/router": "^16.1.0",
     "@fontsource-variable/inter": "^5.0.17",
+    "@ng-icons/core": "^27.2.0",
+    "@ng-icons/lucide": "^27.2.0",
     "@ngrx/store": "^16.3.0",
     "bootstrap": "^5.3.2",
     "font-awesome": "^4.7.0",
@@ -50,6 +52,10 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "nx": "18.0.7",
     "postcss": "^8.4.5",
+    "prettier": "^3.2.5",
+    "prettier-plugin-organize-attributes": "^1.0.0",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "prettier-plugin-tailwindcss": "^0.5.12",
     "tailwindcss": "^3.0.2",
     "typescript": "~5.1.3"
   }

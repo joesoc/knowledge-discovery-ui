@@ -1,16 +1,55 @@
-<div class="chat-settings">
-    <p><strong>Chat Settings</strong></p>
-<div class="mb-3">
-    <label for="chat-settings__IDOLDB" class="form-label">IDOL DB</label>
-    <select id="chat-settings__IDOLDB" class="form-select" [(ngModel)]="selectedDatabase" name="selectedDatabase">
-        <option *ngFor="let db of databases" [value]="db.name">{{db.name}}</option>
-    </select>
-</div>
-<div class="mb-3">
-    <label for="chat-settings__answer-server" class="form-label">Answer Server System</label>
-    <select id="chat-settings__answer-server" class="form-select" [(ngModel)]="selectedAnswerSystem" name="selectedAnswerSystem">
-        <option *ngFor="let system of answerSystems" [value]="system.name">{{system.name}}</option>
-    </select>
-</div>
-<button class="btn btn-primary btn-sm float-end" (click)="saveSettings()" style="width: 50%;align-self: center;">Save and Close</button>
+<div class="mx-4 mb-6 border rounded-lg p-4 border-gray-200 bg-gray-50">
+  <h3 class="font-medium mb-1">Chat Settings</h3>
+  <p class="text-gray-600 text-xs mb-4">Configure the chat settings to tailor your experience.</p>
+
+  <!-- Settings List -->
+  <div class="flex flex-col gap-y-4">
+    <div class="flex gap-x-4 items-center">
+      <label
+        class="block text-sm font-medium text-gray-900 whitespace-nowrap w-[155px] flex-none"
+        for="settings__IDOLDB"
+        >IDOL Database</label
+      >
+
+      <select
+        class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
+        id="chat-settings__IDOLDB"
+        [(ngModel)]="selectedDatabase"
+        name="selectedDatabase"
+      >
+        <option *ngFor="let db of databases" [value]="db.name">{{ db.name }}</option>
+      </select>
+    </div>
+
+    <div class="flex flex-col gap-y-4">
+      <div class="flex gap-x-4 items-center">
+        <label
+          class="block text-sm font-medium text-gray-900 whitespace-nowrap w-[155px] flex-none"
+          for="chat-settings__answer-server"
+          >Answer Server System</label
+        >
+
+        <select
+          class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
+          id="chat-chat-settings__answer-server"
+          [(ngModel)]="selectedAnswerSystem"
+          name="selectedAnswerSystem"
+        >
+          <option *ngFor="let system of answerSystems" [value]="system.name">
+            {{ system.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="flex justify-end">
+      <button
+        class="bg-blue-500 text-white text-sm font-medium rounded-lg px-4 py-2.5 hover:bg-blue-600"
+        (click)="saveSettings()"
+      >
+        Save and Close
+      </button>
+    </div>
+  </div>
 </div>

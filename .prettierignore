@@ -1,0 +1,18 @@
+# Add files here to ignore them from prettier formatting
+
+/dist
+/coverage
+/target
+/.github
+/.yarn
+/.angular
+release-notes-*.md
+
+# Prevent prettier formatting the test-setup files as import order cannot change otherwise tests will fail
+**/test-setup.ts
+**/.lib.swcrc
+**/*.hbs
+
+.angular
+
+/.nx/cache
