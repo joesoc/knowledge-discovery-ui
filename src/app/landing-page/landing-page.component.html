@@ -6,9 +6,15 @@
 >
 </app-header>
 
+@if (loading) {
+  <div class="flex justify-center">
+    <app-loading-indicator />
+  </div>
+}
+
 <button
-  *ngIf="!isChatOpen"
   class="bg-blue-500 w-10 h-10 rounded-lg fixed bottom-8 right-8 shadow-md text-white hover:bg-blue-600 inline-flex justify-center items-center text-lg"
+  *ngIf="!isChatOpen"
   (click)="toggleChat()"
 >
   <ng-icon name="lucideMessageCircle" />
@@ -26,8 +32,8 @@
 <div class="flex-container">
   <div
     class="searchresultsVector"
-    [ngStyle]="{ width: hideStandardResults ? '50%' : '50%' }"
     *ngIf="hideVectorResults"
+    [ngStyle]="{ width: hideStandardResults ? '50%' : '50%' }"
   >
     <app-results-count
       [keyword]="searchkeyword"
@@ -38,8 +44,8 @@
   </div>
   <div
     class="searchresultsIDOL"
-    [ngStyle]="{ width: hideVectorResults ? '50%' : '50%' }"
     *ngIf="hideStandardResults"
+    [ngStyle]="{ width: hideVectorResults ? '50%' : '50%' }"
   >
     <app-results-count
       [keyword]="searchkeyword"
