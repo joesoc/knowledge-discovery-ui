@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-settings-dialog',
-  templateUrl: './settings-dialog.component.html',
-  styleUrls: ['./settings-dialog.component.css']
+    selector: 'app-settings-dialog',
+    templateUrl: './settings-dialog.component.html',
+    styleUrls: ['./settings-dialog.component.css'],
+    standalone: true,
+    imports: [NgClass]
 })
 export class SettingsDialogComponent {
   @Output() close = new EventEmitter<void>();

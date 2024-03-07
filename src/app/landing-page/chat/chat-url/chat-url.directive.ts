@@ -1,7 +1,8 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
 
 @Directive({
-    selector: '[appChatUrl]'
+    selector: '[appChatUrl]',
+    standalone: true
 })
 export class ChatUrlDirective implements AfterViewInit {
     private readonly elementRef = inject(ElementRef);

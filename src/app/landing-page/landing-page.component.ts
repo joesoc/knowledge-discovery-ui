@@ -7,11 +7,20 @@ import { Hit } from '../interfaces/IcontentResponse';
 import { AnswerService } from '../services/answer.service';
 import { Answer, IAnswerServerAskResponse } from '../interfaces/IAnswerServerResponse';
 import { IndexedDbService } from '../services/indexed-db.service';
+import { SearchResultsComponent } from './search-results/search-results.component';
+import { ResultsCountComponent } from './results-count/results-count.component';
+import { AnswerpaneComponent } from './answerpane/answerpane.component';
+import { ChatComponent } from './chat/chat.component';
+import { NgIcon } from '@ng-icons/core';
+import { NgIf, NgStyle } from '@angular/common';
+import { HeaderComponent } from '../shared/header/header.component';
 
 @Component({
-  selector: 'app-landing-page',
-  templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.css']
+    selector: 'app-landing-page',
+    templateUrl: './landing-page.component.html',
+    styleUrls: ['./landing-page.component.css'],
+    standalone: true,
+    imports: [HeaderComponent, NgIf, NgIcon, ChatComponent, AnswerpaneComponent, NgStyle, ResultsCountComponent, SearchResultsComponent]
 })
 
 export class LandingPageComponent {

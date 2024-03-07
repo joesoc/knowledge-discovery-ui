@@ -1,16 +1,35 @@
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { NgIcon } from '@ng-icons/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { addSelectedDatabases } from '../../actions/headeractions';
 import { Database, IGetStatus } from '../../interfaces/IgetStatus';
 import { getSelectedDatabases } from '../../reducers/headerreducer';
+import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
+  standalone: true,
+  imports: [
+    NgIcon,
+    CdkOverlayOrigin,
+    RouterLinkActive,
+    RouterLink,
+    FormsModule,
+    NgIf,
+    NgFor,
+    SettingsDialogComponent,
+    CdkConnectedOverlay,
+    NgClass,
+  ],
 })
 export class HeaderComponent {
   @Input() title: { titleValue: string } | undefined;
