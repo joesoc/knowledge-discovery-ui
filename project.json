@@ -1,6 +1,6 @@
 {
-  "$schema": "node_modules/nx/schemas/project-schema.json",
   "name": "VectorSearchUI",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "generators": {},
   "sourceRoot": "src",
@@ -12,14 +12,9 @@
         "outputPath": "dist/vector-search-ui",
         "index": "src/index.html",
         "main": "src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "tsconfig.app.json",
-        "assets": [
-          "src/favicon.ico",
-          "src/assets"
-        ],
+        "assets": ["src/favicon.ico", "src/assets"],
         "styles": [
           "node_modules/bootstrap/dist/css/bootstrap.min.css",
           "node_modules/font-awesome/css/font-awesome.css",
@@ -56,9 +51,7 @@
         }
       },
       "defaultConfiguration": "production",
-      "outputs": [
-        "{options.outputPath}"
-      ]
+      "outputs": ["{options.outputPath}"]
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
@@ -67,13 +60,13 @@
       },
       "configurations": {
         "production": {
-          "browserTarget": "VectorSearchUI:build:production"
+          "buildTarget": "VectorSearchUI:build:production"
         },
         "development": {
-          "browserTarget": "VectorSearchUI:build:development",
           "ssl": true,
           "sslKey": "D:\\Code\\categoryui\\ssl\\localhost.key",
-          "sslCert": "D:\\Code\\categoryui\\ssl\\localhost.crt"
+          "sslCert": "D:\\Code\\categoryui\\ssl\\localhost.crt",
+          "buildTarget": "VectorSearchUI:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -81,24 +74,16 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "VectorSearchUI:build"
+        "buildTarget": "VectorSearchUI:build"
       }
     },
     "test": {
       "executor": "@angular-devkit/build-angular:karma",
       "options": {
-        "polyfills": [
-          "zone.js",
-          "zone.js/testing"
-        ],
+        "polyfills": ["zone.js", "zone.js/testing"],
         "tsConfig": "tsconfig.spec.json",
-        "assets": [
-          "src/favicon.ico",
-          "src/assets"
-        ],
-        "styles": [
-          "src/styles.css"
-        ],
+        "assets": ["src/favicon.ico", "src/assets"],
+        "styles": ["src/styles.css"],
         "scripts": []
       }
     }
