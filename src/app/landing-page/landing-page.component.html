@@ -1,29 +1,51 @@
-<app-header (searchTermChanged)="propogateSearchTerm($event)"
-            (selectedDatabasesChanged)="propogateDatabaseSelection($event)"
-            (showVectorResultsChanged)="hideVector($event)"
-            (showIDOLResultsChanged)="hideNormalIDOL($event)">
+<app-header
+  (searchTermChanged)="propogateSearchTerm($event)"
+  (selectedDatabasesChanged)="propogateDatabaseSelection($event)"
+  (showVectorResultsChanged)="hideVector($event)"
+  (showIDOLResultsChanged)="hideNormalIDOL($event)"
+>
 </app-header>
-<button *ngIf="!isChatOpen" class="start-chat-btn" (click)="toggleChat()">
-  <i class="fas fa-comments"></i>
+
+<button
+  *ngIf="!isChatOpen"
+  class="bg-blue-500 w-10 h-10 rounded-lg fixed bottom-8 right-8 shadow-md text-white hover:bg-blue-600 inline-flex justify-center items-center text-lg"
+  (click)="toggleChat()"
+>
+  <ng-icon name="lucideMessageCircle" />
 </button>
 
 <app-chat *ngIf="isChatOpen" (closeChat)="toggleChat()"></app-chat>
 
-
 <div class="answerpane-container">
-  <app-answerpane [answers]="answers" [question]="question" [gotAnswers]="gotAnswers"></app-answerpane>
+  <app-answerpane
+    [answers]="answers"
+    [question]="question"
+    [gotAnswers]="gotAnswers"
+  ></app-answerpane>
 </div>
 <div class="flex-container">
-  <div class="searchresultsVector" 
-      [ngStyle]="{'width': hideStandardResults ? '50%' : '50%'}" 
-      *ngIf="hideVectorResults">
-      <app-results-count [keyword]="searchkeyword" [resultsSummary]="resultsSummary" [resultType]="'IDOL Vector Search'"></app-results-count>
-      <app-search-results [searchResults]="resultItems"></app-search-results>    
+  <div
+    class="searchresultsVector"
+    [ngStyle]="{ width: hideStandardResults ? '50%' : '50%' }"
+    *ngIf="hideVectorResults"
+  >
+    <app-results-count
+      [keyword]="searchkeyword"
+      [resultsSummary]="resultsSummary"
+      [resultType]="'IDOL Vector Search'"
+    ></app-results-count>
+    <app-search-results [searchResults]="resultItems"></app-search-results>
   </div>
-  <div class="searchresultsIDOL" 
-      [ngStyle]="{'width': hideVectorResults ? '50%' : '50%'}" 
-      *ngIf="hideStandardResults">
-      <app-results-count [keyword]="searchkeyword" [resultsSummary]="idolresultsSummary" [resultType]="'IDOL Search'"></app-results-count>
-      <app-search-results [searchResults]="idolresultsItems"></app-search-results>    
+  <div
+    class="searchresultsIDOL"
+    [ngStyle]="{ width: hideVectorResults ? '50%' : '50%' }"
+    *ngIf="hideStandardResults"
+  >
+    <app-results-count
+      [keyword]="searchkeyword"
+      [resultsSummary]="idolresultsSummary"
+      [resultType]="'IDOL Search'"
+    ></app-results-count>
+    <app-search-results [searchResults]="idolresultsItems"></app-search-results>
   </div>
 </div>

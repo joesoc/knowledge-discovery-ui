@@ -1,3 +1,9 @@
-<div style="display: flex; gap: 0.25rem" class="choicesdiv">
-    <button class="btn btn-sm choices" *ngFor="let choice of validChoices" (click)="selectChoice(choice)">{{ choice }}</button>
+<div class="flex gap-x-2 mt-1">
+  <button
+    class="justify-center items-center flex shadow-sm px-2 py-1.5 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs"
+    *ngFor="let choice of validChoices"
+    (click)="selectChoice(choice)"
+  >
+    {{ choice }}
+  </button>
 </div>
