@@ -6,11 +6,15 @@ import { AnswerService } from 'src/app/services/answer.service';
 import { DahService } from 'src/app/services/dah.service';
 import { DataService } from 'src/app/services/data.service';
 import { IndexedDbService } from 'src/app/services/indexed-db.service';
+import { NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-chat-settings',
-  templateUrl: './chat-settings.component.html',
-  styleUrls: ['./chat-settings.component.css']
+    selector: 'app-chat-settings',
+    templateUrl: './chat-settings.component.html',
+    styleUrls: ['./chat-settings.component.css'],
+    standalone: true,
+    imports: [FormsModule, NgFor]
 })
 export class ChatSettingsComponent {
   databases: Database[] = [];

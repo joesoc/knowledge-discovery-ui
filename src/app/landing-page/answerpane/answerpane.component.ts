@@ -1,10 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { Answer } from 'src/app/interfaces/IAnswerServerResponse';
+import { NgIcon } from '@ng-icons/core';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-answerpane',
-  templateUrl: './answerpane.component.html',
-  styleUrls: ['./answerpane.component.css']
+    selector: 'app-answerpane',
+    templateUrl: './answerpane.component.html',
+    styleUrls: ['./answerpane.component.css'],
+    standalone: true,
+    imports: [NgIf, NgIcon]
 })
 export class AnswerpaneComponent {
   currentIndex: number = 0;

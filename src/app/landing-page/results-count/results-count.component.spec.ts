@@ -8,8 +8,8 @@ describe('ResultsCountComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ResultsCountComponent]
-    });
+    imports: [ResultsCountComponent]
+});
     fixture = TestBed.createComponent(ResultsCountComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

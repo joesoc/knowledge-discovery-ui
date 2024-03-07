@@ -18,11 +18,28 @@ import { AnswerService } from 'src/app/services/answer.service';
 import { DataService } from 'src/app/services/data.service';
 import { IndexedDbService } from 'src/app/services/indexed-db.service';
 import { environment } from 'src/environments/environment.prod';
+import { FormsModule } from '@angular/forms';
+import { DynamicValidChoicesComponent } from './dynamic-valid-choices/dynamic-valid-choices.component';
+import { ChatUrlDirective } from './chat-url/chat-url.directive';
+import { ChatSettingsComponent } from './chat-settings/chat-settings.component';
+import { NgIcon } from '@ng-icons/core';
+import { NgClass, NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css'],
+    selector: 'app-chat',
+    templateUrl: './chat.component.html',
+    styleUrls: ['./chat.component.css'],
+    standalone: true,
+    imports: [
+        NgClass,
+        NgIf,
+        NgIcon,
+        ChatSettingsComponent,
+        NgFor,
+        ChatUrlDirective,
+        DynamicValidChoicesComponent,
+        FormsModule,
+    ],
 })
 export class ChatComponent implements OnInit, AfterViewInit {
   private changeDetector = inject(ChangeDetectorRef);
