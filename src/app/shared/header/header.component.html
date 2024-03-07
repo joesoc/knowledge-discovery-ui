@@ -13,28 +13,39 @@
       >
         <input
           class="flex-1 outline-none placeholder:text-gray-400"
-          #search
+          #searchInput
+          (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()"
           type="text"
           placeholder="Search..."
         />
       </div>
 
       <!-- Actions -->
-
       <div class="flex flex-none gap-x-2">
         <button
           class="justify-center items-center flex shadow-sm p-3 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
+          (click)="propogateSearchTerm(searchInput.value)"
+          type="button"
         >
           <ng-icon name="lucideSearch" />
         </button>
 
         <button
-          class="justify-center items-center flex shadow-sm p-3 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
+          class="justify-center items-center flex shadow-sm p-3 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 relative"
           #databaseTrigger="cdkOverlayOrigin"
           (click)="showDropdown = !showDropdown"
+          type="button"
           cdkOverlayOrigin
         >
           <ng-icon name="lucideDatabase" />
+
+          @if (selectedOptions.length) {
+            <span
+              class="absolute -bottom-1 -right-1 rounded-full border border-blue-300 bg-blue-100 w-4 h-4 font-semibold text-blue-500 text-[10px] flex justify-center items-center"
+            >
+              {{ selectedOptions.length }}
+            </span>
+          }
         </button>
       </div>
     </div>
@@ -43,6 +54,7 @@
       class="justify-center items-center flex shadow-sm p-3 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
       #settingsTrigger="cdkOverlayOrigin"
       (click)="showSettingsDialog = !showSettingsDialog"
+      type="button"
       cdkOverlayOrigin
     >
       <ng-icon name="lucideSettings" />
@@ -82,7 +94,7 @@
             <div class="input-group idol-input">
               <input
                 class="form-control form-control search custom-height"
-                #searchInput
+                #searchInputOld
                 (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()"
                 (focus)="hideDatabaseAndSettings()"
                 type="search"
