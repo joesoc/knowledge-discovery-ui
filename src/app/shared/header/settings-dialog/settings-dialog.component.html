@@ -1,21 +1,36 @@
-<div class="dialog-container">
-    <div class="dialog-title">
-        Settings
-    </div>
-    <button type="button" class="close" (click)="closeDialog()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <div class="flex-row">
-      <button type="button" class="btn btn-light" [ngClass]="{'active-icon': hideLeft}" (click)="toggleLeft()">
-        <i class="fas fa-align-left"></i>
+<!-- Settings Menu -->
+<div class="w-96 py-4 px-6 border bg-white shadow-md rounded-lg flex flex-col gap-y-3">
+  <h3 class="font-medium">Settings</h3>
+
+  @if (vectorSearchResultsPosition$ | async; as position) {
+    <div class="flex items-center gap-x-3">
+      <button
+        class="justify-center items-center flex shadow-sm p-2 border rounded-lg"
+        [ngClass]="{
+          'border-gray-200 text-gray-700 bg-white hover:bg-gray-100': position === 'right',
+          'border-blue-200 text-blue-500 bg-blue-100': position === 'left'
+        }"
+        (click)="setVectorSearchResultsPosition(position === 'right' ? 'left' : 'right')"
+      >
+        <ng-icon name="lucideAlignLeft" />
       </button>
-      <span>Show Vector Search Results on the left</span>
+      <span class="text-sm">Show Vector Search Results on the left</span>
     </div>
-    <div class="flex-row">
-      <button type="button" class="btn btn-light" [ngClass]="{'active-icon': hideRight}" (click)="toggleRight()">
-        <i class="fas fa-align-right"></i>
+  }
+
+  @if (idolSearchResultsPosition$ | async; as position) {
+    <div class="flex items-center gap-x-3">
+      <button
+        class="justify-center items-center flex shadow-sm p-2 border rounded-lg"
+        [ngClass]="{
+          'border-gray-200 text-gray-700 bg-white hover:bg-gray-100': position === 'left',
+          'border-blue-200 text-blue-500 bg-blue-100': position === 'right'
+        }"
+        (click)="setIdolSearchResultsPosition(position === 'right' ? 'left' : 'right')"
+      >
+        <ng-icon name="lucideAlignRight" />
       </button>
-      <span>Show IDOL Search Results on the right</span>
+      <span class="text-sm">Show IDOL Search Results on the right</span>
     </div>
+  }
 </div>
-  

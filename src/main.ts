@@ -19,10 +19,11 @@ import {
   lucideX,
   lucideXCircle,
 } from '@ng-icons/lucide';
-import { provideStore } from '@ngrx/store';
+import { provideState, provideStore } from '@ngrx/store';
 import { AppComponent } from './app/app.component';
 import { LandingPageComponent } from './app/landing-page/landing-page.component';
-import { selectedDatabaseReducer } from './app/reducers/headerreducer';
+import { databaseFeature, databaseFeatureKey } from './app/state/database/database.reducer';
+import { settingsFeature, settingsFeatureKey } from './app/state/settings/settings.reducer';
 
 const routes: Routes = [
   {
@@ -43,7 +44,9 @@ const routes: Routes = [
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideStore({ selectedDatabases: selectedDatabaseReducer }),
+    provideStore(),
+    provideState({ name: settingsFeatureKey, reducer: settingsFeature.reducer }),
+    provideState({ name: databaseFeatureKey, reducer: databaseFeature.reducer }),
     provideIcons({
       lucideSettings,
       lucideDatabase,
