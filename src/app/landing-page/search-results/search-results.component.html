@@ -1,5 +1,5 @@
-<div class="main-search-result" *ngIf="searchResults">
-    <div class="result-item" *ngFor="let result of searchResults; let i = index">
+<div class="flex flex-col gap-y-4">
+    @for (result of searchResults; track result) {
         <app-search-result-item [resultitem]="result"></app-search-result-item>
-    </div>
+    }
 </div>

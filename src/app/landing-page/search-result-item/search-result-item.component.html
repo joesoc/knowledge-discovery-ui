@@ -1,5 +1,5 @@
-<div class="result-item">
-    <span><strong>{{resultitem.title}}</strong></span><br>
-    <a href="{{resultitem.reference}}">{{resultitem.reference}}</a>
-    <p [innerHTML]="resultitem.summary"></p>
+<div class="flex flex-col gap-y-1">
+    <h3 class="font-medium text-base">{{ resultitem.title }}</h3>
+    <a class="text-sm text-blue-500 underline" [href]="resultitem.reference">{{ resultitem.reference }}</a>
+    <p class="text-sm text-gray-700 result-item" [innerHTML]="resultitem.summary"></p>
 </div>

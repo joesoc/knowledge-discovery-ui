@@ -4,24 +4,24 @@ import { SettingsActions } from './settings.actions';
 export const settingsFeatureKey = 'settings';
 
 export interface State {
-  vectorSearchResultsPosition: 'left' | 'right';
-  idolSearchResultsPosition: 'left' | 'right';
+  showVectorSearchResults: boolean;
+  showIdolSearchResults: boolean;
 }
 
 export const initialState: State = {
-  vectorSearchResultsPosition: 'right',
-  idolSearchResultsPosition: 'left',
+  showVectorSearchResults: true,
+  showIdolSearchResults: false
 };
 
 export const reducer = createReducer(
   initialState,
-  on(SettingsActions.positionVectorSearchResults, (state, action) => ({
+  on(SettingsActions.toggleVectorSearchResults, (state) => ({
     ...state,
-    vectorSearchResultsPosition: action.position,
+    showVectorSearchResults: !state.showVectorSearchResults,
   })),
-  on(SettingsActions.positionIdolSearchResults, (state, action) => ({
+  on(SettingsActions.toggleIdolSearchResults, (state) => ({
     ...state,
-    idolSearchResultsPosition: action.position,
+    showIdolSearchResults: !state.showIdolSearchResults,
   }))
 );
 

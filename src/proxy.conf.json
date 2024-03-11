@@ -33,5 +33,12 @@
     "pathRewrite": {"^/api/mlmodels" : ""},
     "changeOrigin": true, 
     "logLevel": "debug"
+  },
+  "/api/community":{
+    "target": "https://community.idoldemos.net:9030",
+    "secure": false,
+    "pathRewrite": {"^/api/community" : ""},
+    "changeOrigin": true, 
+    "logLevel": "debug"
   }
 }

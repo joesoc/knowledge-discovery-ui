@@ -1,54 +1,64 @@
 <div
-  class="fixed bottom-4 right-4 rounded-lg w-[512px] border-b border-gray-200 border shadow-md flex flex-col transition-all duration-300 ease-in-out bg-white z-50"
+  class="fixed bottom-4 right-4 rounded-lg border-b border-gray-200 border shadow-md flex flex-col transition-all duration-300 ease-in-out bg-white z-50"
   [ngClass]="{
     'w-[512px]': !previewUrl,
-    'w-[1200px]': !!previewUrl,
+    'w-[1600px]': !!previewUrl,
     'h-[800px]': !isMinimized
   }"
 >
   <!-- Chat Header with Close Button -->
-  <div class="p-4 flex justify-between items-center">
-    <h5 class="text-gray-900 text-xl font-semibold leading-7">Chat</h5>
-    <div class="inline-flex gap-x-2">
-      <!-- Minimize Button -->
-      <button
-        class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
-        *ngIf="!isMinimized"
-        (click)="minimizeChat()"
-        title="Minimize"
-      >
-        <ng-icon name="lucideMinimize2" />
-      </button>
-      <!-- Maximize Button, shown only when minimized -->
-      <button
-        class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
-        *ngIf="isMinimized"
-        (click)="maximizeChat()"
-        title="Maximize"
-      >
-        <ng-icon name="lucideMaximize2" />
-      </button>
-      <button
-        class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
-        (click)="toggleChatSettings()"
-        title="Settings"
-      >
-        <ng-icon name="lucideSettings" />
-      </button>
-      <!-- Close Button -->
-      <button
-        class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
-        (click)="closeChat.emit()"
-      >
-        <ng-icon name="lucideX" />
-      </button>
+  <div class="flex flex-col">
+    <div class="p-4 flex justify-between items-center">
+      <h5 class="text-gray-900 text-xl font-semibold leading-7">Chat</h5>
+      <div class="inline-flex gap-x-2">
+        <!-- Minimize Button -->
+        <button
+          class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
+          *ngIf="!isMinimized"
+          (click)="minimizeChat()"
+          title="Minimize"
+        >
+          <ng-icon name="lucideMinimize2" />
+        </button>
+        <!-- Maximize Button, shown only when minimized -->
+        <button
+          class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
+          *ngIf="isMinimized"
+          (click)="maximizeChat()"
+          title="Maximize"
+        >
+          <ng-icon name="lucideMaximize2" />
+        </button>
+        <button
+          class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
+          (click)="toggleChatSettings()"
+          title="Settings"
+        >
+          <ng-icon name="lucideSettings" />
+        </button>
+        <!-- Close Button -->
+        <button
+          class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
+          (click)="closeChat.emit()"
+        >
+          <ng-icon name="lucideX" />
+        </button>
+      </div>
     </div>
+    @if (showChatSettings) {
+      <!-- Place your chat-settings component here -->
+      <app-chat-settings
+        *ngIf="showChatSettings"
+        [sessionID]="this.sessionID"
+        (closeChatSettings)="closeSettings()"
+      />
+    }
   </div>
 
   <!-- Content -->
   <div class="flex-1 flex overflow-auto" *ngIf="!isMinimized">
     <!-- Document Preview -->
-    <div class="flex flex-col flex-1 mb-4 mx-4 gap-y-2 max-w-[583px]" *ngIf="rawUrl">
+    <div class="flex flex-col flex-1 mb-4 mx-4 gap-y-2" *ngIf="rawUrl">
       <div class="flex justify-between items-center gap-x-4">
         <p class="text-gray-700 text-sm font-medium leading-tight truncate">
           Previewing: <span class="text-gray-500 truncate">{{ rawUrl }}</span>
@@ -63,23 +73,14 @@
       <iframe class="border border-gray-200 rounded-lg flex-1" [src]="previewUrl"></iframe>
     </div>
 
-    <div class="flex flex-col flex-1 flex-shrink-0">
+    <div class="flex flex-col flex-1 flex-shrink-0 max-w-[583px]">
       <!-- Messages -->
       <div class="flex flex-col flex-1 overflow-auto">
-        <div *ngIf="showChatSettings">
-          <!-- Place your chat-settings component here -->
-          <app-chat-settings
-            *ngIf="showChatSettings"
-            [sessionID]="this.sessionID"
-            (closeChatSettings)="closeSettings()"
-          ></app-chat-settings>
-        </div>
-
         <!-- Chat Messages -->
         <div class="flex flex-col gap-y-4 px-4">
           <!-- Message -->
           <div
-            class="flex flex-col max-w-[80%] w-full gap-y-1.5"
+            class="flex flex-col max-w-[95%] w-full gap-y-1.5"
             #chatMessage
             *ngFor="let message of messages"
             [class.self-end]="message.fromUser"
@@ -89,8 +90,16 @@
               <div class="text-gray-700 text-sm font-medium leading-tight">
                 {{ message.username }}
               </div>
-              <div class="text-gray-600 text-xs font-normal leading-5">
-                {{ message.timestamp }}
+
+              <div class="flex gap-x-1">
+                @if (message.fromUser) {
+                  <button class="justify-center items-center flex shadow-sm px-0.5 py-0.5 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs" (click)="replayMessage(message)">
+                    <ng-icon name="lucideRefreshCw" />
+                  </button>
+                }
+                <div class="text-gray-600 text-xs font-normal leading-5">
+                  {{ message.timestamp }}
+                </div>
               </div>
             </div>
 
@@ -112,6 +121,13 @@
             />
           </div>
         </div>
+
+        <!-- Loading Indicator -->
+        @if (loading) {
+          <div class="flex justify-center items-center">
+            <app-loading-indicator />
+          </div>
+        }
       </div>
 
       <!-- Message Input Area -->

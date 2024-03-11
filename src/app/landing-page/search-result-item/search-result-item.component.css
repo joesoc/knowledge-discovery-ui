@@ -1,4 +1,5 @@
-.result-item{
-    width: 100%;
+.result-item ::ng-deep span {
+    color: black;
+    font-weight: 700;
 }
 

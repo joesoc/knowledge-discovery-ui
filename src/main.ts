@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { Routes, provideRouter } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
@@ -24,6 +24,12 @@ import { AppComponent } from './app/app.component';
 import { LandingPageComponent } from './app/landing-page/landing-page.component';
 import { databaseFeature, databaseFeatureKey } from './app/state/database/database.reducer';
 import { settingsFeature, settingsFeatureKey } from './app/state/settings/settings.reducer';
+import { LoginComponent } from './app/login/login.component';
+import { authGuard } from './app/shared/guards/auth.guard';
+import { authInterceptor } from './app/shared/interceptors/auth.interceptor';
+import { provideEffects } from '@ngrx/effects';
+import { typeaheadFeature, typeaheadFeatureKey } from './app/state/typeahead/typeahead.reducer';
+import { TypeaheadEffects } from './app/state/typeahead/typeahead.effects';
 
 const routes: Routes = [
   {
@@ -34,11 +40,17 @@ const routes: Routes = [
   {
     path: 'home',
     component: LandingPageComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'search',
     component: LandingPageComponent,
+    canActivate: [authGuard]
   },
+  {
+    path: 'login',
+    component: LoginComponent,
+  }
 ];
 
 bootstrapApplication(AppComponent, {
@@ -47,6 +59,8 @@ bootstrapApplication(AppComponent, {
     provideStore(),
     provideState({ name: settingsFeatureKey, reducer: settingsFeature.reducer }),
     provideState({ name: databaseFeatureKey, reducer: databaseFeature.reducer }),
+    provideState({ name: typeaheadFeatureKey, reducer: typeaheadFeature.reducer }),
+    provideEffects([TypeaheadEffects]),
     provideIcons({
       lucideSettings,
       lucideDatabase,
@@ -64,6 +78,6 @@ bootstrapApplication(AppComponent, {
       lucideArrowLeft,
       lucideArrowRight,
     }),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptors([authInterceptor])),
   ],
 }).catch(err => console.error(err));

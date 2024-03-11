@@ -9,7 +9,6 @@ import {
   System,
 } from '../interfaces/IAnswerServerGetStatusResponse';
 import { IAnswerServerAskResponse } from '../interfaces/IAnswerServerResponse';
-import { IndexedDbService } from './indexed-db.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +18,6 @@ export class AnswerService {
   private scheme: string = 'https';
   constructor(
     private _http: HttpClient,
-    private _indexDBService: IndexedDbService
   ) {}
   getSessionID(): Observable<IManageResourcesResponse> {
     const operation = {
@@ -55,13 +53,13 @@ export class AnswerService {
     );
   }
   async ask(question: string, databaseMatch: string) {
-    let answerSystem: any = await this._indexDBService.getItem('selectedAnswerSystem');
+    let answerSystem: string = localStorage.getItem('selectedAnswerSystem') ?? 'AlbertVector';
     console.log('Database Match: ', databaseMatch);
-    console.log('Answer System: ', answerSystem?.value);
+    console.log('Answer System: ', answerSystem);
     let params = new HttpParams()
       .set('action', 'ask')
       .set('text', question)
-      .set('SystemNames', answerSystem?.value)
+      .set('SystemNames', answerSystem)
       .set('DatabaseMatch', databaseMatch)
       .set('ResponseFormat', 'simplejson');
     const baseUrl = `${environment.answerserver_api}`;
