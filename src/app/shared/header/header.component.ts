@@ -1,23 +1,37 @@
+import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  Output,
+  QueryList,
+  ViewChildren,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { NgIcon } from '@ng-icons/core';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideLogOut } from '@ng-icons/lucide';
 import { Store } from '@ngrx/store';
+import { Subject, debounceTime } from 'rxjs';
+import { TypeaheadActions } from 'src/app/state/typeahead/typeahead.actions';
+import {
+  selectTypeaheadLoading,
+  selectTypeaheadResults,
+  selectTypeaheadShowResults,
+} from 'src/app/state/typeahead/typeahead.selectors';
 import { environment } from 'src/environments/environment.prod';
 import { Database, IGetStatus } from '../../interfaces/IgetStatus';
+import { LoginService } from '../../services/login.service';
 import { DatabaseActions } from '../../state/database/database.actions';
 import { selectDatabaseCount, selectDatabases } from '../../state/database/database.selectors';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
-import { lucideLogOut } from '@ng-icons/lucide';
-import { provideIcons } from '@ng-icons/core';
-import { LoginService } from '../../services/login.service';
-import { selectFocusedTypeaheadResult, selectTypeaheadFocusIndex, selectTypeaheadLoading, selectTypeaheadResults, selectTypeaheadShowResults } from 'src/app/state/typeahead/typeahead.selectors';
-import { TypeaheadActions } from 'src/app/state/typeahead/typeahead.actions';
-import { Subject, debounceTime } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TypeaheadSuggestionComponent } from './typeahead-suggestion/typeahead-suggestion.component';
 
 @Component({
   selector: 'app-header',
@@ -36,9 +50,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     CdkConnectedOverlay,
     NgClass,
     AsyncPipe,
-    FormsModule
+    FormsModule,
+    TypeaheadSuggestionComponent,
   ],
-  providers: [provideIcons({lucideLogOut})],
+  providers: [provideIcons({ lucideLogOut })],
 })
 export class HeaderComponent {
   private readonly store = inject(Store);
@@ -49,11 +64,9 @@ export class HeaderComponent {
   readonly typeaheadResults$ = this.store.select(selectTypeaheadResults);
   readonly typeaheadLoading$ = this.store.select(selectTypeaheadLoading);
   readonly typeaheadShowResults$ = this.store.select(selectTypeaheadShowResults);
-  readonly typeaheadFocusIndex$ = this.store.select(selectTypeaheadFocusIndex);
-  readonly focusedResult = this.store.selectSignal(selectFocusedTypeaheadResult);
 
-  username = localStorage.getItem('username') ?? "";
-  searchTerm: string = ""
+  username = localStorage.getItem('username') ?? '';
+  searchTerm: string = '';
   readonly didSearch$ = new Subject<string>();
 
   @Input() title: { titleValue: string } | undefined;
@@ -62,11 +75,16 @@ export class HeaderComponent {
   @Output() showVectorResultsChanged = new EventEmitter<boolean>();
   @Output() showIDOLResultsChanged = new EventEmitter<boolean>();
 
+  @ViewChildren(TypeaheadSuggestionComponent) suggestions?: QueryList<TypeaheadSuggestionComponent>;
+
   // Add this to your existing TypeScript class
   public showSettingsDialog = false;
 
+  activeDescendantManager?: ActiveDescendantKeyManager<TypeaheadSuggestionComponent>;
+
   propogateSearchTerm(value: string) {
-    const result = this.focusedResult();
+    const result = this.activeDescendantManager?.activeItem?.value;
+    debugger;
     this.store.dispatch(TypeaheadActions.closeTypeahead());
 
     if (result) {
@@ -107,9 +125,18 @@ export class HeaderComponent {
         }
       );
 
-    this.didSearch$.pipe(debounceTime(300),takeUntilDestroyed(this.destroyRef)).subscribe((searchTerm) => {
-      this.store.dispatch(TypeaheadActions.loadTypeahead({ search: searchTerm }));
-    });
+    this.didSearch$
+      .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
+      .subscribe(searchTerm => {
+        this.store.dispatch(TypeaheadActions.loadTypeahead({ search: searchTerm }));
+      });
+  }
+
+  ngAfterViewInit() {
+    this.activeDescendantManager = new ActiveDescendantKeyManager(this.suggestions!)
+      .withVerticalOrientation()
+      .withTypeAhead()
+      .withWrap();
   }
 
   toggleSelection(option: string) {
@@ -140,12 +167,16 @@ export class HeaderComponent {
     this.didSearch$.next(this.searchTerm);
   }
 
-  focusNextSuggestion(): void {
-    this.store.dispatch(TypeaheadActions.focusNextSuggestion());
+  closeTypeahead(): void {
+    this.store.dispatch(TypeaheadActions.closeTypeahead());
   }
 
-  focusPreviousSuggestion(): void {
-    this.store.dispatch(TypeaheadActions.focusPreviousSuggestion());
-  }
+  onKeydown(event: KeyboardEvent) {
+    this.activeDescendantManager?.onKeydown(event);
 
+    // if this is an arrow key, prevent the default behavior
+    if (event.key.startsWith('Arrow')) {
+      event.preventDefault();
+    }
+  }
 }

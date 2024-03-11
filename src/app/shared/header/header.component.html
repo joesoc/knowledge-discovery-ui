@@ -17,8 +17,8 @@
           [(ngModel)]="searchTerm"
           (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()"
           (ngModelChange)="fetchSuggestions()"
-          (keydown.ArrowDown)="focusNextSuggestion(); $event.preventDefault()"
-          (keydown.ArrowUp)="focusPreviousSuggestion(); $event.preventDefault()"
+          (keydown)="onKeydown($event)"
+          (blur)="closeTypeahead()"
           type="text"
           placeholder="Search..."
         />
@@ -50,22 +50,15 @@
           >
             <h3 class="font-medium text-xs text-gray-500">Suggestions</h3>
 
-            <ul>
+            <div>
               @for (result of typeaheadResults$ | async; track result; let index = $index) {
-                <li
-                  class="text-sm text-gray-900 py-1.5 px-3 -mx-3 hover:bg-gray-100 capitalize cursor-pointer"
-                  [ngClass]="{
-                    'bg-blue-500/10 font-semibold': (typeaheadFocusIndex$ | async) === index
-                  }"
-                >
-                  {{ result }}
-                </li>
+                <app-typeahead-suggestion [value]="result" />
               } @empty {
                 @if ((typeaheadLoading$ | async) === false) {
-                  <li class="text-sm text-gray-500 py-1.5 px-3 -mx-3">No results found</li>
+                  <div class="text-sm text-gray-500 py-1.5 px-3 -mx-3">No results found</div>
                 }
               }
-            </ul>
+            </div>
           </div>
         }
       </div>
