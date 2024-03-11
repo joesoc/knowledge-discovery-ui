@@ -1,7 +1,7 @@
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIcon } from '@ng-icons/core';
@@ -11,6 +11,13 @@ import { Database, IGetStatus } from '../../interfaces/IgetStatus';
 import { DatabaseActions } from '../../state/database/database.actions';
 import { selectDatabaseCount, selectDatabases } from '../../state/database/database.selectors';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
+import { lucideLogOut } from '@ng-icons/lucide';
+import { provideIcons } from '@ng-icons/core';
+import { LoginService } from '../../services/login.service';
+import { selectFocusedTypeaheadResult, selectTypeaheadFocusIndex, selectTypeaheadLoading, selectTypeaheadResults, selectTypeaheadShowResults } from 'src/app/state/typeahead/typeahead.selectors';
+import { TypeaheadActions } from 'src/app/state/typeahead/typeahead.actions';
+import { Subject, debounceTime } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
@@ -29,12 +36,25 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     CdkConnectedOverlay,
     NgClass,
     AsyncPipe,
+    FormsModule
   ],
+  providers: [provideIcons({lucideLogOut})],
 })
 export class HeaderComponent {
   private readonly store = inject(Store);
+  private readonly loginService = inject(LoginService);
+  private readonly destroyRef = inject(DestroyRef);
   readonly selectedDatabases$ = this.store.select(selectDatabases);
   readonly databaseCount$ = this.store.select(selectDatabaseCount);
+  readonly typeaheadResults$ = this.store.select(selectTypeaheadResults);
+  readonly typeaheadLoading$ = this.store.select(selectTypeaheadLoading);
+  readonly typeaheadShowResults$ = this.store.select(selectTypeaheadShowResults);
+  readonly typeaheadFocusIndex$ = this.store.select(selectTypeaheadFocusIndex);
+  readonly focusedResult = this.store.selectSignal(selectFocusedTypeaheadResult);
+
+  username = localStorage.getItem('username') ?? "";
+  searchTerm: string = ""
+  readonly didSearch$ = new Subject<string>();
 
   @Input() title: { titleValue: string } | undefined;
   @Output() searchTermChanged = new EventEmitter<string>();
@@ -46,6 +66,15 @@ export class HeaderComponent {
   public showSettingsDialog = false;
 
   propogateSearchTerm(value: string) {
+    const result = this.focusedResult();
+    this.store.dispatch(TypeaheadActions.closeTypeahead());
+
+    if (result) {
+      this.searchTerm = result;
+      this.searchTermChanged.emit(result);
+      return;
+    }
+
     this.searchTermChanged.emit(value);
   }
 
@@ -77,6 +106,10 @@ export class HeaderComponent {
           console.error('Failed to fetch data:', err);
         }
       );
+
+    this.didSearch$.pipe(debounceTime(300),takeUntilDestroyed(this.destroyRef)).subscribe((searchTerm) => {
+      this.store.dispatch(TypeaheadActions.loadTypeahead({ search: searchTerm }));
+    });
   }
 
   toggleSelection(option: string) {
@@ -98,4 +131,21 @@ export class HeaderComponent {
     // Emit the new selected databases list to the parent component
     this.selectedDatabasesChanged.emit(newSelectedOptions); // <-- Emitting new selected databases
   }
+
+  logout() {
+    this.loginService.logout();
+  }
+
+  fetchSuggestions(): void {
+    this.didSearch$.next(this.searchTerm);
+  }
+
+  focusNextSuggestion(): void {
+    this.store.dispatch(TypeaheadActions.focusNextSuggestion());
+  }
+
+  focusPreviousSuggestion(): void {
+    this.store.dispatch(TypeaheadActions.focusPreviousSuggestion());
+  }
+
 }

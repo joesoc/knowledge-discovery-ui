@@ -5,12 +5,12 @@ export const selectSettingsState = createFeatureSelector<fromSettings.State>(
   fromSettings.settingsFeatureKey
 );
 
-export const selectVectorSearchResultsPosition = createSelector(
+export const selectShowVectorSearchResults = createSelector(
   selectSettingsState,
-  state => state.vectorSearchResultsPosition
+  state => state.showVectorSearchResults
 );
 
-export const selectIdolSearchResultsPosition = createSelector(
+export const selectShowIdolSearchResults = createSelector(
   selectSettingsState,
-  state => state.idolSearchResultsPosition
+  state => state.showIdolSearchResults
 );

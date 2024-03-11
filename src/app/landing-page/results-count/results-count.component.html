@@ -1,5 +1,7 @@
-<ng-container *ngIf="keyword && resultsSummary.totalhits && resultsSummary.numhits">
-    <div class="resultsSummary">Showing <strong>{{resultsSummary.numhits}}</strong> of
-        <strong>{{resultsSummary.totalhits}} </strong>results for <strong><i>{{keyword}}</i></strong> - <i>{{resultType}}</i>
-    </div>
-</ng-container>
+@if (keyword && resultsSummary.totalhits && resultsSummary.numhits)
+{
+    <p class="text-xs">
+        Showing <span class="font-semibold">{{ resultsSummary.numhits }}</span> of <span class="font-semibold">{{ resultsSummary.totalhits }}</span>
+        results for <span class="font-semibold">{{ keyword }}</span> - <span class="font-semibold">{{ resultType }}</span>
+    </p>
+}

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject } from '@angular/core';
 
 @Component({
   selector: 'app-loading-indicator',
@@ -9,4 +9,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './loading-indicator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoadingIndicatorComponent {}
+export class LoadingIndicatorComponent {
+  readonly elementRef = inject(ElementRef);
+}

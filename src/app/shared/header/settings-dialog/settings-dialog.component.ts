@@ -4,8 +4,8 @@ import { NgIcon } from '@ng-icons/core';
 import { Store } from '@ngrx/store';
 import { SettingsActions } from '../../../state/settings/settings.actions';
 import {
-  selectIdolSearchResultsPosition,
-  selectVectorSearchResultsPosition,
+  selectShowIdolSearchResults,
+  selectShowVectorSearchResults,
 } from '../../../state/settings/settings.selectors';
 
 @Component({
@@ -18,14 +18,14 @@ import {
 export class SettingsDialogComponent {
   private readonly store = inject(Store);
 
-  readonly vectorSearchResultsPosition$ = this.store.select(selectVectorSearchResultsPosition);
-  readonly idolSearchResultsPosition$ = this.store.select(selectIdolSearchResultsPosition);
+  readonly showVectorSearchResults$ = this.store.select(selectShowVectorSearchResults);
+  readonly showIdolSearchResults$ = this.store.select(selectShowIdolSearchResults);
 
-  setVectorSearchResultsPosition(position: 'left' | 'right') {
-    this.store.dispatch(SettingsActions.positionVectorSearchResults({ position }));
+  toggleVectorSearchResultsPosition() {
+    this.store.dispatch(SettingsActions.toggleVectorSearchResults());
   }
 
-  setIdolSearchResultsPosition(position: 'left' | 'right') {
-    this.store.dispatch(SettingsActions.positionIdolSearchResults({ position }));
+  toggleIdolSearchResultsPosition() {
+    this.store.dispatch(SettingsActions.toggleIdolSearchResults());
   }
 }

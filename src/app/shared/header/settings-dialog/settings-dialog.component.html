@@ -2,35 +2,31 @@
 <div class="w-96 py-4 px-6 border bg-white shadow-md rounded-lg flex flex-col gap-y-3">
   <h3 class="font-medium">Settings</h3>
 
-  @if (vectorSearchResultsPosition$ | async; as position) {
     <div class="flex items-center gap-x-3">
       <button
         class="justify-center items-center flex shadow-sm p-2 border rounded-lg"
         [ngClass]="{
-          'border-gray-200 text-gray-700 bg-white hover:bg-gray-100': position === 'right',
-          'border-blue-200 text-blue-500 bg-blue-100': position === 'left'
+          'border-gray-200 text-gray-700 bg-white hover:bg-gray-100': !(showVectorSearchResults$ | async),
+          'border-blue-200 text-blue-500 bg-blue-100': showVectorSearchResults$ | async
         }"
-        (click)="setVectorSearchResultsPosition(position === 'right' ? 'left' : 'right')"
+        (click)="toggleVectorSearchResultsPosition()"
       >
         <ng-icon name="lucideAlignLeft" />
       </button>
       <span class="text-sm">Show Vector Search Results on the left</span>
     </div>
-  }
 
-  @if (idolSearchResultsPosition$ | async; as position) {
     <div class="flex items-center gap-x-3">
       <button
         class="justify-center items-center flex shadow-sm p-2 border rounded-lg"
         [ngClass]="{
-          'border-gray-200 text-gray-700 bg-white hover:bg-gray-100': position === 'left',
-          'border-blue-200 text-blue-500 bg-blue-100': position === 'right'
+          'border-gray-200 text-gray-700 bg-white hover:bg-gray-100': !(showIdolSearchResults$ | async),
+          'border-blue-200 text-blue-500 bg-blue-100': showIdolSearchResults$ | async
         }"
-        (click)="setIdolSearchResultsPosition(position === 'right' ? 'left' : 'right')"
+        (click)="toggleIdolSearchResultsPosition()"
       >
         <ng-icon name="lucideAlignRight" />
       </button>
       <span class="text-sm">Show IDOL Search Results on the right</span>
     </div>
-  }
 </div>

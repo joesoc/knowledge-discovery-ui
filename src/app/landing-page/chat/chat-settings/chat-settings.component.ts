@@ -5,7 +5,6 @@ import { Database } from 'src/app/interfaces/IDahResponse';
 import { AnswerService } from 'src/app/services/answer.service';
 import { DahService } from 'src/app/services/dah.service';
 import { DataService } from 'src/app/services/data.service';
-import { IndexedDbService } from 'src/app/services/indexed-db.service';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -25,7 +24,6 @@ export class ChatSettingsComponent {
   
   constructor(private dahService: DahService, 
               private answerService: AnswerService,
-              private indexDBService: IndexedDbService,
               private dataService: DataService) { 
     this.dahService.getDatabases().subscribe((dbs: Database[]) => {
       this.databases = dbs;
@@ -38,24 +36,18 @@ export class ChatSettingsComponent {
 
   }
    ngOnInit() {
-    this.indexDBService.InitIndexDB().then(() => {
       this.loadSettings();
-      }
-    );}
+    }
 
   saveSettings(): void {
-    this.indexDBService.addItem({id: 'selectedDatabase', value: this.selectedDatabase});
-    this.indexDBService.addItem({id: 'selectedAnswerSystem', value: this.selectedAnswerSystem});
+    localStorage.setItem('selectedDatabase', this.selectedDatabase);
+    localStorage.setItem('selectedAnswerSystem', this.selectedAnswerSystem);
     this.dataService.addDataToRedis(this.sessionID, this.selectedDatabase, this.selectedAnswerSystem);
     this.closeChatSettings.emit(false);
   }
   loadSettings(): void {
-    this.indexDBService.getItem('selectedDatabase').then((value: any) => {
-      this.selectedDatabase = value ? value.value : "";
-    });
-    this.indexDBService.getItem('selectedAnswerSystem').then((value: any) => {
-      this.selectedAnswerSystem = value ? value.value : "";
-    });
+      this.selectedDatabase = localStorage.getItem('selectedDatabase') ?? "";
+      this.selectedAnswerSystem = localStorage.getItem('selectedAnswerSystem') ?? "";
   }
 
   loadDatabases(): void {

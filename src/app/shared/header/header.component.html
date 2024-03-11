@@ -2,13 +2,13 @@
   <div class="mx-auto h-full items-center flex w-full px-6 justify-between">
     <div class="flex items-center gap-x-4">
       <img class="h-5" src="/assets/logo.svg" alt="Logo" />
-      <h1 class="text-gray-700 pb-0.5 text-xl font-semibold leading-normal">Idol</h1>
+      <h1 class="text-gray-700 pb-0.5 text-xl font-semibold leading-normal">IDOL</h1>
     </div>
 
     <div class="flex gap-x-2">
       <!-- Search -->
       <div
-        class="flex-none w-[800px] focus-within:ring-primary focus-within:hover:ring-primary hidden cursor-text items-center rounded-md bg-white py-1.5 pl-3 pr-3 text-sm leading-6 shadow-sm ring-1 ring-gray-400/20 hover:ring-gray-600/25 lg:flex"
+        class="relative flex-none w-[800px] focus-within:ring-primary focus-within:hover:ring-primary hidden cursor-text items-center rounded-md bg-white py-1.5 pl-3 pr-3 text-sm leading-6 shadow-sm ring-1 ring-gray-400/20 hover:ring-gray-600/25 lg:flex"
         (click)="searchInput.focus()"
       >
         <input
@@ -17,7 +17,39 @@
           (keydown.enter)="propogateSearchTerm(searchInput.value); $event.preventDefault()"
           type="text"
           placeholder="Search..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="fetchSuggestions()"
+          (keydown.ArrowDown)="focusNextSuggestion(); $event.preventDefault()"
+          (keydown.ArrowUp)="focusPreviousSuggestion(); $event.preventDefault()"
         />
+
+        @if (typeaheadLoading$ | async) {
+            <div role="status">
+              <svg aria-hidden="true" class="absolute right-3 top-3 w-5 h-5 text-gray-100 animate-spin fill-blue-500" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+              </svg>
+          </div>
+        }
+
+        @if (typeaheadShowResults$ | async) {
+          <div class="absolute -left-px -right-px top-[39px] py-3 px-3 border bg-white rounded-b-lg flex flex-col gap-y-3">
+            <h3 class="font-medium text-xs text-gray-500">Suggestions</h3>
+
+            <ul>
+              @for (result of typeaheadResults$ | async; track result; let index = $index) {
+                  <li class="text-sm text-gray-900 py-1.5 px-3 -mx-3 hover:bg-gray-100 capitalize cursor-pointer" [ngClass]="{
+                    'bg-blue-500/10 font-semibold': (typeaheadFocusIndex$ | async) === index
+                  }">{{ result }}</li>
+              }
+              @empty {
+                @if ((typeaheadLoading$ | async) === false) {
+                  <li class="text-sm text-gray-500 py-1.5 px-3 -mx-3">No results found</li>
+                }
+              }
+            </ul>
+          </div>  
+        }
       </div>
 
       <!-- Actions -->
@@ -50,15 +82,27 @@
       </div>
     </div>
 
-    <button
-      class="justify-center items-center flex shadow-sm p-3 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
-      #settingsTrigger="cdkOverlayOrigin"
-      (click)="showSettingsDialog = !showSettingsDialog"
-      type="button"
-      cdkOverlayOrigin
-    >
-      <ng-icon name="lucideSettings" />
-    </button>
+    <div class="flex gap-x-2 items-center">
+      <span class="text-gray-700 text-sm font-medium mr-1">{{ username }}</span>
+
+      <button
+        class="justify-center items-center flex shadow-sm p-3 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
+        #settingsTrigger="cdkOverlayOrigin"
+        (click)="showSettingsDialog = !showSettingsDialog"
+        type="button"
+        cdkOverlayOrigin
+      >
+        <ng-icon name="lucideSettings" />
+      </button>
+  
+      <button
+        class="justify-center items-center flex shadow-sm p-3 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100"
+        type="button"
+        (click)="logout()"
+      >
+        <ng-icon name="lucideLogOut" />
+      </button>
+    </div>
   </div>
 
   <!-- Database Popover -->

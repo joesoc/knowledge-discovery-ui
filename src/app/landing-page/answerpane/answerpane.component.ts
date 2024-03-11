@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { Answer } from 'src/app/interfaces/IAnswerServerResponse';
 import { NgIcon } from '@ng-icons/core';
 import { NgIf } from '@angular/common';
@@ -13,15 +13,13 @@ import { NgIf } from '@angular/common';
 export class AnswerpaneComponent {
   currentIndex: number = 0;
   @Input() question:string = "";
-  @Input()answers: Answer[] = []; // Add your answers here
+  @Input() answers: Answer[] = []; // Add your answers here
   @Input() gotAnswers: boolean = false;
-  ngOnInit(): void {
-    this.gotAnswers = false;
-  }
 
   ngAfterViewInit(): void {
     console.table(this.answers);
   }
+
   get totalAnswers(): number {
     return this.answers.length;
   }

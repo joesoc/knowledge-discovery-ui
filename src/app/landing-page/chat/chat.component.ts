@@ -16,14 +16,15 @@ import { Prompt } from 'src/app/interfaces/IAnswerServerConversationPrompts';
 import { IManageResourcesResponse } from 'src/app/interfaces/IAnswerServerConversationResponse';
 import { AnswerService } from 'src/app/services/answer.service';
 import { DataService } from 'src/app/services/data.service';
-import { IndexedDbService } from 'src/app/services/indexed-db.service';
 import { environment } from 'src/environments/environment.prod';
 import { FormsModule } from '@angular/forms';
 import { DynamicValidChoicesComponent } from './dynamic-valid-choices/dynamic-valid-choices.component';
 import { ChatUrlDirective } from './chat-url/chat-url.directive';
 import { ChatSettingsComponent } from './chat-settings/chat-settings.component';
-import { NgIcon } from '@ng-icons/core';
+import { NgIcon, provideIcons } from '@ng-icons/core';
 import { NgClass, NgIf, NgFor } from '@angular/common';
+import { LoadingIndicatorComponent } from '../../shared/loading-indicator/loading-indicator.component';
+import { lucideRefreshCw } from '@ng-icons/lucide';
 
 @Component({
     selector: 'app-chat',
@@ -39,27 +40,26 @@ import { NgClass, NgIf, NgFor } from '@angular/common';
         ChatUrlDirective,
         DynamicValidChoicesComponent,
         FormsModule,
+        LoadingIndicatorComponent,
     ],
+    viewProviders: [provideIcons({lucideRefreshCw})]
 })
 export class ChatComponent implements OnInit, AfterViewInit {
+
   private changeDetector = inject(ChangeDetectorRef);
   sessionID: string = '';
-  messages: Array<{
-    username: string;
-    timestamp: string;
-    text: SafeHtml;
-    fromUser: boolean;
-    choices: string[];
-  }> = [];
+  messages: Array<Message> = [];
 
   previewUrl?: SafeUrl;
   rawUrl?: string;
   showChatSettings: boolean = false;
   answer_source: string = '';
   answer_text: string = '';
+  loading: boolean = false;
   @Output() closeChat = new EventEmitter<void>();
 
   @ViewChildren('chatMessage') chatMessages!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChild(LoadingIndicatorComponent) loadingIndicator?: LoadingIndicatorComponent;
 
   @ViewChild('messageInput')
   messageInput!: ElementRef<HTMLInputElement>;
@@ -74,7 +74,6 @@ export class ChatComponent implements OnInit, AfterViewInit {
     private answerService: AnswerService,
     private sanitizer: DomSanitizer,
     private redisService: DataService,
-    private indexDBService: IndexedDbService
   ) {}
 
   toggleChatSettings(): void {
@@ -104,17 +103,17 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   initializeChatbot(): void {
+    this.setLoading(true);
     // Replace 'variables' with any required session variables
     this.answerService.getSessionID().subscribe(async (response: IManageResourcesResponse) => {
       this.sessionID = response.autnresponse.responsedata.result.managed_resources.id;
-      let database = await this.indexDBService.getItem('selectedDatabase');
-      let answerServerSystem = await this.indexDBService.getItem('selectedAnswerSystem');
-      this.redisService.addDataToRedis(this.sessionID, database.value, answerServerSystem.value);
+      // this.redisService.addDataToRedis(this.sessionID, database.value, answerServerSystem.value);
       this.answerService.converse(this.sessionID, '').subscribe(response => {
         let prompts: Prompt[] = response.autnresponse.responsedata.prompts;
         prompts.forEach(prompt => {
           this.addMessage('Conversation Server', prompt.prompt, false);
         });
+        this.setLoading(false);
       });
       //this.addMessage('Hello! How can I help you today?'+this.sessionID, false);
     });
@@ -134,7 +133,21 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.scrollToBottom();
   }
 
+  setLoading(loading: boolean) {
+    this.loading = loading;
+    this.changeDetector.detectChanges();
+    this.scrollToBottom();
+  }
+
   scrollToBottom(): void {
+    if (this.loadingIndicator) {
+      this.loadingIndicator.elementRef.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      });
+      return;
+    }
+
     try {
       this.chatMessages.last.nativeElement.scrollIntoView({
         behavior: 'smooth',
@@ -179,6 +192,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
     } else {
       usertext = userMessage.text + `|${this.sessionID}`;
     }
+
+    this.setLoading(true);
     this.answerService.converse(this.sessionID, usertext).subscribe(response => {
       let prompts: Prompt[] = response.autnresponse.responsedata.prompts;
       prompts.forEach(prompt => {
@@ -225,6 +240,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
             this.addMessage('Conversation Server', safeMessage, false);
           }
         }
+
+        this.setLoading(false);
       });
     });
   }
@@ -252,4 +269,17 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.rawUrl = undefined;
     this.previewUrl = undefined;
   }
+
+  replayMessage(messgae: Message) {
+    this.newMessage.text = messgae.text.toString();
+    this.sendMessage();
+  }
+}
+
+interface Message {
+    username: string;
+    timestamp: string;
+    text: SafeHtml;
+    fromUser: boolean;
+    choices: string[];
 }

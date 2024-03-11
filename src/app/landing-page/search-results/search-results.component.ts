@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { ISearchResultItem } from 'src/app/interfaces/IsearchResultItem';
 import { SearchResultItemComponent } from '../search-result-item/search-result-item.component';
 import { NgIf, NgFor } from '@angular/common';

@@ -1,8 +1,6 @@
 <app-header
   (searchTermChanged)="propogateSearchTerm($event)"
   (selectedDatabasesChanged)="propogateDatabaseSelection($event)"
-  (showVectorResultsChanged)="hideVector($event)"
-  (showIDOLResultsChanged)="hideNormalIDOL($event)"
 >
 </app-header>
 
@@ -22,6 +20,52 @@
 
 <app-chat *ngIf="isChatOpen" (closeChat)="toggleChat()"></app-chat>
 
+@if (resultItems.length === 0 && idolresultsItems.length === 0 && answers.length === 0 && !loading) {
+<div class="flex flex-col gap-y-4 justify-center items-center w-full h-full pt-16">
+  <img
+    src="assets/empty-state.svg"
+    class="w-32" />
+
+    <div class="flex flex-col gap-y-1">
+      <h1 class="text-2xl text-center mt-4 mb-2">Get Started</h1>
+      <p class="text-sm text-center text-gray-700 leading-loose">
+        Select the IDOL database by clicking the database icon 
+        <span class="justify-center items-center inline-flex shadow-sm p-1 border border-gray-200 rounded text-gray-700 text-xs"><ng-icon name="lucideDatabase" /> </span>
+        and then type your question in the search bar <br /> or use the chatbot icon
+        <span class="justify-center items-center inline-flex p-1 rounded text-white bg-blue-500 text-xs"><ng-icon name="lucideMessageCircle" /> </span>
+        to have a conversation. 
+        <br />
+        <br />
+        To effectively compare search results from Vector Retrieval and IDOL, you can do so by accessing the comparison feature. 
+        <br />
+        Simply click on the gear icon
+        <span class="justify-center items-center inline-flex shadow-sm p-1 border border-gray-200 rounded text-gray-700 text-xs"><ng-icon name="lucideSettings" /></span>
+        and select the desired retrieval mechanism to compare the two sets of results. 
+        <br />
+        Vector retrieval is the default mechanism and the results are shown on the left.
+        <br />
+        <br />
+        The chatbot is equipped with a range of options, including Language Models (LLMs) and vector retrieval capabilities. <br />
+        This design allows users to pose the same question to different LLMs, enabling them to observe variations in the responses <br />
+        and assess the distinct advantages of each approach. You can choose your desired Language Model (LLM) by selecting it from the <br />
+        "Answer Server System" dropdown menu, and select your IDOL database from the "IDOL Database" dropdown menu. <br />
+        To access these options, you need to click on the gear box icon 
+        <span class="justify-center items-center inline-flex shadow-sm p-1 border border-gray-200 rounded text-gray-700 text-xs"><ng-icon name="lucideSettings" /></span> 
+        in the <a (click)="toggleChat()" class="text-blue-500 underline cursor-pointer hover:text-blue-600">chat window</a>, which will open the chat settings.
+
+        <br />
+        <br />
+        We have implemented IDOL visual verification technology to assist users in verifying the accuracy of answers provided by the Language Models (LLMs). <br />
+        This feature is aimed at boosting confidence in the responses and identifying any potential inaccuracies or "hallucinations" by the LLM. <br />
+        To view a preview of the relevant paragraph, which will be highlighted in yellow and displayed in bold font, simply click on the link adjacent to <br />
+        the source label within the answer.
+      </p>
+    </div>
+  
+</div>
+}
+
+
 <div class="answerpane-container">
   <app-answerpane
     [answers]="answers"
@@ -31,9 +75,8 @@
 </div>
 <div class="flex-container">
   <div
-    class="searchresultsVector"
-    *ngIf="hideVectorResults"
-    [ngStyle]="{ width: hideStandardResults ? '50%' : '50%' }"
+    class="searchresultsVector w-[50%] flex flex-col gap-y-4 px-8"
+    *ngIf="showVectorResults$ | async"
   >
     <app-results-count
       [keyword]="searchkeyword"
@@ -43,9 +86,8 @@
     <app-search-results [searchResults]="resultItems"></app-search-results>
   </div>
   <div
-    class="searchresultsIDOL"
-    *ngIf="hideStandardResults"
-    [ngStyle]="{ width: hideVectorResults ? '50%' : '50%' }"
+    class="searchresultsIDOL w-[50%] flex flex-col gap-y-4 px-8"
+    *ngIf="showIdolResults$ | async"
   >
     <app-results-count
       [keyword]="searchkeyword"
