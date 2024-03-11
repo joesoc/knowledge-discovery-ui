@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { Routes, provideRouter } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
@@ -19,17 +19,18 @@ import {
   lucideX,
   lucideXCircle,
 } from '@ng-icons/lucide';
+import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { AppComponent } from './app/app.component';
 import { LandingPageComponent } from './app/landing-page/landing-page.component';
-import { databaseFeature, databaseFeatureKey } from './app/state/database/database.reducer';
-import { settingsFeature, settingsFeatureKey } from './app/state/settings/settings.reducer';
 import { LoginComponent } from './app/login/login.component';
 import { authGuard } from './app/shared/guards/auth.guard';
 import { authInterceptor } from './app/shared/interceptors/auth.interceptor';
-import { provideEffects } from '@ngrx/effects';
-import { typeaheadFeature, typeaheadFeatureKey } from './app/state/typeahead/typeahead.reducer';
+import { databaseFeature, databaseFeatureKey } from './app/state/database/database.reducer';
+import { settingsFeature, settingsFeatureKey } from './app/state/settings/settings.reducer';
 import { TypeaheadEffects } from './app/state/typeahead/typeahead.effects';
+import { typeaheadFeature, typeaheadFeatureKey } from './app/state/typeahead/typeahead.reducer';
 
 const routes: Routes = [
   {
@@ -40,17 +41,17 @@ const routes: Routes = [
   {
     path: 'home',
     component: LandingPageComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'search',
     component: LandingPageComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'login',
     component: LoginComponent,
-  }
+  },
 ];
 
 bootstrapApplication(AppComponent, {
@@ -61,6 +62,7 @@ bootstrapApplication(AppComponent, {
     provideState({ name: databaseFeatureKey, reducer: databaseFeature.reducer }),
     provideState({ name: typeaheadFeatureKey, reducer: typeaheadFeature.reducer }),
     provideEffects([TypeaheadEffects]),
+    provideStoreDevtools(),
     provideIcons({
       lucideSettings,
       lucideDatabase,

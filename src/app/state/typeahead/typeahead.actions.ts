@@ -6,8 +6,6 @@ export const TypeaheadActions = createActionGroup({
     'Load Typeahead': props<{ search: string }>(),
     'Load Typeahead Success': props<{ results: string[] }>(),
     'Load Typeahead Failure': props<{ error: unknown }>(),
-    'Focus Next Suggestion': emptyProps(),
-    'Focus Previous Suggestion': emptyProps(),
     'Close Typeahead': emptyProps(),
-  }
+  },
 });
