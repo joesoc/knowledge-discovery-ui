@@ -7,20 +7,16 @@
   "prefix": "app",
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@angular-devkit/build-angular:browser",
       "options": {
-        "outputPath": {
-          "base": "dist/vector-search-ui"
-        },
+        "outputPath": "dist/vector-search-ui",
         "index": "src/index.html",
+        "main": "src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "tsconfig.app.json",
         "assets": ["src/favicon.ico", "src/assets"],
         "styles": ["src/styles.css"],
-        "scripts": [],
-        "browser": "src/main.ts",
-        "ssr": false,
-        "prerender": false
+        "scripts": []
       },
       "configurations": {
         "production": {
@@ -39,14 +35,16 @@
           "outputHashing": "all"
         },
         "development": {
+          "buildOptimizer": false,
           "optimization": false,
+          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
         }
       },
       "defaultConfiguration": "production",
-      "outputs": ["{options.outputPath.base}"]
+      "outputs": ["{options.outputPath}"]
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
