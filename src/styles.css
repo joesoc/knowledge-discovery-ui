@@ -1,8 +1,9 @@
-@tailwind base;
-@tailwind utilities;
-@import '@fontsource-variable/inter/index.css';
 @import '@angular/cdk/a11y-prebuilt.css';
 @import '@angular/cdk/overlay-prebuilt.css';
+@import '@fontsource-variable/inter/index.css';
+
+@tailwind base;
+@tailwind utilities;
 
 body {
   overflow-y: scroll;
