@@ -84,7 +84,7 @@ export class HeaderComponent {
 
   propogateSearchTerm(value: string) {
     const result = this.activeDescendantManager?.activeItem?.value;
-    debugger;
+
     this.store.dispatch(TypeaheadActions.closeTypeahead());
 
     if (result) {
@@ -165,6 +165,10 @@ export class HeaderComponent {
 
   fetchSuggestions(): void {
     this.didSearch$.next(this.searchTerm);
+  }
+
+  openTypeahead(): void {
+    this.store.dispatch(TypeaheadActions.openTypeahead());
   }
 
   closeTypeahead(): void {

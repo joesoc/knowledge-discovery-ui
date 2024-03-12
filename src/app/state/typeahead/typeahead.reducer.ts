@@ -20,13 +20,13 @@ export const reducer = createReducer(
   on(TypeaheadActions.loadTypeahead, state => ({
     ...state,
     loading: true,
-    isOpen: true,
   })),
   on(TypeaheadActions.loadTypeaheadSuccess, (state, action) => ({
     ...state,
     loading: false,
     results: action.results,
   })),
+  on(TypeaheadActions.openTypeahead, state => ({ ...state, isOpen: true })),
   on(TypeaheadActions.closeTypeahead, state => ({ ...state, isOpen: false }))
 );
 
