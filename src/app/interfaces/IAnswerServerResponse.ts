@@ -40,7 +40,7 @@ export interface IAnswerServerAskResponse {
     windows: Windows
     classifications: Classifications
     context: Context
-    verified_response: VerifiedResponse
+    verified_response: string
   }
   
   export interface VerifiedResponse {

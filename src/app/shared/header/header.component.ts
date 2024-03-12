@@ -137,6 +137,10 @@ export class HeaderComponent {
       .withVerticalOrientation()
       .withTypeAhead()
       .withWrap();
+
+    this.suggestions?.changes.subscribe(suggestions => {
+      this.activeDescendantManager?.updateActiveItem(-1);
+    });
   }
 
   toggleSelection(option: string) {
