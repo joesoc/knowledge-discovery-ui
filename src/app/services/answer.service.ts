@@ -53,9 +53,7 @@ export class AnswerService {
     );
   }
   async ask(question: string, databaseMatch: string) {
-    let answerSystem: string = localStorage.getItem('selectedAnswerSystem') ?? 'AlbertVector';
-    console.log('Database Match: ', databaseMatch);
-    console.log('Answer System: ', answerSystem);
+    let answerSystem: string = localStorage.getItem('selectedSearchAnswerSystem') ?? 'AlbertVector';
     let params = new HttpParams()
       .set('action', 'ask')
       .set('text', question)

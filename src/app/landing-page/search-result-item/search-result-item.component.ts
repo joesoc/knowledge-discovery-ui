@@ -17,7 +17,6 @@ export class SearchResultItemComponent {
   }
 
   ngOnInit(): void {
-    console.log('Debug resultitem.summary:', this.resultitem.summary);
   }
   @Input() resultitem: ISearchResultItem = {} as ISearchResultItem;
 }

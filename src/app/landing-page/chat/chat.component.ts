@@ -206,14 +206,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
             'input[id="sourceHiddenField"]'
           ) as HTMLInputElement;
           if (hiddenValue !== null) {
-            console.log(hiddenValue.value);
             this.answer_source = hiddenValue.value;
           }
           const texthiddenValue = doc.querySelector(
             'input[id="textHiddenField"]'
           ) as HTMLInputElement;
           if (texthiddenValue !== null) {
-            console.log(texthiddenValue.value);
             this.answer_text = texthiddenValue.value;
           }
           const safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(

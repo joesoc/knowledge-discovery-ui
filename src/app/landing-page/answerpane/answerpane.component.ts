@@ -16,9 +16,7 @@ export class AnswerpaneComponent {
   @Input() answers: Answer[] = []; // Add your answers here
   @Input() gotAnswers: boolean = false;
 
-  ngAfterViewInit(): void {
-    console.table(this.answers);
-  }
+  
 
   get totalAnswers(): number {
     return this.answers.length;
