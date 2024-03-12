@@ -58,7 +58,6 @@ export class LandingPageComponent {
     }
     this.answers = [];
     this.question = question;
-    console.log('Asking question: ' + question);
     (await this.answerService.ask(question, this.getDatabaseSelection())).subscribe(data => {
       const response: IAnswerServerAskResponse = data;
       this.answers = response.autnresponse.responsedata.answers

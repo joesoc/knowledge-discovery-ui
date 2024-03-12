@@ -25,13 +25,22 @@ export class ChatSettingsComponent {
   constructor(private dahService: DahService, 
               private answerService: AnswerService,
               private dataService: DataService) { 
+
+    // populate the databases and answer systems
+    this.databases = JSON.parse(localStorage.getItem('databases') ?? "[]");
+    this.answerSystems = JSON.parse(localStorage.getItem('answerSystems') ?? "[]");
+
     this.dahService.getDatabases().subscribe((dbs: Database[]) => {
       this.databases = dbs;
+      // cache the databases in local storage
+      localStorage.setItem('databases', JSON.stringify(this.databases));
     }, (err) => {
       console.log(err);
     });
     this.answerService.getAnswerSystems().subscribe((systems: System[]) => { 
       this.answerSystems = systems.filter((system) => system.type !== "conversation");
+      // cache the answer systems in local storage
+      localStorage.setItem('answerSystems', JSON.stringify(this.answerSystems));
     });
 
   }
