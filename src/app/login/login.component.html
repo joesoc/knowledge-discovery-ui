@@ -24,6 +24,9 @@
                 <p class="text-red-500 text-sm font-medium leading-tight">Password is required</p>
             }
         </div>
+        @if (loginFailed == true){
+            <p class="text-red-500 text-sm font-medium leading-tight">Login failed. Please try again.</p>
+        }
 
         <button class="bg-blue-500 w-full text-white text-sm font-medium rounded-lg px-4 py-2.5 hover:bg-blue-600" type="button" (click)="login()">Login</button>
     </form>
