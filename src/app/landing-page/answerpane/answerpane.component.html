@@ -1,4 +1,4 @@
-<div class="px-6 pt-6 pb-4">
+<div class="px-6 pt-6">
   <div class="rounded-lg border border-gray-200 p-4 bg-gray-100 shadow-sm" *ngIf="totalAnswers > 0">
     <div class="answer-content">
       @if (currentAnswer) {
@@ -38,7 +38,7 @@
       </div>
       <div class="answer-footer" *ngIf="!isPrevDisabled || !isNextDisabled">
         <button
-          class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+          class="justify-center bg-white items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
           [disabled]="isPrevDisabled"
           (click)="prevAnswer()"
         >
@@ -46,7 +46,7 @@
           Previous
         </button>
         <button
-          class="justify-center items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+          class="justify-center bg-white items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
           [disabled]="isNextDisabled"
           (click)="nextAnswer()"
         >
