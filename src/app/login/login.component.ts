@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   private readonly loginService = inject(LoginService);
-  private router = inject(Router);
+  private readonly router = inject(Router);
   loginFailed: boolean = false;
 
   form = new FormGroup({
