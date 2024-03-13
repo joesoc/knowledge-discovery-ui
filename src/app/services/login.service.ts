@@ -22,7 +22,7 @@ export class LoginService {
     }
 
     login(username: string, password: string): Observable<boolean> {
-        return this.http.get<ICommunityUserReadResponse>(`${environment.community_api}/action=UserRead&SecurityInfo=true&username=${username}&password=${encodeURI(password)}&responseFormat=simplejson`)
+        return this.http.get<ICommunityUserReadResponse>(`${environment.community_api}/action=UserRead&SecurityInfo=true&username=${username}&password=${encodeURIComponent(password)}&responseFormat=simplejson`)
             .pipe(
                 tap((response: ICommunityUserReadResponse) => {
                     // todo replace with actual value
