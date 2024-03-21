@@ -16,6 +16,7 @@ import { ResultsCountComponent } from './results-count/results-count.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { Store } from '@ngrx/store';
 import { selectShowIdolSearchResults, selectShowVectorSearchResults } from '../state/settings/settings.selectors';
+import { LlmService } from '../services/llm.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -37,6 +38,7 @@ import { selectShowIdolSearchResults, selectShowVectorSearchResults } from '../s
 })
 export class LandingPageComponent {
   private readonly store = inject(Store);
+  private readonly llm = inject(LlmService);
   readonly showVectorResults$ = this.store.select(selectShowVectorSearchResults);
   readonly showIdolResults$ = this.store.select(selectShowIdolSearchResults);
 
@@ -52,12 +54,24 @@ export class LandingPageComponent {
   }
   async fetchAnswer(question: string) {
     this.gotAnswers = false;
+
+    // check if the text is actually a question
+    const isQuestion = await this.llm.verifyInput(question);
+
+    if (!isQuestion) {
+      this.answers = [];
+      this.loading = false;
+      return;
+    }
+
     // Add a question mark to the query if it doesn't have one
     if (!question.endsWith('?')) {
       question += '?';
     }
+
     this.answers = [];
     this.question = question;
+
     (await this.answerService.ask(question, this.getDatabaseSelection())).subscribe(data => {
       const response: IAnswerServerAskResponse = data;
       this.answers = response.autnresponse.responsedata.answers
