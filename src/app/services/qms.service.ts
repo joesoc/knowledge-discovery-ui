@@ -79,4 +79,21 @@ export class QmsService {
     const url = `${environment.qms_api}/`;
     return this.returnResponse(url, params);
   }
+  getParagraphContext(query:string, selectedDatabase: string): Observable<IContentResponse> {
+    let params = new HttpParams()
+      .set('action', 'query')
+      .set('text', query)
+      .set('outputencoding', 'UTF8')
+      .set('sort', 'relevance')
+      .set('databasematch', selectedDatabase)
+      .set('anylanguage', 'true')
+      .set('maxresults', '1')
+      .set('totalresults', 'true')
+      .set('summary', 'Context')
+      .set('Sentences','3')
+      .set('characters', '250')
+      .set('ResponseFormat', 'simplejson');
+    const url = `${environment.qms_api}/`;
+    return this.returnResponse(url, params);
+  }
 }

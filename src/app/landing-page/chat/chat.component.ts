@@ -25,6 +25,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { NgClass, NgIf, NgFor } from '@angular/common';
 import { LoadingIndicatorComponent } from '../../shared/loading-indicator/loading-indicator.component';
 import { lucideRefreshCw } from '@ng-icons/lucide';
+import { QmsService } from 'src/app/services/qms.service';
 
 @Component({
     selector: 'app-chat',
@@ -74,6 +75,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     private answerService: AnswerService,
     private sanitizer: DomSanitizer,
     private redisService: DataService,
+    private qmsService: QmsService
   ) {}
 
   toggleChatSettings(): void {
@@ -208,12 +210,17 @@ export class ChatComponent implements OnInit, AfterViewInit {
           if (hiddenValue !== null) {
             this.answer_source = hiddenValue.value;
           }
+          let summary:string = '';
           const texthiddenValue = doc.querySelector(
             'input[id="textHiddenField"]'
           ) as HTMLInputElement;
           if (texthiddenValue !== null) {
             this.answer_text = texthiddenValue.value;
           }
+          
+          console.log("Summary = " + summary);
+          console.log("Logging prompt");
+          console.log(prompt.prompt);
           const safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(
             this.decodeHtml(prompt.prompt) +
               '<br><span class="responded-time">Responded in ' +
