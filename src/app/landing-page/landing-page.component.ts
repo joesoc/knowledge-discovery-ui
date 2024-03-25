@@ -1,22 +1,25 @@
 import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
+import { Store } from '@ngrx/store';
 import { Answer, IAnswerServerAskResponse } from '../interfaces/IAnswerServerResponse';
 import { Hit } from '../interfaces/IcontentResponse';
 import { IQMSModelEncodeResponse } from '../interfaces/Iqmsmodel';
 import { ISearchResultItem } from '../interfaces/IsearchResultItem';
 import { IResultSummary } from '../interfaces/IsearchResultsSummary';
 import { AnswerService } from '../services/answer.service';
+import { LlmService } from '../services/llm.service';
 import { QmsService } from '../services/qms.service';
 import { HeaderComponent } from '../shared/header/header.component';
 import { LoadingIndicatorComponent } from '../shared/loading-indicator/loading-indicator.component';
+import {
+  selectShowIdolSearchResults,
+  selectShowVectorSearchResults,
+} from '../state/settings/settings.selectors';
 import { AnswerpaneComponent } from './answerpane/answerpane.component';
 import { ChatComponent } from './chat/chat.component';
 import { ResultsCountComponent } from './results-count/results-count.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
-import { Store } from '@ngrx/store';
-import { selectShowIdolSearchResults, selectShowVectorSearchResults } from '../state/settings/settings.selectors';
-import { LlmService } from '../services/llm.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -33,7 +36,7 @@ import { LlmService } from '../services/llm.service';
     ResultsCountComponent,
     SearchResultsComponent,
     LoadingIndicatorComponent,
-    AsyncPipe
+    AsyncPipe,
   ],
 })
 export class LandingPageComponent {
@@ -81,7 +84,7 @@ export class LandingPageComponent {
       this.loading = false;
     });
   }
-  
+
   resultsSummary: IResultSummary = {} as IResultSummary;
   resultItems: ISearchResultItem[] = [];
   idolresultsItems: ISearchResultItem[] = [];
@@ -90,9 +93,8 @@ export class LandingPageComponent {
 
   constructor(
     private svcQms: QmsService,
-    private answerService: AnswerService,
-  ) {
-  }
+    private answerService: AnswerService
+  ) {}
 
   propogateDatabaseSelection(valueEmitted: any) {
     this.selectedDatabase = [];
@@ -122,6 +124,7 @@ export class LandingPageComponent {
 
   propogateSearchTerm(valueEmitted: any) {
     this.loading = true;
+    this.answers = [];
     this.question = valueEmitted;
     this.fetchAnswer(this.question);
     this.resultsSummary = {} as IResultSummary;
