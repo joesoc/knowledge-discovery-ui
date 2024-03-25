@@ -259,7 +259,6 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   showPreview(url: string) {
     this.rawUrl = url;
-    // TODO: remove this hard coded url
     url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(
       url
     )}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links="${encodeURIComponent(
