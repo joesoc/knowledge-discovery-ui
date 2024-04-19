@@ -9,12 +9,13 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  addDataToRedis(sessionId: string, database: string, answerServerSystem: string) {
+  addDataToRedis(sessionId: string, database: string, answerServerSystem: string, securityinfo: string) {
     const url = `${environment.mlmodels_api}/redis/add`;  // Adjust the URL as necessary
     const data = {
       sessionid: sessionId,
       database: database,
-      answerserversystem: answerServerSystem
+      answerserversystem: answerServerSystem,
+      securityinfo: securityinfo
     };
 
     this.http.post(url, data).subscribe({

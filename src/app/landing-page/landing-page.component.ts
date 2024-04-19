@@ -145,7 +145,6 @@ export class LandingPageComponent {
         this.idolresultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
         this.idolresultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
         this.idolresultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
-
         data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
           this.idolresultsItems.push({
             title: this.generateTitle(hit.title, hit.reference),

@@ -21,6 +21,7 @@ export class ChatSettingsComponent {
   loadingDatabase = true;
   selectedDatabase: string ="";
   selectedAnswerSystem: string = "";
+  securityinfo: string = "";
   
   constructor(private dahService: DahService, 
               private answerService: AnswerService,
@@ -29,7 +30,7 @@ export class ChatSettingsComponent {
     // populate the databases and answer systems
     this.databases = JSON.parse(localStorage.getItem('databases') ?? "[]");
     this.answerSystems = JSON.parse(localStorage.getItem('answerSystems') ?? "[]");
-
+    this.securityinfo = localStorage.getItem('token') ?? "";
     this.dahService.getDatabases().subscribe((dbs: Database[]) => {
       this.databases = dbs;
       // cache the databases in local storage
@@ -51,7 +52,7 @@ export class ChatSettingsComponent {
   saveSettings(): void {
     localStorage.setItem('selectedDatabase', this.selectedDatabase);
     localStorage.setItem('selectedAnswerSystem', this.selectedAnswerSystem);
-    this.dataService.addDataToRedis(this.sessionID, this.selectedDatabase, this.selectedAnswerSystem);
+    this.dataService.addDataToRedis(this.sessionID, this.selectedDatabase, this.selectedAnswerSystem, this.securityinfo);
     this.closeChatSettings.emit(false);
   }
   loadSettings(): void {
