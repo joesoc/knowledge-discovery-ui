@@ -135,6 +135,12 @@ export class HeaderComponent {
     this.didSearch$
       .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe(searchTerm => {
+        // if the search term is empty, close the typeahead
+        if (!searchTerm || searchTerm.trim() === '') {
+          this.store.dispatch(TypeaheadActions.closeTypeahead());
+          return;
+        }
+        
         this.store.dispatch(TypeaheadActions.loadTypeahead({ search: searchTerm }));
       });
   }
@@ -190,7 +196,7 @@ export class HeaderComponent {
     this.activeDescendantManager?.onKeydown(event);
 
     // if this is an arrow key, prevent the default behavior
-    if (event.key.startsWith('Arrow')) {
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
       event.preventDefault();
     }
   }
