@@ -5,6 +5,8 @@ import { map, tap } from "rxjs/operators";
 import { ICommunityUserReadResponse } from "../interfaces/ICommunityUserReadResponse";
 import { Router } from "@angular/router";
 import { environment } from "src/environments/environment.prod";
+import { Store } from "@ngrx/store";
+import { DatabaseActions } from "../state/database/database.actions";
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +14,7 @@ import { environment } from "src/environments/environment.prod";
 export class LoginService {
     private readonly http = inject(HttpClient);
     private readonly router = inject(Router);
+    private readonly store = inject(Store);
     
     get isAuthenticated(): boolean {
         return !!localStorage.getItem('token');
@@ -37,6 +40,7 @@ export class LoginService {
 
     logout(): void {
         localStorage.removeItem('token');
+        this.store.dispatch(DatabaseActions.resetDatabases());
         this.router.navigate(['/login']);
     }
 }

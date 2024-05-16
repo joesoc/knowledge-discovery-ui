@@ -16,6 +16,10 @@ export const reducer = createReducer(
   on(DatabaseActions.selectDatabases, (state, action) => ({
     ...state,
     databases: action.databases,
+  })),
+  on(DatabaseActions.resetDatabases, (state) => ({
+    ...state,
+    databases: [],
   }))
 );
 
