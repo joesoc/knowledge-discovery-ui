@@ -83,18 +83,25 @@ export class HeaderComponent {
   activeDescendantManager?: ActiveDescendantKeyManager<TypeaheadSuggestionComponent>;
 
   propogateSearchTerm(value: string) {
-    const result = this.activeDescendantManager?.activeItem?.value;
-
-    this.store.dispatch(TypeaheadActions.closeTypeahead());
-
-    if (result) {
-      this.searchTerm = result;
-      this.searchTermChanged.emit(result);
-      return;
+    if (!value || value.trim() === '') {
+      console.warn('A search term must be supplied.'); // Move this inside the if block
+    } else {
+      const result = this.activeDescendantManager?.activeItem?.value;
+  
+      this.store.dispatch(TypeaheadActions.closeTypeahead());
+  
+      if (result) {
+        this.searchTerm = result;
+        this.searchTermChanged.emit(result);
+        return;
+      }
+  
+      this.searchTermChanged.emit(value);
+      console.log(value); // Log the value if it's not empty or whitespace
     }
-
-    this.searchTermChanged.emit(value);
   }
+  
+  
 
   showDropdown = false;
   dropdownOptions = [];

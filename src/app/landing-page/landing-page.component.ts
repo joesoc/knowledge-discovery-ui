@@ -51,40 +51,44 @@ export class LandingPageComponent {
   question: string = '';
   isChatOpen: boolean = false;
   loading: boolean = false;
+  loading_answer_pane: boolean = false;
   ngOnInit(): void {}
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
   }
   async fetchAnswer(question: string) {
+    console.log("Fetching Answers");
     this.gotAnswers = false;
-
-    // check if the text is actually a question
+    this.loading = true;
+    this.loading_answer_pane = true;
+  
+    // Check if the text is actually a question
     const isQuestion = await this.llm.verifyInput(question);
-
+  
     if (!isQuestion) {
       this.answers = [];
-      this.loading = false;
+      this.loading_answer_pane = false;
       return;
     }
-
+  
     // Add a question mark to the query if it doesn't have one
     if (!question.endsWith('?')) {
       question += '?';
     }
-
+  
     this.answers = [];
     this.question = question;
-
+  
     (await this.answerService.ask(question, this.getDatabaseSelection())).subscribe(data => {
       const response: IAnswerServerAskResponse = data;
       this.answers = response.autnresponse.responsedata.answers
         ? response.autnresponse.responsedata.answers.answer
         : [];
       this.gotAnswers = true;
-      this.loading = false;
+      this.loading_answer_pane = false;
     });
   }
-
+  
   resultsSummary: IResultSummary = {} as IResultSummary;
   resultItems: ISearchResultItem[] = [];
   idolresultsItems: ISearchResultItem[] = [];
@@ -123,7 +127,7 @@ export class LandingPageComponent {
   }
 
   propogateSearchTerm(valueEmitted: any) {
-    this.loading = true;
+    this.loading= true;    
     this.answers = [];
     this.question = valueEmitted;
     this.fetchAnswer(this.question);
@@ -135,10 +139,6 @@ export class LandingPageComponent {
     this.svcQms.encodeQMS(this.searchkeyword).subscribe((data: IQMSModelEncodeResponse) => {
       let autnresponse = data.autnresponse;
       let responsedata = autnresponse.responsedata;
-      let embeddings = responsedata.embeddings;
-      let num_vectors = parseInt(embeddings.num_vectors);
-      let vector = embeddings.vector[0];
-
       this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection()).subscribe(data => {
         this.idolresultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
         this.idolresultsSummary.predicted = data.autnresponse.responsedata.predicted;
@@ -154,21 +154,28 @@ export class LandingPageComponent {
           });
         });
       });
-      this.svcQms.getVectorResults(vector.$, this.getDatabaseSelection()).subscribe(data => {
-        this.resultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
-        this.resultsSummary.predicted = data.autnresponse.responsedata.predicted;
-        this.resultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
-        this.resultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
-        this.resultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
-        data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
-          this.resultItems.push({
-            title: this.generateTitle(hit.title, hit.reference),
-            reference: hit.reference,
-            summary: hit.summary,
-            autnrank: hit.weight, // Add the autnrank property here
+
+      if (responsedata.embeddings) {
+        let vector = responsedata.embeddings.vector[0];
+        this.svcQms.getVectorResults(vector.$, this.getDatabaseSelection()).subscribe(data => {
+          this.resultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
+          this.resultsSummary.predicted = data.autnresponse.responsedata.predicted;
+          this.resultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
+          this.resultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
+          this.resultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
+          data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
+            this.resultItems.push({
+              title: this.generateTitle(hit.title, hit.reference),
+              reference: hit.reference,
+              summary: hit.summary,
+              autnrank: hit.weight, // Add the autnrank property here
+            });
           });
         });
-      });
+        // Do something with the vector
+      } 
+
     });
+
   }
 }
