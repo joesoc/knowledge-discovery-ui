@@ -50,6 +50,7 @@ export class QmsService {
       .set('summary', 'Concept')
       .set('characters', '250')
       .set('highlight', 'terms')
+      .set('ExpandQuery','True')
       .set('vectormetadata','true')
       .set('StartTag', '<span style="color: black; font-weight:bold;">')
       .set('EndTag', '</span">')
@@ -72,6 +73,7 @@ export class QmsService {
       .set('summary', 'Context')
       .set('characters', '250')
       .set('highlight', 'SummaryTerms')
+      .set('ExpandQuery','True')
       .set('StartTag', '<span style="color: black; font-weight:bold;">')
       .set('ResponseFormat', 'simplejson');
     const url = `${environment.qms_api}/`;

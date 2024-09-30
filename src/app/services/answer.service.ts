@@ -9,6 +9,7 @@ import {
   System,
 } from '../interfaces/IAnswerServerGetStatusResponse';
 import { IAnswerServerAskResponse } from '../interfaces/IAnswerServerResponse';
+import { RAGResponse } from '../interfaces/IAnswerServerRAGResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -61,7 +62,7 @@ export class AnswerService {
       .set('DatabaseMatch', databaseMatch)
       .set('ResponseFormat', 'simplejson');
     const baseUrl = `${environment.answerserver_api}`;
-    return this._http.get<IAnswerServerAskResponse>(baseUrl, { params }).pipe(
+    return this._http.get<IAnswerServerAskResponse | RAGResponse>(baseUrl, { params }).pipe(
       catchError(error => {
         console.error('Error fetching data', error);
         return throwError('Error fetching data');
