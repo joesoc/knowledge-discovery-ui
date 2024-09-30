@@ -20,6 +20,7 @@ import { AnswerpaneComponent } from './answerpane/answerpane.component';
 import { ChatComponent } from './chat/chat.component';
 import { ResultsCountComponent } from './results-count/results-count.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
+import { isRagResponse, RagAnswer } from '../interfaces/IAnswerServerRAGResponse';
 
 @Component({
   selector: 'app-landing-page',
@@ -46,7 +47,7 @@ export class LandingPageComponent {
   readonly showIdolResults$ = this.store.select(selectShowIdolSearchResults);
 
   searchkeyword: string = '';
-  answers: Answer[] = []; // Add your answers here
+  answers: Answer[] | RagAnswer[] = []; // Add your answers here
   gotAnswers: boolean = false;
   question: string = '';
   isChatOpen: boolean = false;
@@ -80,10 +81,10 @@ export class LandingPageComponent {
     this.question = question;
   
     (await this.answerService.ask(question, this.getDatabaseSelection())).subscribe(data => {
-      const response: IAnswerServerAskResponse = data;
-      this.answers = response.autnresponse.responsedata.answers
-        ? response.autnresponse.responsedata.answers.answer
-        : [];
+        this.answers = data.autnresponse.responsedata.answers
+          ? data.autnresponse.responsedata.answers.answer
+          : [];
+      
       this.gotAnswers = true;
       this.loading_answer_pane = false;
     });
