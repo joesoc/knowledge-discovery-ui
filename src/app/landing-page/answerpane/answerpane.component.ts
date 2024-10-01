@@ -33,12 +33,14 @@ export class AnswerpaneComponent {
     let url = this.selectedSource?.['@ref'];
     url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(
       url
-    )}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links="${encodeURIComponent(
+    )}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links=${encodeURIComponent(
       this.selectedSource['text']
-    )}"&Boolean=true&OutputType=HTML#LinkMark`;
+    )}&Boolean=true&OutputType=HTML&MultiHighlight=False&StartTag=<a id="LinkMark"><span style="background-color: yellow; color: black;"><strong>&EndTag=</strong></span></a>#LinkMark`;
+    console.log("Viewing  URL " + `${environment.view_api}${url}`);
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       `${environment.view_api}${url}`
     );
+
   }
 
   get sources(): Source[] {
