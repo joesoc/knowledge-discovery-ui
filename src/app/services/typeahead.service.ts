@@ -11,6 +11,6 @@ export class TypeaheadService {
     private readonly http = inject(HttpClient);
 
     search(term: string) {
-        return this.http.get<IQMSTypeAhead>(`${environment.qms_api}/?action=typeahead&behaviour=Trailing&text=${term}&Mode=Index&ResponseFormat=simplejson`);
+        return this.http.get<IQMSTypeAhead>(`${environment.qms_api}/?action=typeahead&behaviour=Phrase&text=${term}&Mode=Dictionary&ResponseFormat=simplejson`);
     }
 }
