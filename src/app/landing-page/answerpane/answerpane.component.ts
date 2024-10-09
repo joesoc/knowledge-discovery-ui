@@ -119,6 +119,6 @@ export class AnswerpaneComponent {
 
   cleanParagraph(paragraph: Paragraph) {
     // remove any backslashes
-    return paragraph.$.replace(/\\/g, '');
+    return paragraph;
   }
 }
