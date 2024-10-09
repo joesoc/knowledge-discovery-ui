@@ -53,12 +53,15 @@ export class LandingPageComponent {
   isChatOpen: boolean = false;
   loading: boolean = false;
   loading_answer_pane: boolean = false;
+  duration: number = 0;
+  
   ngOnInit(): void {}
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
   }
   async fetchAnswer(question: string) {
     console.log("Fetching Answers");
+    const start = performance.now();
     this.gotAnswers = false;
     this.loading = true;
     this.loading_answer_pane = true;
@@ -87,6 +90,7 @@ export class LandingPageComponent {
       
       this.gotAnswers = true;
       this.loading_answer_pane = false;
+      this.duration = performance.now() - start;
     });
   }
   

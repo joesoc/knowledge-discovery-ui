@@ -1,7 +1,7 @@
 import { Component, inject, Input, SimpleChanges } from '@angular/core';
-import { Answer } from 'src/app/interfaces/IAnswerServerResponse';
+import { Answer, Paragraph } from 'src/app/interfaces/IAnswerServerResponse';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { NgIf } from '@angular/common';
+import { DecimalPipe, NgIf } from '@angular/common';
 import { isRagResponse, RagAnswer, RagMetadata, Source } from 'src/app/interfaces/IAnswerServerRAGResponse';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment.prod';
@@ -12,7 +12,7 @@ import { lucideXCircle } from '@ng-icons/lucide';
     templateUrl: './answerpane.component.html',
     styleUrls: ['./answerpane.component.css'],
     standalone: true,
-    imports: [NgIf, NgIcon],
+    imports: [NgIf, NgIcon, DecimalPipe],
     viewProviders: [provideIcons({lucideXCircle})]
 })
 export class AnswerpaneComponent {
@@ -21,6 +21,8 @@ export class AnswerpaneComponent {
   @Input() question:string = "";
   @Input() answers: Answer[] | RagAnswer[] = []; // Add your answers here
   @Input() gotAnswers: boolean = false;
+  @Input() duration: number = 0;
+
   showAllSources = false;
 
   selectedSource: Source | undefined;
@@ -60,9 +62,34 @@ export class AnswerpaneComponent {
   }
 
   get currentAnswer(): Answer | RagAnswer {
-    return this.answers[this.currentIndex];
+    const answer = this.answers[this.currentIndex];
+    // Helper function to sanitize strings
+    const sanitizeString = (str: string): string => {
+      return str.replace(/[\n"]/g, '');
+    };
+  
+    // If the answer is a string, return it as is
+    if (typeof answer === 'string') {
+      return answer;
+    }
+  
+    // If the answer is an object, iterate over its string properties and sanitize them
+    if (answer && typeof answer === 'object') {
+      const sanitizedAnswer: any = { ...answer };
+  
+      // Loop over the properties of the answer object
+      for (const key in sanitizedAnswer) {
+        if (typeof sanitizedAnswer[key] === 'string') {
+          sanitizedAnswer[key] = sanitizeString(sanitizedAnswer[key]);
+        }
+      }
+  
+      return sanitizedAnswer;
+    }
+  
+    return answer;
   }
-
+  
   get isPrevDisabled(): boolean {
     return this.currentIndex === 0;
   }
@@ -88,5 +115,10 @@ export class AnswerpaneComponent {
 
   isStandardAnswer(answer: Answer | RagAnswer): answer is Answer {
     return !this.isRagAnswer(answer);
+  }
+
+  cleanParagraph(paragraph: Paragraph) {
+    // remove any backslashes
+    return paragraph.$.replace(/\\/g, '');
   }
 }
