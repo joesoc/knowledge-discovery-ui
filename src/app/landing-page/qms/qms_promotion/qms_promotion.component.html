@@ -1,0 +1,11 @@
+@if(showPromotions){
+    @if (topPromotions.autnresponse.responsedata.numhits == "1") {
+        <div class="promotion-container">
+            <div class="promotion_title">
+                <h3><strong>{{topPromotions.autnresponse.responsedata.hit[0].title}}</strong></h3>
+                <a class="promotion_link" href='{{topPromotions.autnresponse.responsedata.hit[0].reference}}'>{{topPromotions.autnresponse.responsedata.hit[0].reference}}</a>
+                <p class="promotion_body">{{topPromotions.autnresponse.responsedata.hit[0].content.DOCUMENT.DRECONTENT}}</p>
+            </div>
+        </div>
+    }    
+}

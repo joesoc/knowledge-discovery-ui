@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment.prod';
 import { IQMSModelEncodeResponse } from '../interfaces/Iqmsmodel';
 import { IContentResponse } from '../interfaces/IcontentResponse';
 import { catchError, throwError } from 'rxjs';
+import { IQMSPromotionResult } from '../interfaces/IQMSPromotionResult';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,14 @@ export class QmsService {
       })
     );
   }
+  returnQMSResponse(url:string, params:HttpParams): Observable<IQMSPromotionResult> {
+    return this.http.get<IQMSPromotionResult>(url, { params }).pipe(
+      catchError(error => {
+        console.error('Error fetching data', error);
+        return throwError('Error fetching data');
+      }
+    ));
+  }
   getVectorResults(vector:string, databases:string): Observable<IContentResponse> {
     let params = new HttpParams()
       .set('action', 'query')
@@ -55,6 +64,7 @@ export class QmsService {
       .set('vectormetadata','true')
       .set('StartTag', '<span style="color: black; font-weight:bold;">')
       .set('EndTag', '</span">')
+      .set('ActionID', 'webui.idoldemos.net')
       .set('ResponseFormat', 'simplejson');
       const url = `${environment.qms_api}/`;
       return this.returnResponse(url, params);
@@ -76,10 +86,39 @@ export class QmsService {
       .set('characters', '250')
       .set('highlight', 'SummaryTerms')
       .set('ExpandQuery','True')
+      .set('ActionID', 'webui.idoldemos.net')
       .set('StartTag', '<span style="color: black; font-weight:bold;">')
       .set('ResponseFormat', 'simplejson');
     const url = `${environment.qms_api}/`;
     return this.returnResponse(url, params);
+  }
+
+  getQMSPromotions(query:string, selectedDatabase: string): Observable<IQMSPromotionResult> {
+    let params = new HttpParams()
+      .set('action', 'Query')	
+      .set('text', '('+query+')')
+      .set('Combine', 'Simple')
+      .set('MaxResults','1')
+      .set('Summary', 'Context')
+      .set('databasematch', selectedDatabase)	
+      .set('Promotions', 'true')	
+      .set('ResponseFormat', 'simplejson')
+      .set('anylanguage', 'true')
+      .set('TotalResults', 'true')
+      .set('Start','1')
+      .set('XMLMeta', 'true')
+      .set('Sort','Relevance')
+      .set('Predict', 'true') 
+      .set('MinScore', '0')
+      .set('Hightlight', 'SummaryTerms')
+      .set('Characters', '250')
+      .set('print', 'Fields')
+      .set('printfields','DRETITLE,DRECONTENT')
+      .set('ActionID', 'promotionswebui.idoldemos.net')
+      .set('ExpandQuery', 'true');	
+      
+      const url = `${environment.qms_api}/`;
+      return this.returnQMSResponse(url, params);
   }
   getParagraphContext(query:string, selectedDatabase: string): Observable<IContentResponse> {
     let params = new HttpParams()

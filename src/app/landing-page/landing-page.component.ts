@@ -21,6 +21,8 @@ import { ChatComponent } from './chat/chat.component';
 import { ResultsCountComponent } from './results-count/results-count.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { isRagResponse, RagAnswer } from '../interfaces/IAnswerServerRAGResponse';
+import { QmsPromotionComponent } from "./qms/qms_promotion/qms_promotion.component";
+import { IQMSPromotionResult } from '../interfaces/IQMSPromotionResult';
 
 @Component({
   selector: 'app-landing-page',
@@ -38,14 +40,18 @@ import { isRagResponse, RagAnswer } from '../interfaces/IAnswerServerRAGResponse
     SearchResultsComponent,
     LoadingIndicatorComponent,
     AsyncPipe,
-  ],
+    QmsPromotionComponent
+],
 })
+
+
 export class LandingPageComponent {
   private readonly store = inject(Store);
   private readonly llm = inject(LlmService);
   readonly showVectorResults$ = this.store.select(selectShowVectorSearchResults);
   readonly showIdolResults$ = this.store.select(selectShowIdolSearchResults);
 
+  topPromotions: IQMSPromotionResult = {} as IQMSPromotionResult;
   searchkeyword: string = '';
   answers: Answer[] | RagAnswer[] = []; // Add your answers here
   gotAnswers: boolean = false;
@@ -54,11 +60,14 @@ export class LandingPageComponent {
   loading: boolean = false;
   loading_answer_pane: boolean = false;
   duration: number = 0;
+  showPromotions = true;
   
   ngOnInit(): void {}
+  
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
   }
+
   async fetchAnswer(question: string) {
     console.log("Fetching Answers");
     const start = performance.now();
@@ -132,6 +141,7 @@ export class LandingPageComponent {
   }
 
   propogateSearchTerm(valueEmitted: any) {
+    this.showPromotions = false;
     this.loading= true;    
     this.answers = [];
     this.question = valueEmitted;
@@ -141,6 +151,10 @@ export class LandingPageComponent {
     this.idolresultsItems = [];
     this.idolresultsSummary = {} as IResultSummary;
     this.searchkeyword = valueEmitted;
+    this.svcQms.getQMSPromotions(this.searchkeyword, this.getDatabaseSelection()).subscribe((data: IQMSPromotionResult) => {
+      this.showPromotions = true;
+      this.topPromotions = data;
+    });
     this.svcQms.encodeQMS(this.searchkeyword).subscribe((data: IQMSModelEncodeResponse) => {
       let autnresponse = data.autnresponse;
       let responsedata = autnresponse.responsedata;

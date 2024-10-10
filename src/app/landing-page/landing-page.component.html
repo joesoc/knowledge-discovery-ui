@@ -87,6 +87,8 @@
     </div>
   </div>
 }
+<!-- Other HTML elements -->
+<app-qms-promotion [topPromotions]="topPromotions" [showPromotions]="showPromotions"></app-qms-promotion>
 
 @if (answers.length > 0) {
   <app-answerpane [answers]="answers" [question]="question" [duration]="duration" [gotAnswers]="gotAnswers" />
