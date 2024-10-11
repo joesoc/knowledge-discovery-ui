@@ -56,8 +56,10 @@
               <ng-icon class="text-green-500 text-base" name="lucideCheckCircle2" />
               <span class="text-xs">Verified Response</span>
             } @else {
-              <ng-icon class="text-red-500 text-base" name="lucideXCircle" />
-              <span class="text-xs">Response Verification Failed</span>
+              @if (currentAnswer['@system_name'] !== 'AnswerBank'){
+                <ng-icon class="text-red-500 text-base" name="lucideXCircle" />
+                <span class="text-xs">Response Verification Failed</span>
+              }
             }
         </div>
         }
