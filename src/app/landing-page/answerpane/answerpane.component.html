@@ -52,7 +52,7 @@
 
         @if (isStandardAnswer(currentAnswer)) {
         <div class="flex gap-x-1 items-center mb-2">
-            @if (currentAnswer.metadata.verified_response === 'True' || currentAnswer['@system_name'] === 'AnswerBank') {
+            @if (currentAnswer.metadata.verified_response === 'True') {
               <ng-icon class="text-green-500 text-base" name="lucideCheckCircle2" />
               <span class="text-xs">Verified Response</span>
             } @else {
