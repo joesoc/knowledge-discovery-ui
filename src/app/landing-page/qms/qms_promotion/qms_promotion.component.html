@@ -1,11 +1,14 @@
 @if(showPromotions){
-    @if (topPromotions.autnresponse.responsedata.numhits == "1") {
-        <div class="promotion-container">
+    @if (topPromotions?.autnresponse?.responsedata?.numhits == "1") {
+        <div class="px-6 pt-6">
+            <div class="rounded-lg border border-gray-200 p-4 bg-gray-100 shadow-sm">
             <div class="promotion_title">
-                <h3><strong>{{topPromotions.autnresponse.responsedata.hit[0].title}}</strong></h3>
-                <a class="promotion_link" href='{{topPromotions.autnresponse.responsedata.hit[0].reference}}'>{{topPromotions.autnresponse.responsedata.hit[0].reference}}</a>
-                <p class="promotion_body">{{topPromotions.autnresponse.responsedata.hit[0].content.DOCUMENT.DRECONTENT}}</p>
+                <h3 class="text-base font-medium mb-2">{{topPromotions.autnresponse.responsedata.hit[0].title}}</h3>
+
+                <a class="block text-blue-500 underline text-xs mb-1" href='{{topPromotions.autnresponse.responsedata.hit[0].reference}}'>{{topPromotions.autnresponse.responsedata.hit[0].reference}}</a>
+                <p class="text-sm text-gray-700 leading-5 mb-1">{{topPromotions.autnresponse.responsedata.hit[0].content.DOCUMENT.DRECONTENT}}</p>
             </div>
         </div>
-    }    
+    </div>
+    }       
 }

@@ -37,7 +37,7 @@
                   <tr>
                     <td class="pr-4 truncate">{{ source['@database'] }}</td>
                     <td class="pr-4 truncate">{{ source['@title'] || 'No title' }}</td>
-                    <td><a class="block text-blue-500 underline text-xs truncate cursor-pointer" (click)="selectedSource = source">{{ source['@ref'] }}</a></td>
+                    <td><a class="block text-blue-500 underline text-xs truncate cursor-pointer" (click)="selectSource(source)">{{ source['@ref'] }}</a></td>
                   </tr>
                 }
               </tbody>
@@ -114,10 +114,12 @@
       <button class="absolute top-2 right-2 text-gray-500" (click)="selectedSource = undefined" title="Close to return to results">
         <ng-icon name="lucideXCircle" />
       </button>
-      
       @if (previewUrl) {
         <iframe class="border border-gray-200 rounded-lg w-full h-[620px]" [src]="previewUrl"></iframe>
+      } @else {
+        <div>Loading Preview...</div> <!-- Optional loading message -->
       }
+      
     </div>
   }
 </div>
