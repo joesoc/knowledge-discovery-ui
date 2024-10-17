@@ -6,6 +6,8 @@ import { isRagResponse, RagAnswer, RagMetadata, Source } from 'src/app/interface
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment.prod';
 import { lucideXCircle } from '@ng-icons/lucide';
+import { HttpClient } from '@angular/common/http';
+import { HighlightingService } from 'src/app/services/highlighting/highlighting.service';
 
 @Component({
     selector: 'app-answerpane',
@@ -16,6 +18,7 @@ import { lucideXCircle } from '@ng-icons/lucide';
     viewProviders: [provideIcons({lucideXCircle})]
 })
 export class AnswerpaneComponent {
+
   private readonly sanitizer = inject(DomSanitizer)
   currentIndex: number = 0;
   @Input() question:string = "";
@@ -23,27 +26,14 @@ export class AnswerpaneComponent {
   @Input() gotAnswers: boolean = false;
   @Input() duration: number = 0;
 
+  showPreview: boolean = false;
   showAllSources = false;
 
   selectedSource: Source | undefined;
 
-  get previewUrl(): SafeHtml {
-    if (!this.selectedSource) {
-      return '';
-    }
+  constructor(private _svc:HighlightingService) {}
 
-    let url = this.selectedSource?.['@ref'];
-    url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(
-      url
-    )}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links=${encodeURIComponent(
-      this.selectedSource['text']
-    )}&Boolean=true&OutputType=HTML&MultiHighlight=False&StartTag=<a id="LinkMark"><span style="background-color: yellow; color: black;"><strong>&EndTag=</strong></span></a>#LinkMark`;
-    console.log("Viewing  URL " + `${environment.view_api}${url}`);
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `${environment.view_api}${url}`
-    );
-
-  }
+  previewUrl: SafeHtml | undefined;
 
   get sources(): Source[] {
     // if we are not showing all sources, return the first 3 sources
@@ -120,5 +110,51 @@ export class AnswerpaneComponent {
   cleanParagraph(paragraph: Paragraph) {
     // remove any backslashes
     return paragraph;
+  }
+  
+  async selectSource(source: Source) {
+    this.selectedSource = source;
+
+ if (!this.selectedSource) {
+      return;
+    }
+
+    let text = this.currentAnswer['text'];
+    let links = this.selectedSource?.['text'];
+    let url = this.selectedSource?.['@ref'];
+
+    const response = await this._svc.getHighlightingResults(text, links).toPromise();
+
+    const html = response?.autnresponse.responsedata.hit.content;
+    const terms = new Set<string>();
+
+    if (html) {
+
+      // we need to extract the content of all the font tags in the html
+      const template = document.createElement('template');
+      template.innerHTML = html;
+
+      const fontTags = template.content.querySelectorAll('font');
+
+      fontTags.forEach((fontTag) => {
+        if (fontTag.textContent) {
+          terms.add(fontTag.textContent);
+        }
+      });
+
+    }
+
+    debugger
+
+    url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(
+      url
+    )}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links=${encodeURIComponent(
+      Array.from(terms).join(',')
+    )}&Boolean=true&OutputType=HTML&MultiHighlight=False&StartTag=<a id="LinkMark"><span style="background-color: yellow; color: black;"><strong>&EndTag=</strong></span></a>#LinkMark`;
+    console.log("Viewing  URL " + `${environment.view_api}${url}`);
+    this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+
+      `${environment.view_api}${url}`
+    )
   }
 }

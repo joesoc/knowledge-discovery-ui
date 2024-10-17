@@ -14,7 +14,6 @@ export class QmsPromotionComponent implements OnChanges {
   @Input() topPromotions: IQMSPromotionResult = {} as IQMSPromotionResult;  // Receive searchKeyword input from another component
   @Input() showPromotions: boolean = false;
   constructor(private _qmssvc: QmsService) {
-    console.table(this.topPromotions);
   }
 
   ngOnInit(): void {
