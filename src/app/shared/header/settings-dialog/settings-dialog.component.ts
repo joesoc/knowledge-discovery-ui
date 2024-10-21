@@ -21,6 +21,7 @@ import { System } from 'src/app/interfaces/IAnswerServerGetStatusResponse';
   imports: [NgIcon, AsyncPipe, NgClass, FormsModule],
 })
 export class SettingsDialogComponent {
+
   private readonly store = inject(Store);
   private readonly answerService = inject(AnswerService);
 
@@ -32,6 +33,9 @@ export class SettingsDialogComponent {
   answerSystems: System[] = [];
   selectedAnswerSystem?: string;
 
+  querySystems: QuerySystem[] = ['Dictionary', 'Index', 'Answerbank'];
+  selectedQms?: QuerySystem;
+
   ngOnInit() {
     this.answerSystems = localStorage.getItem('answerSystems') ? JSON.parse(localStorage.getItem('answerSystems') ?? '[]') : [];
 
@@ -41,6 +45,7 @@ export class SettingsDialogComponent {
     });
 
     this.selectedAnswerSystem = localStorage.getItem('selectedSearchAnswerSystem') ?? 'AlbertVector';
+    this.selectedQms = localStorage.getItem('selectedQuerySystem') as QuerySystem ?? 'Dictionary';
   }
 
   toggleVectorSearchResultsPosition() {
@@ -55,4 +60,10 @@ export class SettingsDialogComponent {
     // store the selected system in local storage
     localStorage.setItem('selectedSearchAnswerSystem', system);
   }
+  
+  onBehaviorChange(system: QuerySystem) {
+    localStorage.setItem('selectedQuerySystem', system);
+  }
 }
+
+export type QuerySystem = 'Dictionary' | 'Index' | 'Answerbank';
