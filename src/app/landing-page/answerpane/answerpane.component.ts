@@ -119,8 +119,8 @@ export class AnswerpaneComponent {
       return;
     }
 
-    let text = this.currentAnswer['text'];
-    let links = this.selectedSource?.['text'];
+    let links = this.currentAnswer['text'];
+    let text = this.selectedSource?.['text'];
     let url = this.selectedSource?.['@ref'];
 
     const response = await this._svc.getHighlightingResults(text, links).toPromise();
@@ -144,7 +144,6 @@ export class AnswerpaneComponent {
 
     }
 
-    debugger
 
     url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(
       url
