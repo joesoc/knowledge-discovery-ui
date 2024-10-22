@@ -122,38 +122,18 @@ export class AnswerpaneComponent {
     let links = this.currentAnswer['text'];
     let text = this.selectedSource?.['text'];
     let url = this.selectedSource?.['@ref'];
-
-    const response = await this._svc.getHighlightingResults(text, links).toPromise();
-
-    const html = response?.autnresponse.responsedata.hit.content;
-    const terms = new Set<string>();
-
-    if (html) {
-
-      // we need to extract the content of all the font tags in the html
-      const template = document.createElement('template');
-      template.innerHTML = html;
-
-      const fontTags = template.content.querySelectorAll('font');
-
-      fontTags.forEach((fontTag) => {
-        if (fontTag.textContent) {
-          terms.add(fontTag.textContent);
-        }
-      });
-
-    }
-
-
     url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(
       url
     )}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links=${encodeURIComponent(
-      Array.from(terms).join(',')
+      links
     )}&Boolean=true&OutputType=HTML&MultiHighlight=False&StartTag=<a id="LinkMark"><span style="background-color: yellow; color: black;"><strong>&EndTag=</strong></span></a>#LinkMark`;
     console.log("Viewing  URL " + `${environment.view_api}${url}`);
     this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
 
       `${environment.view_api}${url}`
     )
+
+
+
   }
 }
