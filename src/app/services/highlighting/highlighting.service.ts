@@ -17,6 +17,7 @@ export class HighlightingService {
       .set('action', 'highlight')
       .set('Text', text)
       .set('Links', terms_to_highlight)
+      .set('ActionID', 'webui.idoldemos.net')
       .set('responseFormat', 'simplejson'); 
     const baseUrl = `${environment.dah_api}`;
     return this._http.get<IHighlightingResult>(baseUrl, { params }).pipe(
