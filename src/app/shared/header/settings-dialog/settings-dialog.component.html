@@ -73,5 +73,19 @@
         }
       </select>
     </div>
+    <hr class="border-b">
+    <div class="flex flex-col gap-y-1">
+      <h4 class="text-sm font-medium">Default Boolean Proximity Operation</h4>
+        <p class="text-xs text-gray-700 mb-2">Select the default boolean proximity operator to use in query:</p>
 
+        <select
+        class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
+        [(ngModel)]="selectedOperator"
+        (ngModelChange)="onOperatorChange($event)"
+        name="selectedOperator">
+        @for (operator of defaultOperators; track operator) {
+          <option [value]="operator">{{ operator }}</option>
+        }
+      </select>
+    </div>
 </div>

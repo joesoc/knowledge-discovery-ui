@@ -36,6 +36,10 @@ export class SettingsDialogComponent {
   querySystems: QuerySystem[] = ['Dictionary', 'Index', 'Answerbank'];
   selectedQms?: QuerySystem;
 
+  defaultOperators: DefaultOperator[] = ['WNEAR', 'DNEAR' , 'YNEAR' , 'NNEAR' , 'XNEAR' , 'AND' , 'OR' , 'BEFORE' , 'AFTER' , 'SENTENCE' , 'DSENTENCE' , 'PARAGRAPH' ];
+  selectedOperator?: DefaultOperator;
+
+
   ngOnInit() {
     this.answerSystems = localStorage.getItem('answerSystems') ? JSON.parse(localStorage.getItem('answerSystems') ?? '[]') : [];
 
@@ -46,6 +50,7 @@ export class SettingsDialogComponent {
 
     this.selectedAnswerSystem = localStorage.getItem('selectedSearchAnswerSystem') ?? 'AlbertVector';
     this.selectedQms = localStorage.getItem('selectedQuerySystem') as QuerySystem ?? 'Dictionary';
+    this.selectedOperator = localStorage.getItem('selectedOperator') as DefaultOperator ?? 'WNEAR';
   }
 
   toggleVectorSearchResultsPosition() {
@@ -64,6 +69,11 @@ export class SettingsDialogComponent {
   onBehaviorChange(system: QuerySystem) {
     localStorage.setItem('selectedQuerySystem', system);
   }
+
+  onOperatorChange(operator: DefaultOperator) {
+    localStorage.setItem('selectedOperator', operator);
+  }
 }
 
 export type QuerySystem = 'Dictionary' | 'Index' | 'Answerbank';
+export type DefaultOperator = 'WNEAR' | 'DNEAR' | 'YNEAR' | 'NNEAR' | 'XNEAR' | 'AND' | 'OR' | 'BEFORE' | 'AFTER' | 'SENTENCE' | 'DSENTENCE' | 'PARAGRAPH' 
