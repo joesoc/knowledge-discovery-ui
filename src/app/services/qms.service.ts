@@ -6,6 +6,7 @@ import { IQMSModelEncodeResponse } from '../interfaces/Iqmsmodel';
 import { IContentResponse } from '../interfaces/IcontentResponse';
 import { catchError, throwError } from 'rxjs';
 import { IQMSPromotionResult } from '../interfaces/IQMSPromotionResult';
+import { DefaultOperator } from '../shared/header/settings-dialog/settings-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +72,7 @@ export class QmsService {
       return this.returnResponse(url, params);
   }
   getResults(query:string, databases:string): Observable<IContentResponse> {
+    const defaultoperator = localStorage.getItem('selectedOperator') as DefaultOperator ?? 'DNEAR';
     let params = new HttpParams()
       .set('action', 'query')
       .set('text', query)
@@ -86,6 +88,7 @@ export class QmsService {
       .set('totalresults', 'true')
       .set('summary', 'Context')
       .set('characters', '250')
+      .set('DefaultOperator', defaultoperator)
       .set('highlight', 'SummaryTerms')
       .set('ExpandQuery','True')
       .set('ActionID', 'webui.idoldemos.net')
