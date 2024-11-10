@@ -23,6 +23,7 @@ import { SearchResultsComponent } from './search-results/search-results.componen
 import { isRagResponse, RagAnswer } from '../interfaces/IAnswerServerRAGResponse';
 import { QmsPromotionComponent } from "./qms/qms_promotion/qms_promotion.component";
 import { IQMSPromotionResult } from '../interfaces/IQMSPromotionResult';
+import { DahService } from '../services/dah.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -76,18 +77,29 @@ export class LandingPageComponent {
     this.loading_answer_pane = true;
   
     // Check if the text is actually a question
-    const isQuestion = await this.llm.verifyInput(question);
-  
-    if (!isQuestion) {
+
+    const language = await this.dahService.getLanguage(question).toPromise();
+    console.log("Language: ", language?.autnresponse.responsedata.language);
+    if (language?.autnresponse.responsedata.language === 'ARABIC') {
+      console.log("Language is Arabic. Skip binary classification.");
       this.answers = [];
       this.loading_answer_pane = false;
-      return;
+    }
+    else {
+      console.log("Language is not Arabic. Proceed with binary classification.");
+      const isQuestion = await this.llm.verifyInput(question);
+      if (!isQuestion) {
+        this.answers = [];
+        this.loading_answer_pane = false;
+        return;
+      }
+          // Add a question mark to the query if it doesn't have one
+      if (!question.endsWith('?')) {
+        question += '?';
+      }
     }
   
-    // Add a question mark to the query if it doesn't have one
-    if (!question.endsWith('?')) {
-      question += '?';
-    }
+
   
     this.answers = [];
     this.question = question;
@@ -111,7 +123,8 @@ export class LandingPageComponent {
 
   constructor(
     private svcQms: QmsService,
-    private answerService: AnswerService
+    private answerService: AnswerService,
+    private dahService: DahService
   ) {}
 
   propogateDatabaseSelection(valueEmitted: any) {
