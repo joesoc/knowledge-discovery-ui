@@ -59,6 +59,7 @@ export class AnswerService {
       .set('action', 'ask')
       .set('text', question)
       .set('SystemNames', answerSystem)
+      .set('AnyLanguage', 'true')
       .set('DatabaseMatch', databaseMatch)
       .set('ResponseFormat', 'simplejson');
     const baseUrl = `${environment.answerserver_api}`;
