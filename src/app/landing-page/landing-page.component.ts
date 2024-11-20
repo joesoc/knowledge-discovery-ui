@@ -79,6 +79,11 @@ export class LandingPageComponent {
     // Check if the text is actually a question
 
     const language = await this.dahService.getLanguage(question).toPromise();
+      // Store the result in local storage
+    const queryLanguage = `${language?.autnresponse.responsedata.language.toLowerCase()}utf8`;
+
+    localStorage.setItem('QueryLanguage', queryLanguage);
+
     console.log("Language: ", language?.autnresponse.responsedata.language);
     if (language?.autnresponse.responsedata.language === 'ARABIC') {
       console.log("Language is Arabic. Skip binary classification.");

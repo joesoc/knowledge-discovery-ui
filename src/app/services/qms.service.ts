@@ -73,6 +73,8 @@ export class QmsService {
   }
   getResults(query:string, databases:string): Observable<IContentResponse> {
     const defaultoperator = localStorage.getItem('selectedOperator') as DefaultOperator ?? 'DNEAR';
+    const queryLanguage = localStorage.getItem('QueryLanguage') ?? "[]";
+    console.log('Query Language: ', queryLanguage);
     let params = new HttpParams()
       .set('action', 'query')
       .set('text', query)
@@ -90,6 +92,7 @@ export class QmsService {
       .set('characters', '250')
       .set('DefaultOperator', defaultoperator)
       .set('highlight', 'SummaryTerms')
+      .set('LanguageType', queryLanguage)
       .set('ExpandQuery','True')
       .set('ActionID', 'webui.idoldemos.net')
       .set('StartTag', '<span style="color: black; font-weight:bold;">')
