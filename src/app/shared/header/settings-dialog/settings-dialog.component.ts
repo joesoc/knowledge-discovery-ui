@@ -39,6 +39,8 @@ export class SettingsDialogComponent {
   defaultOperators: DefaultOperator[] = ['WNEAR', 'DNEAR' , 'YNEAR' , 'NNEAR' , 'XNEAR' , 'AND' , 'OR' , 'BEFORE' , 'AFTER' , 'SENTENCE' , 'DSENTENCE' , 'PARAGRAPH' ];
   selectedOperator?: DefaultOperator;
 
+  summaryOptions: SummaryOptions[] = ['Concept', 'Context', 'Quick', 'ParagraphConcept', 'ParagraphContext', 'RAG', 'Vector'];
+  selectedSummaryOption?: SummaryOptions;
 
   ngOnInit() {
     this.answerSystems = localStorage.getItem('answerSystems') ? JSON.parse(localStorage.getItem('answerSystems') ?? '[]') : [];
@@ -51,6 +53,7 @@ export class SettingsDialogComponent {
     this.selectedAnswerSystem = localStorage.getItem('selectedSearchAnswerSystem') ?? 'AlbertVector';
     this.selectedQms = localStorage.getItem('selectedQuerySystem') as QuerySystem ?? 'Dictionary';
     this.selectedOperator = localStorage.getItem('selectedOperator') as DefaultOperator ?? 'WNEAR';
+    this.selectedSummaryOption = localStorage.getItem('selectedSummaryOption') as SummaryOptions ?? 'Concept';
   }
 
   toggleVectorSearchResultsPosition() {
@@ -73,7 +76,13 @@ export class SettingsDialogComponent {
   onOperatorChange(operator: DefaultOperator) {
     localStorage.setItem('selectedOperator', operator);
   }
+
+  onSummaryOptionChange(option: SummaryOptions) {
+    localStorage.setItem('selectedSummaryOption', option);
+  }
+
 }
 
 export type QuerySystem = 'Dictionary' | 'Index' | 'Answerbank';
 export type DefaultOperator = 'WNEAR' | 'DNEAR' | 'YNEAR' | 'NNEAR' | 'XNEAR' | 'AND' | 'OR' | 'BEFORE' | 'AFTER' | 'SENTENCE' | 'DSENTENCE' | 'PARAGRAPH' 
+export type SummaryOptions = 'Concept' | 'Context' | 'Quick' | 'ParagraphConcept' | 'ParagraphContext' | 'RAG' | 'Vector' 

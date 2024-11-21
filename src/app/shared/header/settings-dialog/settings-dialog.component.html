@@ -88,4 +88,19 @@
         }
       </select>
     </div>
+    <hr class="border-b">
+    <div class="flex flex-col gap-y-1">
+      <h4 class="text-sm font-medium">Retrieval Summary Options</h4>
+        <p class="text-xs text-gray-700 mb-2">Select the type of summary to return for each result document:</p>
+
+        <select
+        class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
+        [(ngModel)]="selectedSummaryOption"
+        (ngModelChange)="onSummaryOptionChange($event)"
+        name="selectedSummaryOption">
+        @for (option of summaryOptions; track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+    </div>
 </div>

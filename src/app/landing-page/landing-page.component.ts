@@ -85,39 +85,39 @@ export class LandingPageComponent {
     localStorage.setItem('QueryLanguage', queryLanguage);
 
     console.log("Language: ", language?.autnresponse.responsedata.language);
-    if (language?.autnresponse.responsedata.language === 'ARABIC') {
-      console.log("Language is Arabic. Skip binary classification.");
-      this.answers = [];
-      this.loading_answer_pane = false;
-    }
-    else {
-      console.log("Language is not Arabic. Proceed with binary classification.");
+    if (language?.autnresponse.responsedata.language === 'ENGLISH') {
+      console.log("Language is English. Proceed with binary classification.");
       const isQuestion = await this.llm.verifyInput(question);
       if (!isQuestion) {
-        this.answers = [];
-        this.loading_answer_pane = false;
-        return;
+      this.answers = [];
+      this.loading_answer_pane = false;
+      return;
       }
-          // Add a question mark to the query if it doesn't have one
+      // Add a question mark to the query if it doesn't have one
       if (!question.endsWith('?')) {
-        question += '?';
+      question += '?';
       }
+      this.answers = [];
+      this.question = question;
+    
+      (await this.answerService.ask(question, this.getDatabaseSelection())).subscribe(data => {
+          this.answers = data.autnresponse.responsedata.answers
+            ? data.autnresponse.responsedata.answers.answer
+            : [];
+        
+        this.gotAnswers = true;
+        this.loading_answer_pane = false;
+        this.duration = performance.now() - start;
+      });
+    } else {
+      console.log("Language is not English. Skip binary classification.");
+      this.answers = [];
+      this.loading_answer_pane = false;
     }
   
 
   
-    this.answers = [];
-    this.question = question;
-  
-    (await this.answerService.ask(question, this.getDatabaseSelection())).subscribe(data => {
-        this.answers = data.autnresponse.responsedata.answers
-          ? data.autnresponse.responsedata.answers.answer
-          : [];
-      
-      this.gotAnswers = true;
-      this.loading_answer_pane = false;
-      this.duration = performance.now() - start;
-    });
+
   }
   
   resultsSummary: IResultSummary = {} as IResultSummary;

@@ -51,18 +51,19 @@
         }
 
         @if (isStandardAnswer(currentAnswer)) {
-        <div class="flex gap-x-1 items-center mb-2">
+          <div class="flex gap-x-1 items-center mb-2">
             @if (currentAnswer.metadata.verified_response === 'True') {
               <ng-icon class="text-green-500 text-base" name="lucideCheckCircle2" />
               <span class="text-xs">Verified Response</span>
             } @else {
-              @if (currentAnswer['@system_name'] !== 'AnswerBank'){
+              @if (currentAnswer['@system_name'] !== 'AnswerBank' && !currentAnswer['@system_name'].includes('RAG')) {
                 <ng-icon class="text-red-500 text-base" name="lucideXCircle" />
                 <span class="text-xs">Response Verification Failed</span>
               }
             }
-        </div>
+          </div>
         }
+
       }
       <div *ngIf="gotAnswers == false">
         <p>I am fetching the answer for you. Please do not refresh this page.</p>

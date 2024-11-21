@@ -55,11 +55,13 @@ export class AnswerService {
   }
   async ask(question: string, databaseMatch: string) {
     let answerSystem: string = localStorage.getItem('selectedSearchAnswerSystem') ?? 'AlbertVector';
+    let defaultOperator: string = localStorage.getItem('selectedOperator') ?? 'WNEAR';
     let params = new HttpParams()
       .set('action', 'ask')
       .set('text', question)
       .set('SystemNames', answerSystem)
       .set('AnyLanguage', 'true')
+      .set('DefaultOperator', defaultOperator)
       .set('DatabaseMatch', databaseMatch)
       .set('ResponseFormat', 'simplejson');
     const baseUrl = `${environment.answerserver_api}`;

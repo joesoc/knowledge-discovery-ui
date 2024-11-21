@@ -46,6 +46,7 @@ export class QmsService {
     ));
   }
   getVectorResults(vector:string, databases:string): Observable<IContentResponse> {
+    const summaryOption = localStorage.getItem('selectedSummaryOption') ?? 'Context';
     let params = new HttpParams()
       .set('action', 'query')
       .set('text', 'VECTOR{' + vector + '}:VECTOR')
@@ -59,7 +60,7 @@ export class QmsService {
       .set('maxresults', '10')
       .set('totalresults', 'true')
       .set('Combine','Simple')
-      .set('summary', 'Concept')
+      .set('summary', summaryOption)
       .set('characters', '250')
       .set('highlight', 'terms')
       .set('ExpandQuery','True')
@@ -74,6 +75,7 @@ export class QmsService {
   getResults(query:string, databases:string): Observable<IContentResponse> {
     const defaultoperator = localStorage.getItem('selectedOperator') as DefaultOperator ?? 'DNEAR';
     const queryLanguage = localStorage.getItem('QueryLanguage') ?? "[]";
+    const summaryOption = localStorage.getItem('selectedSummaryOption') ?? 'Context';
     console.log('Query Language: ', queryLanguage);
     let params = new HttpParams()
       .set('action', 'query')
@@ -88,7 +90,7 @@ export class QmsService {
       .set('maxresults', '10')
       .set('Combine','Simple')
       .set('totalresults', 'true')
-      .set('summary', 'Context')
+      .set('summary', summaryOption )
       .set('characters', '250')
       .set('DefaultOperator', defaultoperator)
       .set('highlight', 'SummaryTerms')
