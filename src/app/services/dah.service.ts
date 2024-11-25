@@ -25,7 +25,10 @@ export class DahService {
   }
 
   getDatabases(): Observable<Database[]> {
-    return this.http.get<DahResponse>(this.dahUrl)
+    let params = new HttpParams()
+      .set('action', 'GetStatus')
+      .set('responseformat', 'simplejson');
+    return this.http.get<DahResponse>(this.dahUrl, {params})
       .pipe(
         map(response => response.autnresponse.responsedata.databases.database) // Adjusted to the correct path
       );

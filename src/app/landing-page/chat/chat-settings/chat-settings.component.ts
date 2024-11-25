@@ -33,6 +33,7 @@ export class ChatSettingsComponent {
     this.securityinfo = localStorage.getItem('token') ?? "";
     this.dahService.getDatabases().subscribe((dbs: Database[]) => {
       this.databases = dbs;
+      console.table(this.databases);
       // cache the databases in local storage
       localStorage.setItem('databases', JSON.stringify(this.databases));
     }, (err) => {
