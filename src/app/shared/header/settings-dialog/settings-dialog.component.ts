@@ -42,6 +42,8 @@ export class SettingsDialogComponent {
   summaryOptions: SummaryOptions[] = ['Concept', 'Context', 'Quick', 'ParagraphConcept', 'ParagraphContext', 'RAG', 'Vector'];
   selectedSummaryOption?: SummaryOptions;
 
+  explicitUserProfileEnabled: boolean = false; // New property
+
   ngOnInit() {
     this.answerSystems = localStorage.getItem('answerSystems') ? JSON.parse(localStorage.getItem('answerSystems') ?? '[]') : [];
 
@@ -54,6 +56,9 @@ export class SettingsDialogComponent {
     this.selectedQms = localStorage.getItem('selectedQuerySystem') as QuerySystem ?? 'Dictionary';
     this.selectedOperator = localStorage.getItem('selectedOperator') as DefaultOperator ?? 'WNEAR';
     this.selectedSummaryOption = localStorage.getItem('selectedSummaryOption') as SummaryOptions ?? 'Concept';
+
+    // Retrieve the toggle state from local storage (default to false if not set)
+    this.explicitUserProfileEnabled = localStorage.getItem('explicitUserProfileEnabled') === 'true';
   }
 
   toggleVectorSearchResultsPosition() {
@@ -65,7 +70,6 @@ export class SettingsDialogComponent {
   }
 
   onSystemChange(system: string) {
-    // store the selected system in local storage
     localStorage.setItem('selectedSearchAnswerSystem', system);
   }
   
@@ -81,8 +85,17 @@ export class SettingsDialogComponent {
     localStorage.setItem('selectedSummaryOption', option);
   }
 
+  // Method to handle toggle changes and store the value in local storage
+  onExplicitUserProfileToggle(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement && inputElement.checked !== undefined) {
+      this.explicitUserProfileEnabled = inputElement.checked;
+      localStorage.setItem('explicitUserProfileEnabled', inputElement.checked.toString());
+    }
+  }
+  
 }
 
 export type QuerySystem = 'Dictionary' | 'Index' | 'Answerbank';
 export type DefaultOperator = 'WNEAR' | 'DNEAR' | 'YNEAR' | 'NNEAR' | 'XNEAR' | 'AND' | 'OR' | 'BEFORE' | 'AFTER' | 'SENTENCE' | 'DSENTENCE' | 'PARAGRAPH' 
-export type SummaryOptions = 'Concept' | 'Context' | 'Quick' | 'ParagraphConcept' | 'ParagraphContext' | 'RAG' | 'Vector' 
+export type SummaryOptions = 'Concept' | 'Context' | 'Quick' | 'ParagraphConcept' | 'ParagraphContext' | 'RAG' | 'Vector';

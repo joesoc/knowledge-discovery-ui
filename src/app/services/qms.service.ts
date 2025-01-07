@@ -73,6 +73,10 @@ export class QmsService {
       return this.returnResponse(url, params);
   }
   getResults(query:string, databases:string): Observable<IContentResponse> {
+    const explicitUserProfileEnabled = localStorage.getItem('explicitUserProfileEnabled') === 'true';
+    const username = localStorage.getItem('username') ?? '';
+    console.log("Username: ", username);
+    console.log("Explicit User Profile Enabled: ", explicitUserProfileEnabled);
     const defaultoperator = localStorage.getItem('selectedOperator') as DefaultOperator ?? 'DNEAR';
     const queryLanguage = localStorage.getItem('QueryLanguage') ?? "[]";
     const summaryOption = localStorage.getItem('selectedSummaryOption') ?? 'Context';
@@ -99,6 +103,12 @@ export class QmsService {
       .set('ActionID', 'webui.idoldemos.net')
       .set('StartTag', '<span style="color: black; font-weight:bold;">')
       .set('ResponseFormat', 'simplejson');
+      if (explicitUserProfileEnabled) {
+        console.log("Explicit User Profile Enabled: ", explicitUserProfileEnabled);
+        params = params
+          .set('ExplicitProfiling', 'True')
+          .set('Username', username);
+      }
     const url = `${environment.qms_api}/`;
     return this.returnResponse(url, params);
   }
