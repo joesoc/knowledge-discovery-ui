@@ -41,8 +41,6 @@ import { TypeaheadSuggestionComponent } from './typeahead-suggestion/typeahead-s
   imports: [
     NgIcon,
     CdkOverlayOrigin,
-    RouterLinkActive,
-    RouterLink,
     FormsModule,
     NgIf,
     NgFor,
