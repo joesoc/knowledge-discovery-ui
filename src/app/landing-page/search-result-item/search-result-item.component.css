@@ -3,3 +3,6 @@
     font-weight: 700;
 }
 
+.result-div {
+    cursor: pointer; /* Change cursor to pointer on hover */
+}

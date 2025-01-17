@@ -9,8 +9,8 @@ export interface State {
 }
 
 export const initialState: State = {
-  showVectorSearchResults: true,
-  showIdolSearchResults: false
+  showVectorSearchResults: false,
+  showIdolSearchResults: true
 };
 
 export const reducer = createReducer(

@@ -12,6 +12,7 @@ import { Database } from 'src/app/interfaces/IDahResponse';
 import { FormsModule } from '@angular/forms';
 import { AnswerService } from 'src/app/services/answer.service';
 import { System } from 'src/app/interfaces/IAnswerServerGetStatusResponse';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-settings-dialog',
@@ -24,12 +25,16 @@ export class SettingsDialogComponent {
 
   private readonly store = inject(Store);
   private readonly answerService = inject(AnswerService);
-
   readonly showVectorSearchResults$ = this.store.select(selectShowVectorSearchResults);
   readonly showIdolSearchResults$ = this.store.select(selectShowIdolSearchResults);
+  isComparisonSearchDisabled: boolean = true;
+  constructor(private settingsService: SettingsService) { 
+    this.settingsService.previewEnabled$.subscribe((enabled) => {
+      this.viewEnabled = enabled;
+    });
+  }
 
   @Output() close = new EventEmitter<void>();
-
   answerSystems: System[] = [];
   selectedAnswerSystem?: string;
 
@@ -43,7 +48,7 @@ export class SettingsDialogComponent {
   selectedSummaryOption?: SummaryOptions;
 
   explicitUserProfileEnabled: boolean = false; // New property
-
+  viewEnabled: boolean = false;
   ngOnInit() {
     this.answerSystems = localStorage.getItem('answerSystems') ? JSON.parse(localStorage.getItem('answerSystems') ?? '[]') : [];
 
@@ -85,12 +90,19 @@ export class SettingsDialogComponent {
     localStorage.setItem('selectedSummaryOption', option);
   }
 
-  // Method to handle toggle changes and store the value in local storage
   onExplicitUserProfileToggle(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement && inputElement.checked !== undefined) {
       this.explicitUserProfileEnabled = inputElement.checked;
       localStorage.setItem('explicitUserProfileEnabled', inputElement.checked.toString());
+    }
+  }
+  onviewEnabled(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement && inputElement.checked !== undefined) {
+      this.viewEnabled = inputElement.checked;
+      localStorage.setItem('viewEnabled', inputElement.checked.toString());
+      this.settingsService.setPreviewEnabled(inputElement.checked);
     }
   }
   

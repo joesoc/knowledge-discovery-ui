@@ -173,46 +173,22 @@ export class LandingPageComponent {
       this.showPromotions = true;
       this.topPromotions = data;
     });
-    this.svcQms.encodeQMS(this.searchkeyword).subscribe((data: IQMSModelEncodeResponse) => {
-      let autnresponse = data.autnresponse;
-      let responsedata = autnresponse.responsedata;
-      this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection()).subscribe(data => {
-        this.idolresultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
-        this.idolresultsSummary.predicted = data.autnresponse.responsedata.predicted;
-        this.idolresultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
-        this.idolresultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
-        this.idolresultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
-        data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
-          this.idolresultsItems.push({
-            title: this.generateTitle(hit.title, hit.reference),
-            reference: hit.reference,
-            summary: hit.summary,
-            autnrank: hit.weight, // Add the autnrank property here
-          });
+    this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection()).subscribe(data => {
+      this.idolresultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
+      this.idolresultsSummary.predicted = data.autnresponse.responsedata.predicted;
+      this.idolresultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
+      this.idolresultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
+      this.idolresultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
+      data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
+        this.idolresultsItems.push({
+          title: this.generateTitle(hit.title, hit.reference),
+          reference: hit.reference,
+          summary: hit.summary,
+          autnrank: hit.weight, // Add the autnrank property here
         });
       });
-
-      if (responsedata.embeddings) {
-        let vector = responsedata.embeddings.vector[0];
-        this.svcQms.getVectorResults(vector.$, this.getDatabaseSelection()).subscribe(data => {
-          this.resultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
-          this.resultsSummary.predicted = data.autnresponse.responsedata.predicted;
-          this.resultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
-          this.resultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
-          this.resultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
-          data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
-            this.resultItems.push({
-              title: this.generateTitle(hit.title, hit.reference),
-              reference: hit.reference,
-              summary: hit.summary,
-              autnrank: hit.weight, // Add the autnrank property here
-            });
-          });
-        });
-        // Do something with the vector
-      } 
-
     });
+      console.log("Vector Results enabled");
 
   }
 }
