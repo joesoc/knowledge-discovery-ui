@@ -4,7 +4,6 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-typeahead-suggestion',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './typeahead-suggestion.component.html',
 })

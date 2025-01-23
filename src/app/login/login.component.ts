@@ -1,12 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { LoginService } from '../services/login.service';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
 })
@@ -23,9 +21,9 @@ export class LoginComponent {
   login() {
     const username = this.form.controls.username.value;
     const password = this.form.controls.password.value;
-  
+
     this.loginService.login(username ?? '', password ?? '').subscribe({
-      next: (success) => {
+      next: success => {
         if (success) {
           // Handle successful login, possibly redirecting the user
           this.loginFailed = false;
@@ -35,11 +33,11 @@ export class LoginComponent {
           this.loginFailed = true;
         }
       },
-      error: (error) => {
+      error: error => {
         // Handle any error that might occur during login
         console.error('Login error:', error);
         this.loginFailed = true;
       },
     });
-}
+  }
 }

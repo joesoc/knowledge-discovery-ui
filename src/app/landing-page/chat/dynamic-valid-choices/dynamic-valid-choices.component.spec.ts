@@ -8,8 +8,8 @@ describe('DynamicValidChoicesComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [DynamicValidChoicesComponent]
-});
+      imports: [DynamicValidChoicesComponent],
+    });
     fixture = TestBed.createComponent(DynamicValidChoicesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

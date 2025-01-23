@@ -11,9 +11,6 @@
       "inputs": ["default", "^production"]
     }
   },
-  "affected": {
-    "defaultBase": "master"
-  },
   "namedInputs": {
     "sharedGlobals": [],
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
@@ -24,5 +21,7 @@
       "style": "none"
     }
   },
-  "nxCloudAccessToken": "Y2Y4Yzg3NGYtZGJhMi00OTQ0LTllMGMtNGYwN2Q2NjFmMjU4fHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "Y2Y4Yzg3NGYtZGJhMi00OTQ0LTllMGMtNGYwN2Q2NjFmMjU4fHJlYWQtd3JpdGU=",
+  "defaultBase": "master",
+  "useLegacyCache": true
 }

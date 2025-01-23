@@ -8,8 +8,8 @@ describe('LandingPageComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [LandingPageComponent]
-});
+      imports: [LandingPageComponent],
+    });
     fixture = TestBed.createComponent(LandingPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

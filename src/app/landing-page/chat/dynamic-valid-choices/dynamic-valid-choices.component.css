@@ -1,10 +1,10 @@
-.choices{
-    background-color: blue;
-    color: white;
-    border-color: blue;
-    border-width: 0px;
-    font-size: smaller;
+.choices {
+  background-color: blue;
+  color: white;
+  border-color: blue;
+  border-width: 0px;
+  font-size: smaller;
 }
-.choicesdiv{
-    margin-top:5px;
+.choicesdiv {
+  margin-top: 5px;
 }

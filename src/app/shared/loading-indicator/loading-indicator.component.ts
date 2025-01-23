@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, ElementRef, inject } from '@angular
 
 @Component({
   selector: 'app-loading-indicator',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './loading-indicator.component.html',
   styleUrl: './loading-indicator.component.scss',

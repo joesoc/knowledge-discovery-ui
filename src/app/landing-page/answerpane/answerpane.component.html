@@ -1,19 +1,24 @@
 <div class="px-6 pt-6">
-  <div class="rounded-lg border border-gray-200 p-4 bg-gray-100 shadow-sm relative" *ngIf="totalAnswers > 0">
-    
+  <div
+    class="rounded-lg border border-gray-200 p-4 bg-gray-100 shadow-sm relative"
+    *ngIf="totalAnswers > 0"
+  >
     <!-- Answer feedback -->
-     <div class="absolute top-4 right-2 flex gap-x-1 items-center">
-
-      <button (click)="setResponse('positive')" class="justify-center bg-white items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none">
-        <ng-icon name="lucideThumbsUp" />
+    <div class="absolute top-4 right-2 flex gap-x-1 items-center">
+      <button
+        class="justify-center bg-white items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+        (click)="setResponse('positive')"
+      >
+        <ng-icon [class.text-lime-500]="response === 'positive'" name="lucideThumbsUp" />
       </button>
 
-      <button  (click)="setResponse('negative')" class="justify-center bg-white items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none">
-        <ng-icon name="lucideThumbsDown" />
+      <button
+        class="justify-center bg-white items-center flex shadow-sm p-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+        (click)="setResponse('negative')"
+      >
+        <ng-icon [class.text-red-500]="response === 'negative'" name="lucideThumbsDown" />
       </button>
-
-     </div>
-
+    </div>
 
     <div class="answer-content">
       @if (currentAnswer) {
@@ -23,11 +28,11 @@
         <span class="text-xs text-gray-500">Answer:</span>
         <div class="font-medium text-base mb-1" [innerHTML]="currentAnswer.text"></div>
 
-        @if(isStandardAnswer(currentAnswer)) {
-        <div
-          class="text-sm text-gray-700 leading-5 mb-1"
-          [innerHTML]="cleanParagraph(currentAnswer.metadata.paragraph)"
-        ></div>
+        @if (isStandardAnswer(currentAnswer)) {
+          <div
+            class="text-sm text-gray-700 leading-5 mb-1"
+            [innerHTML]="cleanParagraph(currentAnswer.metadata.paragraph)"
+          ></div>
         }
 
         <!--<span class="score">Score: {{currentAnswer.score}}</span><br>-->
@@ -35,9 +40,9 @@
           <a class="block text-blue-500 underline text-xs mb-4" [href]="currentAnswer.source">
             {{ currentAnswer.source }}
           </a>
-        } @else if(!selectedSource) {
+        } @else if (!selectedSource) {
           <!-- Divider -->
-           <div class="border-t border-gray-200 my-4"></div>
+          <div class="border-t border-gray-200 my-4"></div>
 
           <table class="mt-2">
             <thead>
@@ -46,20 +51,29 @@
                 <th class="text-left pr-4">Title</th>
                 <th class="text-left">Link</th>
               </tr>
-              </thead>
-              <tbody>
-                @for (source of sources; track source) {
-                  <tr>
-                    <td class="pr-4 truncate">{{ source['@database'] }}</td>
-                    <td class="pr-4 truncate">{{ source['@title'] || 'No title' }}</td>
-                    <td><a class="block text-blue-500 underline text-xs truncate cursor-pointer" (click)="selectSource(source)">{{ source['@ref'] }}</a></td>
-                  </tr>
-                }
-              </tbody>
+            </thead>
+            <tbody>
+              @for (source of sources; track source) {
+                <tr>
+                  <td class="pr-4 truncate">{{ source['@database'] }}</td>
+                  <td class="pr-4 truncate">{{ source['@title'] || 'No title' }}</td>
+                  <td>
+                    <a
+                      class="block text-blue-500 underline text-xs truncate cursor-pointer"
+                      (click)="selectSource(source)"
+                      >{{ source['@ref'] }}</a
+                    >
+                  </td>
+                </tr>
+              }
+            </tbody>
           </table>
 
           @if (currentAnswer.metadata.sources.source.length > 3) {
-            <button (click)="showAllSources = !showAllSources" class="justify-center items-center flex text-xs px-4 py-1 text-gray-700 hover:bg-gray-200 relative">
+            <button
+              class="justify-center items-center flex text-xs px-4 py-1 text-gray-700 hover:bg-gray-200 relative"
+              (click)="showAllSources = !showAllSources"
+            >
               {{ showAllSources ? 'Show fewer sources' : 'Show all sources' }}
             </button>
           }
@@ -71,14 +85,16 @@
               <ng-icon class="text-green-500 text-base" name="lucideCheckCircle2" />
               <span class="text-xs">Verified Response</span>
             } @else {
-              @if (currentAnswer['@system_name'] !== 'AnswerBank' && !currentAnswer['@system_name'].includes('RAG')) {
+              @if (
+                currentAnswer['@system_name'] !== 'AnswerBank' &&
+                !currentAnswer['@system_name'].includes('RAG')
+              ) {
                 <ng-icon class="text-red-500 text-base" name="lucideXCircle" />
                 <span class="text-xs">Response Verification Failed</span>
               }
             }
           </div>
         }
-
       }
       <div *ngIf="gotAnswers == false">
         <p>I am fetching the answer for you. Please do not refresh this page.</p>
@@ -90,12 +106,13 @@
           @if (isStandardAnswer(currentAnswer)) {
             Found {{ totalAnswers }} answers from {{ currentAnswer['@answer_type'] }}
           } @else {
-            Found {{ totalAnswers }} answers from {{ currentAnswer.metadata.sources.source.length }} sources
+            Found {{ totalAnswers }} answers from
+            {{ currentAnswer.metadata.sources.source.length }} sources
           }
         </div>
 
         <div class="text-xs text-gray-500">
-          Retrieved answer in {{ (duration / 1000) | number: '1.0-3' }} seconds
+          Retrieved answer in {{ duration / 1000 | number: '1.0-3' }} seconds
         </div>
       </div>
       <div class="answer-footer" *ngIf="!isPrevDisabled || !isNextDisabled">
@@ -118,25 +135,34 @@
       </div>
     </div>
 
-  <!-- Selected Source -->
-  @if (selectedSource) {
-    <!-- Divider -->
-    <div class="border-t border-gray-200 my-4"></div>
+    <!-- Selected Source -->
+    @if (selectedSource) {
+      <!-- Divider -->
+      <div class="border-t border-gray-200 my-4"></div>
 
-    <div class="mt-4 relative">
-      <h1 class="text-lg font-medium mb-1">Previewing - {{ selectedSource['@title'] || 'No title'}} </h1>
-      <a class="block text-sm text-gray-700 mb-2">{{ selectedSource['@ref'] }}</a>
+      <div class="mt-4 relative">
+        <h1 class="text-lg font-medium mb-1">
+          Previewing - {{ selectedSource['@title'] || 'No title' }}
+        </h1>
+        <a class="block text-sm text-gray-700 mb-2">{{ selectedSource['@ref'] }}</a>
 
-      <button class="absolute top-2 right-2 text-gray-500" (click)="selectedSource = undefined" title="Close to return to results">
-        <ng-icon name="lucideXCircle" />
-      </button>
-      @if (previewUrl) {
-        <iframe class="border border-gray-200 rounded-lg w-full h-[620px]" [src]="previewUrl"></iframe>
-      } @else {
-        <div>Loading Preview...</div> <!-- Optional loading message -->
-      }
-      
-    </div>
-  }
-</div>
+        <button
+          class="absolute top-2 right-2 text-gray-500"
+          (click)="selectedSource = undefined"
+          title="Close to return to results"
+        >
+          <ng-icon name="lucideXCircle" />
+        </button>
+        @if (previewUrl) {
+          <iframe
+            class="border border-gray-200 rounded-lg w-full h-[620px]"
+            [src]="previewUrl"
+          ></iframe>
+        } @else {
+          <div>Loading Preview...</div>
+          <!-- Optional loading message -->
+        }
+      </div>
+    }
+  </div>
 </div>

@@ -1,5 +1,11 @@
-<div class="result-div flex flex-col gap-y-1 p-4 -m-4 rounded" [class.bg-zinc-100]="selected && viewEnabled" (click)="showPreview.emit()">
-    <h3 class="font-medium text-base">{{ resultitem.title }}</h3>
-    <a class="text-sm text-blue-500 underline" [href]="resultitem.reference">{{ resultitem.reference }}</a>
-    <p class="text-sm text-gray-700 result-item" [innerHTML]="resultitem.summary"></p>
+<div
+  class="result-div flex flex-col gap-y-1 p-4 -m-4 rounded"
+  [class.bg-zinc-100]="selected && viewEnabled"
+  (click)="showPreview.emit()"
+>
+  <h3 class="font-medium text-base">{{ resultitem.title }}</h3>
+  <a class="text-sm text-blue-500 underline" [href]="resultitem.reference">{{
+    resultitem.reference
+  }}</a>
+  <p class="text-sm text-gray-700 result-item" [innerHTML]="resultitem.summary"></p>
 </div>

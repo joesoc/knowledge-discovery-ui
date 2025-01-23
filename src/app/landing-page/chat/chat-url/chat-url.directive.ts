@@ -1,29 +1,28 @@
-import { AfterViewInit, Directive, ElementRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Output, inject } from '@angular/core';
 
 @Directive({
-    selector: '[appChatUrl]',
-    standalone: true
+  selector: '[appChatUrl]',
+  standalone: true,
 })
 export class ChatUrlDirective implements AfterViewInit {
-    private readonly elementRef = inject(ElementRef);
+  private readonly elementRef = inject(ElementRef);
 
-    @Output() urlClicked = new EventEmitter<string>();
+  @Output() urlClicked = new EventEmitter<string>();
 
-    ngAfterViewInit(): void {
-        // find any urls in the chat message and intercept their click event
-        this.elementRef.nativeElement.addEventListener('click', (event: MouseEvent) => {
-            const target = event.target as HTMLElement;
-            if (target.tagName === 'A') {
-                const href = target.getAttribute('href');
+  ngAfterViewInit(): void {
+    // find any urls in the chat message and intercept their click event
+    this.elementRef.nativeElement.addEventListener('click', (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'A') {
+        const href = target.getAttribute('href');
 
-                if (!href) {
-                    return;
-                }
+        if (!href) {
+          return;
+        }
 
-                event.preventDefault();
-                this.urlClicked.emit(href);
-            }
-        });
-
-    }
+        event.preventDefault();
+        this.urlClicked.emit(href);
+      }
+    });
+  }
 }

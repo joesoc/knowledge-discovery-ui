@@ -15,13 +15,14 @@ export interface Embeddings {
 }
 
 export interface VectorElement {
-  "@start": string;
-  "@end": string;
-  "@length": string;
-  "$": string;
+  '@start': string;
+  '@end': string;
+  '@length': string;
+  $: string;
 }
 
-export interface ErrorElement { // Added new interface for error elements
+export interface ErrorElement {
+  // Added new interface for error elements
   errorid: string;
   rawerrorid: string;
   errorstring: string;

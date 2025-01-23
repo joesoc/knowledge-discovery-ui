@@ -9,145 +9,168 @@
     <ng-icon name="lucideX" />
   </button>
 
-<!-- Settings Menu -->
-<div class="w-full flex-1 flex items-start gap-x-8">
+  <!-- Settings Menu -->
+  <div class="w-full flex-1 flex items-start gap-x-8">
+    <!-- Left Column -->
+    <div class="w-1/2 flex flex-col gap-y-3">
+      <h4 class="text-sm font-medium">Search Comparison</h4>
 
-  <!-- Left Column -->
-  <div class="w-1/2 flex flex-col gap-y-3">
+      <div class="flex items-center gap-x-3" [ngClass]="{ disabled: isComparisonSearchDisabled }">
+        <button
+          class="justify-center items-center flex shadow-sm p-2 border rounded-lg"
+          [ngClass]="{
+            'border-gray-200 text-gray-700 bg-white hover:bg-gray-100': !(
+              showVectorSearchResults$ | async
+            ),
+            'border-blue-200 text-blue-500 bg-blue-100': showVectorSearchResults$ | async,
+          }"
+          [disabled]="isComparisonSearchDisabled"
+          (click)="toggleVectorSearchResultsPosition()"
+        >
+          <ng-icon name="lucideAlignLeft" />
+        </button>
+        <span class="text-sm">Show IDOL Vector Search Results on the left</span>
+      </div>
 
-  
-    <h4 class="text-sm font-medium">Search Comparison</h4>
+      <div class="flex items-center gap-x-3">
+        <button
+          class="justify-center items-center flex shadow-sm p-2 border rounded-lg"
+          [ngClass]="{
+            'border-gray-200 text-gray-700 bg-white hover:bg-gray-100': !(
+              showIdolSearchResults$ | async
+            ),
+            'border-blue-200 text-blue-500 bg-blue-100': showIdolSearchResults$ | async,
+          }"
+          (click)="toggleIdolSearchResultsPosition()"
+        >
+          <ng-icon name="lucideAlignRight" />
+        </button>
+        <span class="text-sm">Show IDOL Search Results on the right</span>
+      </div>
 
-    <div class="flex items-center gap-x-3" [ngClass]="{ 'disabled': isComparisonSearchDisabled }">
-      <button
-        class="justify-center items-center flex shadow-sm p-2 border rounded-lg"
-        [ngClass]="{
-          'border-gray-200 text-gray-700 bg-white hover:bg-gray-100': !(showVectorSearchResults$ | async),
-          'border-blue-200 text-blue-500 bg-blue-100': showVectorSearchResults$ | async
-        }"
-        (click)="toggleVectorSearchResultsPosition()"
-        [disabled]="isComparisonSearchDisabled"
-      >
-        <ng-icon name="lucideAlignLeft" />
-      </button>
-      <span class="text-sm">Show IDOL Vector Search Results on the left</span>
-    </div>
+      <hr class="border-b" />
 
-    <div class="flex items-center gap-x-3">
-      <button
-        class="justify-center items-center flex shadow-sm p-2 border rounded-lg"
-        [ngClass]="{
-          'border-gray-200 text-gray-700 bg-white hover:bg-gray-100': !(showIdolSearchResults$ | async),
-          'border-blue-200 text-blue-500 bg-blue-100': showIdolSearchResults$ | async
-        }"
-        (click)="toggleIdolSearchResultsPosition()"
-      >
-        <ng-icon name="lucideAlignRight" />
-      </button>
-      <span class="text-sm">Show IDOL Search Results on the right</span>
-    </div>
+      <!-- Other Settings -->
+      <div class="flex flex-col gap-y-1">
+        <h4 class="text-sm font-medium">Answer System</h4>
+        <p class="text-xs text-gray-700 mb-2">
+          Choose an Answer Server from the list to process queries entered in the search bar.
+        </p>
+        <select
+          class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
+          [(ngModel)]="selectedAnswerSystem"
+          (ngModelChange)="onSystemChange($event)"
+          name="selectedAnswerSystem"
+        >
+          @for (system of answerSystems; track system.name) {
+            <option [value]="system.name">{{ system.name }}</option>
+          }
+        </select>
+      </div>
+      <hr class="border-b" />
 
-    <hr class="border-b">
-
-    <!-- Other Settings -->
-    <div class="flex flex-col gap-y-1">
-      <h4 class="text-sm font-medium">Answer System</h4>
-      <p class="text-xs text-gray-700 mb-2">Choose an Answer Server from the list to process queries entered in the search bar.</p>
-      <select
-        class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
-        [(ngModel)]="selectedAnswerSystem"
-        (ngModelChange)="onSystemChange($event)"
-        name="selectedAnswerSystem">
-        @for (system of answerSystems; track system.name) {
-          <option [value]="system.name">{{ system.name }}</option>
-        }
-      </select>
-    </div>
-    <hr class="border-b">
-
-    <hr class="border-b">
-    <div class="flex flex-col gap-y-1">
-      <h4 class="text-sm font-medium">Query Manipulation Service (QMS)</h4>
-        <p class="text-xs text-gray-700 mb-2">Select the typeahead behavior from the following options:</p>
+      <hr class="border-b" />
+      <div class="flex flex-col gap-y-1">
+        <h4 class="text-sm font-medium">Query Manipulation Service (QMS)</h4>
+        <p class="text-xs text-gray-700 mb-2">
+          Select the typeahead behavior from the following options:
+        </p>
 
         <select
-        class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
-        [(ngModel)]="selectedQms"
-        (ngModelChange)="onBehaviorChange($event)"
-        name="selectedQms">
-        @for (system of querySystems; track system) {
-          <option [value]="system">{{ system }}</option>
-        }
-      </select>
-    </div>
-    <hr class="border-b">
-    <div class="flex flex-col gap-y-1">
-      <h4 class="text-sm font-medium">Default Boolean Proximity Operation</h4>
-        <p class="text-xs text-gray-700 mb-2">Select the default boolean proximity operator to use in query:</p>
+          class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
+          [(ngModel)]="selectedQms"
+          (ngModelChange)="onBehaviorChange($event)"
+          name="selectedQms"
+        >
+          @for (system of querySystems; track system) {
+            <option [value]="system">{{ system }}</option>
+          }
+        </select>
+      </div>
+      <hr class="border-b" />
+      <div class="flex flex-col gap-y-1">
+        <h4 class="text-sm font-medium">Default Boolean Proximity Operation</h4>
+        <p class="text-xs text-gray-700 mb-2">
+          Select the default boolean proximity operator to use in query:
+        </p>
 
         <select
-        class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
-        [(ngModel)]="selectedOperator"
-        (ngModelChange)="onOperatorChange($event)"
-        name="selectedOperator">
-        @for (operator of defaultOperators; track operator) {
-          <option [value]="operator">{{ operator }}</option>
-        }
-      </select>
-    </div>
-    <hr class="border-b">
-    <div class="flex flex-col gap-y-1">
-      <h4 class="text-sm font-medium">Retrieval Summary Options</h4>
-        <p class="text-xs text-gray-700 mb-2">Select the type of summary to return for each result document:</p>
+          class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
+          [(ngModel)]="selectedOperator"
+          (ngModelChange)="onOperatorChange($event)"
+          name="selectedOperator"
+        >
+          @for (operator of defaultOperators; track operator) {
+            <option [value]="operator">{{ operator }}</option>
+          }
+        </select>
+      </div>
+      <hr class="border-b" />
+      <div class="flex flex-col gap-y-1">
+        <h4 class="text-sm font-medium">Retrieval Summary Options</h4>
+        <p class="text-xs text-gray-700 mb-2">
+          Select the type of summary to return for each result document:
+        </p>
 
         <select
-        class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
-        [(ngModel)]="selectedSummaryOption"
-        (ngModelChange)="onSummaryOptionChange($event)"
-        name="selectedSummaryOption">
-        @for (option of summaryOptions; track option) {
-          <option [value]="option">{{ option }}</option>
-        }
-      </select>
+          class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
+          [(ngModel)]="selectedSummaryOption"
+          (ngModelChange)="onSummaryOptionChange($event)"
+          name="selectedSummaryOption"
+        >
+          @for (option of summaryOptions; track option) {
+            <option [value]="option">{{ option }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="flex-none w-px h-[620px] bg-gray-200"></div>
+
+    <!-- Right Column: Explicit User Profile -->
+    <div class="w-1/2 flex flex-col gap-y-3">
+      <h4 class="text-sm font-medium">Explicit User Profile</h4>
+      <p class="text-xs text-gray-700 mb-2">
+        Bias search results based on attributes in user profiles.
+      </p>
+
+      <!-- Toggle Switch -->
+      <div class="flex items-center gap-x-3">
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            class="sr-only peer"
+            [(ngModel)]="explicitUserProfileEnabled"
+            (change)="onExplicitUserProfileToggle($event)"
+            type="checkbox"
+          />
+          <div
+            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"
+          ></div>
+          <span class="ml-3 text-sm font-medium text-gray-900"
+            >Boost Rules: {{ explicitUserProfileEnabled ? 'On' : 'Off' }}</span
+          >
+        </label>
+      </div>
+      <hr class="border-b" />
+      <h4 class="text-sm font-medium">View Settings</h4>
+      <p class="text-xs text-gray-700 mb-2">Change view settings here.</p>
+
+      <div class="flex items-center gap-x-3">
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            class="sr-only peer"
+            [(ngModel)]="viewEnabled"
+            (change)="onviewEnabled($event)"
+            type="checkbox"
+          />
+          <div
+            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"
+          ></div>
+          <span class="ml-3 text-sm font-medium text-gray-900"
+            >Enable View: {{ viewEnabled ? 'On' : 'Off' }}</span
+          >
+        </label>
+      </div>
     </div>
   </div>
-
-  <div class="flex-none w-px h-[620px] bg-gray-200"></div>
-  
-  <!-- Right Column: Explicit User Profile -->
-  <div class="w-1/2 flex flex-col gap-y-3">
-    <h4 class="text-sm font-medium">Explicit User Profile</h4>
-    <p class="text-xs text-gray-700 mb-2">Bias search results based on attributes in user profiles.</p>
-    
-    <!-- Toggle Switch -->
-    <div class="flex items-center gap-x-3">
-      <label class="relative inline-flex items-center cursor-pointer">
-        <input
-        type="checkbox"
-        class="sr-only peer"
-        [(ngModel)]="explicitUserProfileEnabled"
-        (change)="onExplicitUserProfileToggle($event)"
-      >
-        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-        <span class="ml-3 text-sm font-medium text-gray-900">Boost Rules: {{ explicitUserProfileEnabled ? 'On' : 'Off' }}</span>
-      </label>
-    </div>
-    <hr class="border-b">
-    <h4 class="text-sm font-medium">View Settings</h4>
-    <p class="text-xs text-gray-700 mb-2">Change view settings here.</p>
-    
-    <div class="flex items-center gap-x-3">
-      <label class="relative inline-flex items-center cursor-pointer">
-        <input
-        type="checkbox"
-        class="sr-only peer"
-        [(ngModel)]="viewEnabled"
-        (change)="onviewEnabled($event)"/>
-        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-        <span class="ml-3 text-sm font-medium text-gray-900">Enable View: {{ viewEnabled ? 'On' : 'Off' }}</span>
-      </label>
-    </div>
-  </div>
-
-</div>
 </div>

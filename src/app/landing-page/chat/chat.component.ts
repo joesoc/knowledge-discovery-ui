@@ -1,3 +1,4 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -11,42 +12,39 @@ import {
   ViewChildren,
   inject,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideRefreshCw } from '@ng-icons/lucide';
 import { Prompt } from 'src/app/interfaces/IAnswerServerConversationPrompts';
 import { IManageResourcesResponse } from 'src/app/interfaces/IAnswerServerConversationResponse';
 import { AnswerService } from 'src/app/services/answer.service';
 import { DataService } from 'src/app/services/data.service';
-import { environment } from 'src/environments/environment.prod';
-import { FormsModule } from '@angular/forms';
-import { DynamicValidChoicesComponent } from './dynamic-valid-choices/dynamic-valid-choices.component';
-import { ChatUrlDirective } from './chat-url/chat-url.directive';
-import { ChatSettingsComponent } from './chat-settings/chat-settings.component';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { NgClass, NgIf, NgFor } from '@angular/common';
-import { LoadingIndicatorComponent } from '../../shared/loading-indicator/loading-indicator.component';
-import { lucideRefreshCw } from '@ng-icons/lucide';
 import { QmsService } from 'src/app/services/qms.service';
+import { environment } from 'src/environments/environment.prod';
+import { LoadingIndicatorComponent } from '../../shared/loading-indicator/loading-indicator.component';
+import { ChatSettingsComponent } from './chat-settings/chat-settings.component';
+import { ChatUrlDirective } from './chat-url/chat-url.directive';
+import { DynamicValidChoicesComponent } from './dynamic-valid-choices/dynamic-valid-choices.component';
 
 @Component({
-    selector: 'app-chat',
-    templateUrl: './chat.component.html',
-    styleUrls: ['./chat.component.css'],
-    standalone: true,
-    imports: [
-        NgClass,
-        NgIf,
-        NgIcon,
-        ChatSettingsComponent,
-        NgFor,
-        ChatUrlDirective,
-        DynamicValidChoicesComponent,
-        FormsModule,
-        LoadingIndicatorComponent,
-    ],
-    viewProviders: [provideIcons({lucideRefreshCw})]
+  selector: 'app-chat',
+  templateUrl: './chat.component.html',
+  styleUrls: ['./chat.component.css'],
+  imports: [
+    NgClass,
+    NgIf,
+    NgIcon,
+    ChatSettingsComponent,
+    NgFor,
+    ChatUrlDirective,
+    DynamicValidChoicesComponent,
+    FormsModule,
+    LoadingIndicatorComponent,
+  ],
+  viewProviders: [provideIcons({ lucideRefreshCw })],
 })
 export class ChatComponent implements OnInit, AfterViewInit {
-
   private changeDetector = inject(ChangeDetectorRef);
   sessionID: string = '';
   messages: Array<Message> = [];
@@ -210,16 +208,16 @@ export class ChatComponent implements OnInit, AfterViewInit {
           if (hiddenValue !== null) {
             this.answer_source = hiddenValue.value;
           }
-          let summary:string = '';
+          let summary: string = '';
           const texthiddenValue = doc.querySelector(
             'input[id="textHiddenField"]'
           ) as HTMLInputElement;
           if (texthiddenValue !== null) {
             this.answer_text = texthiddenValue.value;
           }
-          
-          console.log("Summary = " + summary);
-          console.log("Logging prompt");
+
+          console.log('Summary = ' + summary);
+          console.log('Logging prompt');
           console.log(prompt.prompt);
           const safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(
             this.decodeHtml(prompt.prompt) +
@@ -281,9 +279,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
 }
 
 interface Message {
-    username: string;
-    timestamp: string;
-    text: SafeHtml;
-    fromUser: boolean;
-    choices: string[];
+  username: string;
+  timestamp: string;
+  text: SafeHtml;
+  fromUser: boolean;
+  choices: string[];
 }

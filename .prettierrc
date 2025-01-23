@@ -6,12 +6,7 @@
   "trailingComma": "es5",
   "importOrder": ["^[./]"],
   "importOrderSeparation": false,
-  "importOrderParserPlugins": [
-    "typescript",
-    "jsx",
-    "classProperties",
-    "decorators-legacy"
-  ],
+  "importOrderParserPlugins": ["typescript", "jsx", "classProperties", "decorators-legacy"],
   "plugins": [
     "prettier-plugin-organize-imports",
     "prettier-plugin-tailwindcss",

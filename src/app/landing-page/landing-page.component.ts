@@ -2,14 +2,17 @@ import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { Store } from '@ngrx/store';
-import { Answer, IAnswerServerAskResponse } from '../interfaces/IAnswerServerResponse';
+import { RagAnswer } from '../interfaces/IAnswerServerRAGResponse';
+import { Answer } from '../interfaces/IAnswerServerResponse';
 import { Hit } from '../interfaces/IcontentResponse';
-import { IQMSModelEncodeResponse } from '../interfaces/Iqmsmodel';
+import { IQMSPromotionResult } from '../interfaces/IQMSPromotionResult';
 import { ISearchResultItem } from '../interfaces/IsearchResultItem';
 import { IResultSummary } from '../interfaces/IsearchResultsSummary';
 import { AnswerService } from '../services/answer.service';
+import { DahService } from '../services/dah.service';
 import { LlmService } from '../services/llm.service';
 import { QmsService } from '../services/qms.service';
+import { QuestionService } from '../services/question.service';
 import { HeaderComponent } from '../shared/header/header.component';
 import { LoadingIndicatorComponent } from '../shared/loading-indicator/loading-indicator.component';
 import {
@@ -18,19 +21,14 @@ import {
 } from '../state/settings/settings.selectors';
 import { AnswerpaneComponent } from './answerpane/answerpane.component';
 import { ChatComponent } from './chat/chat.component';
+import { QmsPromotionComponent } from './qms/qms_promotion/qms_promotion.component';
 import { ResultsCountComponent } from './results-count/results-count.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
-import { isRagResponse, RagAnswer } from '../interfaces/IAnswerServerRAGResponse';
-import { QmsPromotionComponent } from "./qms/qms_promotion/qms_promotion.component";
-import { IQMSPromotionResult } from '../interfaces/IQMSPromotionResult';
-import { DahService } from '../services/dah.service';
-import { QuestionService } from '../services/question.service';
 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.css'],
-  standalone: true,
   imports: [
     HeaderComponent,
     NgIf,
@@ -42,11 +40,9 @@ import { QuestionService } from '../services/question.service';
     SearchResultsComponent,
     LoadingIndicatorComponent,
     AsyncPipe,
-    QmsPromotionComponent
-],
+    QmsPromotionComponent,
+  ],
 })
-
-
 export class LandingPageComponent {
   private readonly store = inject(Store);
   private readonly llm = inject(LlmService);
@@ -63,48 +59,48 @@ export class LandingPageComponent {
   loading_answer_pane: boolean = false;
   duration: number = 0;
   showPromotions = true;
-  
+
   ngOnInit(): void {}
-  
+
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
   }
 
   async fetchAnswer(question: string) {
-    console.log("Fetching Answers");
+    console.log('Fetching Answers');
     const start = performance.now();
     this.gotAnswers = false;
     this.loading = true;
     this.loading_answer_pane = true;
-  
+
     // Check if the text is actually a question
 
     const language = await this.dahService.getLanguage(question).toPromise();
-      // Store the result in local storage
+    // Store the result in local storage
     const queryLanguage = `${language?.autnresponse.responsedata.language.toLowerCase()}utf8`;
 
     localStorage.setItem('QueryLanguage', queryLanguage);
 
-    console.log("Language: ", language?.autnresponse.responsedata.language);
+    console.log('Language: ', language?.autnresponse.responsedata.language);
     if (language?.autnresponse.responsedata.language === 'ENGLISH') {
-      console.log("Language is English. Proceed with binary classification.");
+      console.log('Language is English. Proceed with binary classification.');
       const isQuestion = await this.llm.verifyInput(question);
       if (!isQuestion) {
-      this.answers = [];
-      this.loading_answer_pane = false;
-      return;
+        this.answers = [];
+        this.loading_answer_pane = false;
+        return;
       }
       // Add a question mark to the query if it doesn't have one
       if (!question.endsWith('?')) {
-      question += '?';
+        question += '?';
       }
       this.answers = [];
       this.question = question;
-    
+
       (await this.answerService.ask(question, this.getDatabaseSelection())).subscribe(data => {
-          this.answers = data.autnresponse.responsedata.answers
-            ? data.autnresponse.responsedata.answers.answer
-            : [];
+        this.answers = data.autnresponse.responsedata.answers
+          ? data.autnresponse.responsedata.answers.answer
+          : [];
         this.questionService.setQuestion(question);
         // this.questionService.setAnswer(this.answers);
         this.gotAnswers = true;
@@ -112,16 +108,12 @@ export class LandingPageComponent {
         this.duration = performance.now() - start;
       });
     } else {
-      console.log("Language is not English. Skip binary classification.");
+      console.log('Language is not English. Skip binary classification.');
       this.answers = [];
       this.loading_answer_pane = false;
     }
-  
-
-  
-
   }
-  
+
   resultsSummary: IResultSummary = {} as IResultSummary;
   resultItems: ISearchResultItem[] = [];
   idolresultsItems: ISearchResultItem[] = [];
@@ -132,7 +124,7 @@ export class LandingPageComponent {
     private svcQms: QmsService,
     private answerService: AnswerService,
     private dahService: DahService,
-    private questionService:QuestionService
+    private questionService: QuestionService
   ) {}
 
   propogateDatabaseSelection(valueEmitted: any) {
@@ -163,7 +155,7 @@ export class LandingPageComponent {
 
   propogateSearchTerm(valueEmitted: any) {
     this.showPromotions = false;
-    this.loading= true;    
+    this.loading = true;
     this.answers = [];
     this.question = valueEmitted;
     this.fetchAnswer(this.question);
@@ -172,10 +164,12 @@ export class LandingPageComponent {
     this.idolresultsItems = [];
     this.idolresultsSummary = {} as IResultSummary;
     this.searchkeyword = valueEmitted;
-    this.svcQms.getQMSPromotions(this.searchkeyword, this.getDatabaseSelection()).subscribe((data: IQMSPromotionResult) => {
-      this.showPromotions = true;
-      this.topPromotions = data;
-    });
+    this.svcQms
+      .getQMSPromotions(this.searchkeyword, this.getDatabaseSelection())
+      .subscribe((data: IQMSPromotionResult) => {
+        this.showPromotions = true;
+        this.topPromotions = data;
+      });
     this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection()).subscribe(data => {
       this.idolresultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
       this.idolresultsSummary.predicted = data.autnresponse.responsedata.predicted;
@@ -191,7 +185,6 @@ export class LandingPageComponent {
         });
       });
     });
-      console.log("Vector Results enabled");
-
+    console.log('Vector Results enabled');
   }
 }

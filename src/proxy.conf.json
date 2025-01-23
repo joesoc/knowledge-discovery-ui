@@ -2,50 +2,57 @@
   "/api/answerserver": {
     "target": "https://answerserver.idoldemos.net:12000",
     "secure": false,
-    "pathRewrite": {"^/api/answerserver" : ""},
-    "changeOrigin": true, 
+    "pathRewrite": { "^/api/answerserver": "" },
+    "changeOrigin": true,
     "logLevel": "debug"
   },
   "/api/qms": {
     "target": "https://qms.idoldemos.net:16000",
     "secure": false,
-    "pathRewrite": {"^/api/qms" : ""},
-    "changeOrigin": true, 
+    "pathRewrite": { "^/api/qms": "" },
+    "changeOrigin": true,
     "logLevel": "debug"
   },
-  "/api/view":{
+  "/api/view": {
     "target": "https://view.idoldemos.net:9080",
     "secure": false,
-    "pathRewrite": {"^/api/view" : ""},
-    "changeOrigin": true, 
+    "pathRewrite": { "^/api/view": "" },
+    "changeOrigin": true,
     "logLevel": "debug"
   },
-  "/api/dah":{
+  "/api/dah": {
     "target": "https://dah.idoldemos.net:9060",
     "secure": false,
-    "pathRewrite": {"^/api/dah" : ""},
-    "changeOrigin": true, 
+    "pathRewrite": { "^/api/dah": "" },
+    "changeOrigin": true,
     "logLevel": "debug"
   },
-  "/api/mlmodels":{
+  "/api/mlmodels": {
     "target": "https://mlmodels.idoldemos.net:5000",
     "secure": false,
-    "pathRewrite": {"^/api/mlmodels" : ""},
-    "changeOrigin": true, 
+    "pathRewrite": { "^/api/mlmodels": "" },
+    "changeOrigin": true,
     "logLevel": "debug"
   },
-  "/api/answerbank":{
+  "/api/answerbank/feedback":{
+    "target": "https://webui.idoldemos.net/nifi/feedback",
+    "secure": false,
+    "pathRewrite": { "^/api/answerbank/feedback": "" },
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/api/answerbank": {
     "target": "https://answerbankagentstore.idoldemos.net:12200",
     "secure": false,
-    "pathRewrite": {"^/api/answerbank" : ""},
-    "changeOrigin": true, 
+    "pathRewrite": { "^/api/answerbank": "" },
+    "changeOrigin": true,
     "logLevel": "debug"
   },
-  "/api/community":{
+  "/api/community": {
     "target": "https://community.idoldemos.net:9030",
     "secure": false,
-    "pathRewrite": {"^/api/community" : ""},
-    "changeOrigin": true, 
+    "pathRewrite": { "^/api/community": "" },
+    "changeOrigin": true,
     "logLevel": "debug"
   }
 }

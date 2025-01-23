@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { ProfileUserResponse } from '../interfaces/profile-user.interfaces';
@@ -43,13 +43,15 @@ export class ProfileUserService {
       .set('UserName', userName)
       .set('Document', documentRef)
       .set('ShowUpdates', 'true')
-      .set('ResponseFormat','simplejson');
+      .set('ResponseFormat', 'simplejson');
 
     // Configure headers for the request
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
 
-    return this.http.get(this.apiUrl, { headers, params }).pipe(map((response: any) => this.parseResponse(response)));
+    return this.http
+      .get(this.apiUrl, { headers, params })
+      .pipe(map((response: any) => this.parseResponse(response)));
   }
 }

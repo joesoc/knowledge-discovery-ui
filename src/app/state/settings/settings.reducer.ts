@@ -10,16 +10,16 @@ export interface State {
 
 export const initialState: State = {
   showVectorSearchResults: false,
-  showIdolSearchResults: true
+  showIdolSearchResults: true,
 };
 
 export const reducer = createReducer(
   initialState,
-  on(SettingsActions.toggleVectorSearchResults, (state) => ({
+  on(SettingsActions.toggleVectorSearchResults, state => ({
     ...state,
     showVectorSearchResults: !state.showVectorSearchResults,
   })),
-  on(SettingsActions.toggleIdolSearchResults, (state) => ({
+  on(SettingsActions.toggleIdolSearchResults, state => ({
     ...state,
     showIdolSearchResults: !state.showIdolSearchResults,
   }))

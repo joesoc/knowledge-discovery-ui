@@ -1,128 +1,128 @@
 /* Your other global styles go here */
 .navbar {
-    background: lightgray !important;
-    padding-left: 10px;
-    font-size: large;
+  background: lightgray !important;
+  padding-left: 10px;
+  font-size: large;
 }
 
 .active a {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 /* Style for search input */
 .search {
-    width: 600px;
-    padding-right: 40px;  /* Make room for the search icon */
-    position: relative;
-    z-index: 1;  /* Lower z-index than the icon */
+  width: 600px;
+  padding-right: 40px; /* Make room for the search icon */
+  position: relative;
+  z-index: 1; /* Lower z-index than the icon */
 }
 
 /* Style for search box and icon */
 .search-box {
-    position: relative;
-    margin-left: 300px;
+  position: relative;
+  margin-left: 300px;
 }
 
 /* Style for search icon */
 .input-group-append {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;  /* Stretch to the bottom of the parent to help with centering */
-    background: transparent;
-    border: none;
-    display: flex;  /* Use flexbox for easy centering */
-    align-items: center;  /* Vertically center the contents */
-    z-index: 2;  /* Higher z-index than the input field */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0; /* Stretch to the bottom of the parent to help with centering */
+  background: transparent;
+  border: none;
+  display: flex; /* Use flexbox for easy centering */
+  align-items: center; /* Vertically center the contents */
+  z-index: 2; /* Higher z-index than the input field */
 }
-.idol-input .input-group  {
-    & input  {
-        background: white;
-        border: none;
-    
-        outline: none;
-        cursor: pointer;
-    }
+.idol-input .input-group {
+  & input {
+    background: white;
+    border: none;
+
+    outline: none;
+    cursor: pointer;
+  }
 }
 /* .form-control .search{
     border-top-right-radius: 0.25rem !important;  
     border-bottom-right-radius: 0.25rem !important  ;  
 } */
 .input-group-append i.fas {
-    color: black;
-    padding: 10px;
+  color: black;
+  padding: 10px;
 }
 .input-group.idol-input {
-    align-items: center;
-  }
-  
-  .input-group-text {
-    background-color: transparent;
-    border: none;
-  }
-.fas{
-    cursor: pointer;
-    z-index: 0;
-}  
-.btn{
-    margin-left: 3px;
+  align-items: center;
+}
+
+.input-group-text {
+  background-color: transparent;
+  border: none;
+}
+.fas {
+  cursor: pointer;
+  z-index: 0;
+}
+.btn {
+  margin-left: 3px;
 }
 .dropdown-container {
-    position: relative;
-  }
-  
-  .multi-select-dropdown {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    width: 200px;
-    z-index: 1;
-    top: 0;
-    left: 100%;
-  }
+  position: relative;
+}
 
-  .idol-indexes{
-    margin-left: 3px;
-    padding-left: 3px;
-    padding-top:3px;
-    padding-right:3px;
-    padding-bottom: 3px;
-    font-size: small;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  }
-  /* ... (previous styles) */
+.multi-select-dropdown {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  width: 200px;
+  z-index: 1;
+  top: 0;
+  left: 100%;
+}
+
+.idol-indexes {
+  margin-left: 3px;
+  padding-left: 3px;
+  padding-top: 3px;
+  padding-right: 3px;
+  padding-bottom: 3px;
+  font-size: small;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva,
+    Verdana, sans-serif;
+}
+/* ... (previous styles) */
 
 .dropdown-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f1f1f1;
-    padding: 5px;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .close-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .dropdown-item{
-    margin-top: 3px;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f1f1f1;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+}
 
-  .multi-select-dropdown.idol-indexes {
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
-    padding: 5px 5px 5px 5px;
-  }
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
 
-  .custom-height {
-    height: 36px;  /* adjust this value as needed */
-  }
-  .gear-container {
-    position: relative;
-  }
-    
+.dropdown-item {
+  margin-top: 3px;
+}
+
+.multi-select-dropdown.idol-indexes {
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  padding: 5px 5px 5px 5px;
+}
+
+.custom-height {
+  height: 36px; /* adjust this value as needed */
+}
+.gear-container {
+  position: relative;
+}

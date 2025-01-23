@@ -3,7 +3,7 @@
   [ngClass]="{
     'w-[512px]': !previewUrl,
     'w-[1600px]': !!previewUrl,
-    'h-[800px]': !isMinimized
+    'h-[800px]': !isMinimized,
   }"
 >
   <!-- Chat Header with Close Button -->
@@ -93,7 +93,10 @@
 
               <div class="flex gap-x-1">
                 @if (message.fromUser) {
-                  <button class="justify-center items-center flex shadow-sm px-0.5 py-0.5 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs" (click)="replayMessage(message)">
+                  <button
+                    class="justify-center items-center flex shadow-sm px-0.5 py-0.5 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 text-xs"
+                    (click)="replayMessage(message)"
+                  >
                     <ng-icon name="lucideRefreshCw" />
                   </button>
                 }
@@ -105,13 +108,14 @@
 
             <!-- Message body -->
             <div
-              class="px-3.5 py-2.5 rounded-lg border justify-start items-center gap-2 text-sm chat-message-content" style="word-break: break-word;"
+              class="px-3.5 py-2.5 rounded-lg border justify-start items-center gap-2 text-sm chat-message-content"
               [ngClass]="{
                 'bg-blue-500 border-blue-500 text-white': message.fromUser,
-                'bg-gray-50 border-gray-200 text-gray-900': !message.fromUser
+                'bg-gray-50 border-gray-200 text-gray-900': !message.fromUser,
               }"
               [innerHTML]="message.text"
               (urlClicked)="showPreview($event)"
+              style="word-break: break-word"
               appChatUrl
             ></div>
             <app-dynamic-valid-choices

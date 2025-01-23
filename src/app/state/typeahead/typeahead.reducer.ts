@@ -31,7 +31,12 @@ export const reducer = createReducer(
     loading: false,
   })),
   on(TypeaheadActions.openTypeahead, state => ({ ...state, isOpen: true })),
-  on(TypeaheadActions.closeTypeahead, state => ({ ...state, isOpen: false, loading: false, results: [] }))
+  on(TypeaheadActions.closeTypeahead, state => ({
+    ...state,
+    isOpen: false,
+    loading: false,
+    results: [],
+  }))
 );
 
 export const typeaheadFeature = createFeature({

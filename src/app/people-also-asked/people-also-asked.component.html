@@ -1,13 +1,12 @@
 <div class="paa-container">
-    <div *ngFor="let question of questions" class="question">
-      <div class="question-title" (click)="toggleQuestion(question)">
-        {{ question.text }}
-        <span>{{ question.expanded ? '-' : '+' }}</span>
-      </div>
-      <div *ngIf="question.expanded" class="answer">
-        <p *ngIf="question.answer">{{ question.answer }}</p>
-        <p *ngIf="question.loading">Loading...</p>
-      </div>
+  <div class="question" *ngFor="let question of questions">
+    <div class="question-title" (click)="toggleQuestion(question)">
+      {{ question.text }}
+      <span>{{ question.expanded ? '-' : '+' }}</span>
+    </div>
+    <div class="answer" *ngIf="question.expanded">
+      <p *ngIf="question.answer">{{ question.answer }}</p>
+      <p *ngIf="question.loading">Loading...</p>
     </div>
   </div>
-  
+</div>

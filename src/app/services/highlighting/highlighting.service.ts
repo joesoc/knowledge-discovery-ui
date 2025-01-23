@@ -4,21 +4,22 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { IHighlightingResult } from 'src/app/interfaces/IHighlightingResult';
 import { environment } from 'src/environments/environment.prod';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HighlightingService {
+  constructor(private _http: HttpClient) {}
 
-  constructor(private _http:HttpClient) { }
-
-  getHighlightingResults(text:string, terms_to_highlight:string): Observable<IHighlightingResult> {
+  getHighlightingResults(
+    text: string,
+    terms_to_highlight: string
+  ): Observable<IHighlightingResult> {
     let params = new HttpParams()
       .set('action', 'highlight')
       .set('Text', text)
       .set('Links', terms_to_highlight)
       .set('ActionID', 'webui.idoldemos.net')
-      .set('responseFormat', 'simplejson'); 
+      .set('responseFormat', 'simplejson');
     const baseUrl = `${environment.dah_api}`;
     return this._http.get<IHighlightingResult>(baseUrl, { params }).pipe(
       catchError(error => {

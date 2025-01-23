@@ -1,8 +1,8 @@
 .result-item ::ng-deep span {
-    color: black;
-    font-weight: 700;
+  color: black;
+  font-weight: 700;
 }
 
 .result-div {
-    cursor: pointer; /* Change cursor to pointer on hover */
+  cursor: pointer; /* Change cursor to pointer on hover */
 }

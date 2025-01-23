@@ -8,10 +8,9 @@ describe('QmsPromotionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QmsPromotionComponent]
-    })
-    .compileComponents();
-    
+      imports: [QmsPromotionComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(QmsPromotionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -14,7 +14,6 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideLogOut } from '@ng-icons/lucide';
 import { Store } from '@ngrx/store';
@@ -37,7 +36,6 @@ import { TypeaheadSuggestionComponent } from './typeahead-suggestion/typeahead-s
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  standalone: true,
   imports: [
     NgIcon,
     CdkOverlayOrigin,
@@ -85,21 +83,19 @@ export class HeaderComponent {
       console.warn('A search term must be supplied.'); // Move this inside the if block
     } else {
       const result = this.activeDescendantManager?.activeItem?.value;
-  
+
       this.store.dispatch(TypeaheadActions.closeTypeahead());
-  
+
       if (result) {
         this.searchTerm = result;
         this.searchTermChanged.emit(result);
         return;
       }
-  
+
       this.searchTermChanged.emit(value);
       console.log(value); // Log the value if it's not empty or whitespace
     }
   }
-  
-  
 
   showDropdown = false;
   dropdownOptions = [];
@@ -138,7 +134,7 @@ export class HeaderComponent {
           this.store.dispatch(TypeaheadActions.closeTypeahead());
           return;
         }
-        
+
         this.store.dispatch(TypeaheadActions.loadTypeahead({ search: searchTerm }));
       });
   }

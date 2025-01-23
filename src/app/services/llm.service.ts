@@ -1,22 +1,20 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
-import { environment } from "src/environments/environment";
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class LlmService {
-    private readonly http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
-    
-    async verifyInput(input: string): Promise<boolean> {
-
-      if(input === "?") {
-        return Promise.resolve(false);
-      }
-      const data = {
-          model: "mistralai/Mistral-7B-Instruct-v0.2",
-          prompt: `You are a highly accurate text classifier trained to categorize text into one of the following two categories: 'question' or 'other'.
+  async verifyInput(input: string): Promise<boolean> {
+    if (input === '?') {
+      return Promise.resolve(false);
+    }
+    const data = {
+      model: 'mistralai/Mistral-7B-Instruct-v0.2',
+      prompt: `You are a highly accurate text classifier trained to categorize text into one of the following two categories: 'question' or 'other'.
 
           Your task is to read the provided text and classify it based on the given categories. The text will be enclosed within << >>.
       
@@ -63,35 +61,35 @@ export class LlmService {
           Text: <<${input}>>
           [INST] Only display 'question' or 'other' in the response[/INST]
           `,
-          max_tokens: 2,
-          n: 1
-      };
+      max_tokens: 2,
+      n: 1,
+    };
 
-
-        const response = await this.http.post<MistralCompletionResponse>(`${environment.mistral_api}`, data).toPromise();
-        return (response?.choices[0].text.trim().toLowerCase().includes('question')) ?? false;
-    }
+    const response = await this.http
+      .post<MistralCompletionResponse>(`${environment.mistral_api}`, data)
+      .toPromise();
+    return response?.choices[0].text.trim().toLowerCase().includes('question') ?? false;
+  }
 }
 
 export interface MistralCompletionResponse {
-    id: string
-    object: string
-    created: number
-    model: string
-    choices: Choice[]
-    usage: Usage
-  }
-  
-  export interface Choice {
-    index: number
-    text: string
-    logprobs: any
-    finish_reason: string
-  }
-  
-  export interface Usage {
-    prompt_tokens: number
-    total_tokens: number
-    completion_tokens: number
-  }
-  
+  id: string;
+  object: string;
+  created: number;
+  model: string;
+  choices: Choice[];
+  usage: Usage;
+}
+
+export interface Choice {
+  index: number;
+  text: string;
+  logprobs: any;
+  finish_reason: string;
+}
+
+export interface Usage {
+  prompt_tokens: number;
+  total_tokens: number;
+  completion_tokens: number;
+}

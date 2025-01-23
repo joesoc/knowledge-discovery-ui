@@ -6,12 +6,6 @@ export const addSelectedDatabases = createAction(
   props<{ databases: string[] }>()
 );
 
-export const showVectorResults = createAction(
-  '[Vector] Show Results',
-  props<{ show: boolean }>()
-);
+export const showVectorResults = createAction('[Vector] Show Results', props<{ show: boolean }>());
 
-export const showIDOLResults = createAction(
-  '[IDOL] Show Results',
-  props<{ show: boolean }>()
-);
+export const showIDOLResults = createAction('[IDOL] Show Results', props<{ show: boolean }>());

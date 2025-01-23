@@ -8,6 +8,8 @@ import { environment } from 'src/environments/environment.prod';
 import { lucideThumbsDown, lucideThumbsUp, lucideXCircle } from '@ng-icons/lucide';
 import { HttpClient } from '@angular/common/http';
 import { HighlightingService } from 'src/app/services/highlighting/highlighting.service';
+import { toast } from 'ngx-sonner';
+import { catchError, of } from 'rxjs';
 
 @Component({
     selector: 'app-answerpane',
@@ -20,7 +22,9 @@ import { HighlightingService } from 'src/app/services/highlighting/highlighting.
 export class AnswerpaneComponent {
 
 
-  private readonly sanitizer = inject(DomSanitizer)
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly http = inject(HttpClient);
+
   currentIndex: number = 0;
   @Input() question:string = "";
   @Input() answers: Answer[] | RagAnswer[] = []; // Add your answers here
@@ -33,8 +37,6 @@ export class AnswerpaneComponent {
   selectedSource: Source | undefined;
 
   response: 'positive' | 'negative' | 'neutral' = 'neutral';
-
-  constructor(private _svc:HighlightingService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if ('question' in changes) {
@@ -145,5 +147,18 @@ export class AnswerpaneComponent {
 
   setResponse(response: 'positive' | 'negative' | 'neutral') {
     this.response = response;
-    }
+    this.http.post(`/api/answerbank/feedback`, {
+      question: this.question,
+      answer: this.currentAnswer.text,
+    })
+    .pipe(catchError((error) => {
+      console.error(error);
+      toast.error('Something went wrong');
+      return of('Something went wrong');
+    }))
+    .subscribe((response) => {
+      toast(`Registered ${this.response} feedback on the answer.`);
+    });
+
+  }
 }

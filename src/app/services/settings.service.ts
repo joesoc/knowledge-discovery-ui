@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SettingsService {
-
   private previewEnabledSubject = new BehaviorSubject<boolean>(false);
   private vectorSearchEnabledSubject = new BehaviorSubject<boolean>(false);
 
@@ -17,5 +16,5 @@ export class SettingsService {
   }
   setPreviewEnabled(enabled: boolean) {
     this.previewEnabledSubject.next(enabled);
-  } 
+  }
 }

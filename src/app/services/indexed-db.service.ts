@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { openDB, deleteDB, wrap, unwrap } from 'idb';
+import { openDB } from 'idb';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +10,7 @@ export class IndexedDbService {
   private storeName: string = 'vectorUIstore'; // Object store name
   private resolveDbReady!: (value: void | PromiseLike<void>) => void;
 
-  constructor() {
-  }
+  constructor() {}
 
   async InitIndexDB(): Promise<void> {
     const db = await openDB(this.dbName);
@@ -39,7 +38,7 @@ export class IndexedDbService {
     };
 
     request.onerror = (event: Event) => {
-      console.error("IndexedDB error:", (event.target as IDBOpenDBRequest).error);
+      console.error('IndexedDB error:', (event.target as IDBOpenDBRequest).error);
     };
   }
 
@@ -56,13 +55,13 @@ export class IndexedDbService {
 
   async getItem(id: string): Promise<any> {
     await this.dbReady;
-      return new Promise((resolve, reject) => {
-        const transaction = this.db.transaction([this.storeName], 'readonly');
-        const store = transaction.objectStore(this.storeName);
-        const request = store.get(id);
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction([this.storeName], 'readonly');
+      const store = transaction.objectStore(this.storeName);
+      const request = store.get(id);
 
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      });
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
   }
 }

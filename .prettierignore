@@ -16,3 +16,5 @@ release-notes-*.md
 .angular
 
 /.nx/cache
+
+/.nx/workspace-data

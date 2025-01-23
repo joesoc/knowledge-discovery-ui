@@ -1,33 +1,53 @@
 <form class="flex flex-col items-center justify-center w-screen h-screen">
-    <!-- Header -->
-    <div class="flex flex-col gap-y-3 mb-8">
-        <h1 class="w-96 text-center text-gray-900 text-3xl font-semibold leading-9">Log in to your account</h1>
-        <p class="w-96 text-center text-gray-600 text-base">Welcome back! Please enter your details.</p>
+  <!-- Header -->
+  <div class="flex flex-col gap-y-3 mb-8">
+    <h1 class="w-96 text-center text-gray-900 text-3xl font-semibold leading-9">
+      Log in to your account
+    </h1>
+    <p class="w-96 text-center text-gray-600 text-base">Welcome back! Please enter your details.</p>
+  </div>
+
+  <!-- Form -->
+  <form class="flex flex-col gap-y-5 w-96" [formGroup]="form">
+    <!-- Username -->
+    <div class="flex flex-col gap-y-1.5">
+      <label class="text-gray-700 text-sm font-medium leading-tight" for="username">Username</label>
+      <input
+        class="flex-1 outline-none placeholder:text-gray-400 w-full focus-within:ring-primary focus-within:hover:ring-primary cursor-text items-center rounded-md bg-white py-1.5 pl-3 pr-3 text-sm leading-6 shadow-sm ring-1 ring-gray-400/20 hover:ring-gray-600/25"
+        id="username"
+        formControlName="username"
+        type="text"
+        placeholder="Enter your username"
+      />
+      @if (form.controls.username.touched && form.controls.username.invalid) {
+        <p class="text-red-500 text-sm font-medium leading-tight">Username is required</p>
+      }
     </div>
 
-    <!-- Form -->
-    <form class="flex flex-col gap-y-5 w-96" [formGroup]="form">
-        <!-- Username -->
-        <div class="flex flex-col gap-y-1.5">
-            <label for="username" class="text-gray-700 text-sm font-medium leading-tight">Username</label>
-            <input formControlName="username" type="text" id="username" class="flex-1 outline-none placeholder:text-gray-400 w-full focus-within:ring-primary focus-within:hover:ring-primary cursor-text items-center rounded-md bg-white py-1.5 pl-3 pr-3 text-sm leading-6 shadow-sm ring-1 ring-gray-400/20 hover:ring-gray-600/25" placeholder="Enter your username" />
-            @if (form.controls.username.touched && form.controls.username.invalid) {
-                <p class="text-red-500 text-sm font-medium leading-tight">Username is required</p>
-            }
-        </div>
+    <!-- Password -->
+    <div class="flex flex-col gap-y-1.5">
+      <label class="text-gray-700 text-sm font-medium leading-tight" for="password">Password</label>
+      <input
+        class="flex-1 outline-none placeholder:text-gray-400 w-full focus-within:ring-primary focus-within:hover:ring-primary cursor-text items-center rounded-md bg-white py-1.5 pl-3 pr-3 text-sm leading-6 shadow-sm ring-1 ring-gray-400/20 hover:ring-gray-600/25"
+        id="password"
+        formControlName="password"
+        type="password"
+        placeholder="Enter your password"
+      />
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+        <p class="text-red-500 text-sm font-medium leading-tight">Password is required</p>
+      }
+    </div>
+    @if (loginFailed == true) {
+      <p class="text-red-500 text-sm font-medium leading-tight">Login failed. Please try again.</p>
+    }
 
-        <!-- Password -->
-        <div class="flex flex-col gap-y-1.5">
-            <label for="password" class="text-gray-700 text-sm font-medium leading-tight">Password</label>
-            <input formControlName="password" type="password" id="password" class="flex-1 outline-none placeholder:text-gray-400 w-full focus-within:ring-primary focus-within:hover:ring-primary cursor-text items-center rounded-md bg-white py-1.5 pl-3 pr-3 text-sm leading-6 shadow-sm ring-1 ring-gray-400/20 hover:ring-gray-600/25" placeholder="Enter your password" />
-            @if (form.controls.password.touched && form.controls.password.invalid) {
-                <p class="text-red-500 text-sm font-medium leading-tight">Password is required</p>
-            }
-        </div>
-        @if (loginFailed == true){
-            <p class="text-red-500 text-sm font-medium leading-tight">Login failed. Please try again.</p>
-        }
-
-        <button class="bg-blue-500 w-full text-white text-sm font-medium rounded-lg px-4 py-2.5 hover:bg-blue-600" type="button" (click)="login()">Login</button>
-    </form>
+    <button
+      class="bg-blue-500 w-full text-white text-sm font-medium rounded-lg px-4 py-2.5 hover:bg-blue-600"
+      (click)="login()"
+      type="button"
+    >
+      Login
+    </button>
+  </form>
 </form>

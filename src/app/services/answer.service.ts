@@ -8,8 +8,8 @@ import {
   IAnswerServerGetStatusResponse,
   System,
 } from '../interfaces/IAnswerServerGetStatusResponse';
-import { IAnswerServerAskResponse } from '../interfaces/IAnswerServerResponse';
 import { RAGResponse } from '../interfaces/IAnswerServerRAGResponse';
+import { IAnswerServerAskResponse } from '../interfaces/IAnswerServerResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +17,7 @@ import { RAGResponse } from '../interfaces/IAnswerServerRAGResponse';
 export class AnswerService {
   private _url: string = `${environment.answerserver_api}`;
   private scheme: string = 'https';
-  constructor(
-    private _http: HttpClient,
-  ) {}
+  constructor(private _http: HttpClient) {}
   getSessionID(): Observable<IManageResourcesResponse> {
     const operation = {
       operation: 'add',

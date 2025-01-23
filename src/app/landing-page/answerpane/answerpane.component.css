@@ -1,49 +1,49 @@
 .answers {
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #f5f5f5;
-    color: black;
-    padding: 20px;
-    border-radius: 5px;
-    width: 95%;
-    margin-left: 45px;
-    margin-top:5px;
-    position: relative;
-  }
-  .btn-sm {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.7875rem;
-    line-height: 1.5;
-    border-radius: 0.2rem;
-  }
-  .score{
-    font-size: smaller;
-  }
-  .answer-header {
-    top: 10px;
-    right: 10px;
-    font-size: 12px;
-    font-style: italic;
-  }
-  .answerhtml{
-    margin-bottom: -20px;
-    font-weight: bold;
-    display: block;
-    clear: both;
-  }
-  .answerparagraph {
-    margin-bottom: -20px;
-  }
-  .answer-content {
-    min-height: 100px;
-    font-size: smaller;
-  }
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5;
+  color: black;
+  padding: 20px;
+  border-radius: 5px;
+  width: 95%;
+  margin-left: 45px;
+  margin-top: 5px;
+  position: relative;
+}
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+.score {
+  font-size: smaller;
+}
+.answer-header {
+  top: 10px;
+  right: 10px;
+  font-size: 12px;
+  font-style: italic;
+}
+.answerhtml {
+  margin-bottom: -20px;
+  font-weight: bold;
+  display: block;
+  clear: both;
+}
+.answerparagraph {
+  margin-bottom: -20px;
+}
+.answer-content {
+  min-height: 100px;
+  font-size: smaller;
+}
 
-  .answer-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 3px;
-  }
-  
-  .linkref{
-    font-size: smaller;
-  }
+.answer-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3px;
+}
+
+.linkref {
+  font-size: smaller;
+}

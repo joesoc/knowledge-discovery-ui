@@ -1,11 +1,11 @@
-import { inject } from "@angular/core";
-import { LoginService } from "../../services/login.service";
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpEvent } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { LoginService } from '../../services/login.service';
 
 export const authInterceptor: HttpInterceptorFn = (
-    req: HttpRequest<any>,
-    next: HttpHandlerFn
+  req: HttpRequest<any>,
+  next: HttpHandlerFn
 ): Observable<HttpEvent<any>> => {
   const loginService = inject(LoginService);
   const token = loginService.token;
