@@ -6,5 +6,6 @@ export const environment = {
   dah_api: 'api/dah',
   mlmodels_api: 'api/mlmodels',
   community_api: 'api/community',
+  answerbank_api: 'api/answerbank',
   mistral_api: 'https://llms.idoldemos.net/mistral/v1/completions'
 };

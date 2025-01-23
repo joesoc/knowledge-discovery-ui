@@ -57,10 +57,10 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "nx": "18.0.7",
     "postcss": "^8.4.5",
-    "prettier": "^3.2.5",
+    "prettier": "^3.4.2",
     "prettier-plugin-organize-attributes": "^1.0.0",
     "prettier-plugin-organize-imports": "^3.2.4",
-    "prettier-plugin-tailwindcss": "^0.5.12",
+    "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.0.2",
     "typescript": "5.3.3"
   }

@@ -1,0 +1,24 @@
+.paa-container {
+    font-family: Arial, sans-serif;
+    margin: 10px 0;
+  }
+  
+  .question {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
+  
+  .question-title {
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .answer {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #555;
+  }
+  

@@ -34,6 +34,13 @@
     "changeOrigin": true, 
     "logLevel": "debug"
   },
+  "/api/answerbank":{
+    "target": "https://answerbankagentstore.idoldemos.net:12200",
+    "secure": false,
+    "pathRewrite": {"^/api/answerbank" : ""},
+    "changeOrigin": true, 
+    "logLevel": "debug"
+  },
   "/api/community":{
     "target": "https://community.idoldemos.net:9030",
     "secure": false,

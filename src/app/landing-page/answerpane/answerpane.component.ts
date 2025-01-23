@@ -5,7 +5,7 @@ import { DecimalPipe, NgIf } from '@angular/common';
 import { isRagResponse, RagAnswer, RagMetadata, Source } from 'src/app/interfaces/IAnswerServerRAGResponse';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment.prod';
-import { lucideXCircle } from '@ng-icons/lucide';
+import { lucideThumbsDown, lucideThumbsUp, lucideXCircle } from '@ng-icons/lucide';
 import { HttpClient } from '@angular/common/http';
 import { HighlightingService } from 'src/app/services/highlighting/highlighting.service';
 
@@ -15,9 +15,10 @@ import { HighlightingService } from 'src/app/services/highlighting/highlighting.
     styleUrls: ['./answerpane.component.css'],
     standalone: true,
     imports: [NgIf, NgIcon, DecimalPipe],
-    viewProviders: [provideIcons({lucideXCircle})]
+    viewProviders: [provideIcons({lucideXCircle, lucideThumbsUp, lucideThumbsDown})]
 })
 export class AnswerpaneComponent {
+
 
   private readonly sanitizer = inject(DomSanitizer)
   currentIndex: number = 0;
@@ -31,7 +32,15 @@ export class AnswerpaneComponent {
 
   selectedSource: Source | undefined;
 
+  response: 'positive' | 'negative' | 'neutral' = 'neutral';
+
   constructor(private _svc:HighlightingService) {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if ('question' in changes) {
+      this.response = 'neutral';
+    }
+  }
 
   previewUrl: SafeHtml | undefined;
 
@@ -132,8 +141,9 @@ export class AnswerpaneComponent {
 
       `${environment.view_api}${url}`
     )
-
-
-
   }
+
+  setResponse(response: 'positive' | 'negative' | 'neutral') {
+    this.response = response;
+    }
 }

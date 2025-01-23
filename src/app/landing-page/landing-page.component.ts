@@ -24,6 +24,7 @@ import { isRagResponse, RagAnswer } from '../interfaces/IAnswerServerRAGResponse
 import { QmsPromotionComponent } from "./qms/qms_promotion/qms_promotion.component";
 import { IQMSPromotionResult } from '../interfaces/IQMSPromotionResult';
 import { DahService } from '../services/dah.service';
+import { QuestionService } from '../services/question.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -104,7 +105,8 @@ export class LandingPageComponent {
           this.answers = data.autnresponse.responsedata.answers
             ? data.autnresponse.responsedata.answers.answer
             : [];
-        
+        this.questionService.setQuestion(question);
+        // this.questionService.setAnswer(this.answers);
         this.gotAnswers = true;
         this.loading_answer_pane = false;
         this.duration = performance.now() - start;
@@ -129,7 +131,8 @@ export class LandingPageComponent {
   constructor(
     private svcQms: QmsService,
     private answerService: AnswerService,
-    private dahService: DahService
+    private dahService: DahService,
+    private questionService:QuestionService
   ) {}
 
   propogateDatabaseSelection(valueEmitted: any) {
