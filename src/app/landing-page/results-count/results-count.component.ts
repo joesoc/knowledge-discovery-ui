@@ -6,7 +6,6 @@ import { IResultSummary } from 'src/app/interfaces/IsearchResultsSummary';
   selector: 'app-results-count',
   templateUrl: './results-count.component.html',
   styleUrls: ['./results-count.component.css'],
-  imports: [NgIf],
 })
 export class ResultsCountComponent {
   @Input() keyword: string = '';

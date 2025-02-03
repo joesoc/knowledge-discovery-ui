@@ -1,52 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, input, resource, signal } from '@angular/core';
 import { AnswerBankService } from '../services/answer-bank.service';
+import { lastValueFrom, map } from 'rxjs';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucidePlus, lucideMinus } from '@ng-icons/lucide';
+import {CdkAccordionModule} from '@angular/cdk/accordion';
+import { QuestionService } from '../services/question.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Hit } from '../interfaces/IAnswerBankResponse';
+import { SettingsService } from '../services/settings.service';
 
 @Component({
   selector: 'app-people-also-asked',
-  imports: [],
+  imports: [NgIcon, CdkAccordionModule],
+  viewProviders: [provideIcons({ lucidePlus, lucideMinus})],
   templateUrl: './people-also-asked.component.html',
   styleUrl: './people-also-asked.component.css',
 })
 export class PeopleAlsoAskedComponent {
-  constructor(private answerbanksvc: AnswerBankService) {}
-  questions: any[] = []; // Holds the list of questions
+  private readonly answerbank = inject(AnswerBankService);
+  private readonly questionService = inject(QuestionService);
+  relatedQuestions: Hit[] = [];
+  hasRelatedQuestions: boolean = false;
+  isPeopleAlsoAskedEnabled = false;
 
-  ngOnInit() {
-    this.loadInitialQuestions();
-  }
+  readonly isLoading = signal(true);
 
-  loadInitialQuestions() {
-    this.answerbanksvc.getrelatedquestions().subscribe(data => {
-      this.questions = data.map((q: any) => ({
-        ...q,
-        expanded: false,
-        loading: false,
-        answer: null,
-      }));
+  constructor(private readonly settingsService: SettingsService) {
+    this.questionService.question$.pipe(takeUntilDestroyed()).subscribe((question) => {
+      this.isLoading.set(true);
+      this.isPeopleAlsoAskedEnabled = localStorage.getItem('peoplealsoaskedEnabled') === 'true';
+      this.answerbank.getRelatedQuestions(question).subscribe((response) => {
+        const hits = response?.autnresponse?.responsedata?.hit;
+
+        this.relatedQuestions = hits || [];
+        this.hasRelatedQuestions = hits && hits.length > 0;
+        this.isLoading.set(false);
+      });
     });
-  }
-
-  toggleQuestion(question: any) {
-    if (question.expanded) {
-      question.expanded = false; // Collapse the question
-    } else {
-      question.expanded = true;
-      if (!question.answer) {
-        this.loadAnswer(question);
-      }
-    }
-  }
-
-  loadAnswer(question: any) {
-    question.loading = true;
-    this.paaService.getAnswer(question.id).subscribe(
-      answer => {
-        question.answer = answer;
-        question.loading = false;
-      },
-      () => {
-        question.loading = false; // Handle error gracefully
-      }
-    );
   }
 }

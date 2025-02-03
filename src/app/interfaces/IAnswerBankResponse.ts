@@ -22,6 +22,15 @@ export interface Hit {
   content: Content;
 }
 
+export interface Metadata {
+  ANSWERSOURCE: string[];
+  AutoRule: string[];
+  AutoRuleOn: string[];
+  Created_By: string[];
+  CustomRuleOn: string[];
+  Last_Modified_By: string[];
+}
+
 export interface Content {
   DOCUMENT: Document[];
 }
@@ -30,10 +39,13 @@ export interface Document {
   DREREFERENCE: string[];
   CREATED_TIME: string[];
   DELETED: string[];
+  DRETITLE: string[];
+  ANSWER: string[];
   DREDBNAME: string[];
   EXPIRE_DATE: string[];
   LAST_MODIFIED_TIME: string[];
   QUESTION_EQUIVALENCE_CLASS_ID: string[];
   STATE: string[];
   DRECONTENT: string[];
+  METADATA: Metadata[];
 }

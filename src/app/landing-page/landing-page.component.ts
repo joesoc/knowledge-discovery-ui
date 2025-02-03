@@ -24,6 +24,8 @@ import { ChatComponent } from './chat/chat.component';
 import { QmsPromotionComponent } from './qms/qms_promotion/qms_promotion.component';
 import { ResultsCountComponent } from './results-count/results-count.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
+import { PeopleAlsoAskedComponent } from "../people-also-asked/people-also-asked.component";
+import { SettingsService } from '../services/settings.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -35,13 +37,13 @@ import { SearchResultsComponent } from './search-results/search-results.componen
     NgIcon,
     ChatComponent,
     AnswerpaneComponent,
-    NgStyle,
     ResultsCountComponent,
     SearchResultsComponent,
     LoadingIndicatorComponent,
     AsyncPipe,
     QmsPromotionComponent,
-  ],
+    PeopleAlsoAskedComponent
+],
 })
 export class LandingPageComponent {
   private readonly store = inject(Store);
@@ -59,9 +61,8 @@ export class LandingPageComponent {
   loading_answer_pane: boolean = false;
   duration: number = 0;
   showPromotions = true;
-
-  ngOnInit(): void {}
-
+  loadingPeopleAlsoAsked = false;
+  showPeopleAlsoAsked = false;
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
   }
@@ -72,6 +73,7 @@ export class LandingPageComponent {
     this.gotAnswers = false;
     this.loading = true;
     this.loading_answer_pane = true;
+    this.loadingPeopleAlsoAsked = true;
 
     // Check if the text is actually a question
 
@@ -105,12 +107,14 @@ export class LandingPageComponent {
         // this.questionService.setAnswer(this.answers);
         this.gotAnswers = true;
         this.loading_answer_pane = false;
+        this.loadingPeopleAlsoAsked = false;
         this.duration = performance.now() - start;
       });
     } else {
       console.log('Language is not English. Skip binary classification.');
       this.answers = [];
       this.loading_answer_pane = false;
+      this.loadingPeopleAlsoAsked = false;
     }
   }
 
@@ -124,7 +128,8 @@ export class LandingPageComponent {
     private svcQms: QmsService,
     private answerService: AnswerService,
     private dahService: DahService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private settingsService: SettingsService
   ) {}
 
   propogateDatabaseSelection(valueEmitted: any) {
@@ -137,6 +142,11 @@ export class LandingPageComponent {
     return this.selectedDatabase.join(',');
   }
 
+  ngOnInit() {
+    this.settingsService.peopleAlsoAskedEnabled$.subscribe(enabled => {
+      this.showPeopleAlsoAsked = enabled;
+    });
+  }
   // Method to generate the title based on the hit title or the filename in the URL
   generateTitle(existingTitle: string, url: string): string {
     // If existingTitle is not empty, return it

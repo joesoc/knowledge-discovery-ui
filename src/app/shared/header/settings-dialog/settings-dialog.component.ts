@@ -66,6 +66,7 @@ export class SettingsDialogComponent {
 
   explicitUserProfileEnabled: boolean = false; // New property
   viewEnabled: boolean = false;
+  peoplealsoaskedEnabled: boolean = false;
   ngOnInit() {
     this.answerSystems = localStorage.getItem('answerSystems')
       ? JSON.parse(localStorage.getItem('answerSystems') ?? '[]')
@@ -86,6 +87,7 @@ export class SettingsDialogComponent {
 
     // Retrieve the toggle state from local storage (default to false if not set)
     this.explicitUserProfileEnabled = localStorage.getItem('explicitUserProfileEnabled') === 'true';
+    this.peoplealsoaskedEnabled = localStorage.getItem('peoplealsoaskedEnabled') === 'true';
   }
 
   toggleVectorSearchResultsPosition() {
@@ -125,6 +127,14 @@ export class SettingsDialogComponent {
       this.viewEnabled = inputElement.checked;
       localStorage.setItem('viewEnabled', inputElement.checked.toString());
       this.settingsService.setPreviewEnabled(inputElement.checked);
+    }
+  }
+  onPeopleAlsoAskedEnabled(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement && inputElement.checked !== undefined) {
+      this.peoplealsoaskedEnabled = inputElement.checked;
+      localStorage.setItem('peoplealsoaskedEnabled', inputElement.checked.toString());
+      this.settingsService.setPeopleAlsoAskedEnabled(inputElement.checked);
     }
   }
 }

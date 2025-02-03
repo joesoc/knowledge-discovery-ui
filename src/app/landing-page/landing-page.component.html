@@ -101,7 +101,10 @@
     [gotAnswers]="gotAnswers"
   />
 }
+
+
 <div class="flex-container mt-4">
+  
   <div
     class="searchresultsVector w-[50%] flex flex-col gap-y-4 px-8"
     *ngIf="showVectorResults$ | async"
@@ -117,11 +120,19 @@
     class="searchresultsIDOL w-[50%] flex flex-col gap-y-4 px-8"
     *ngIf="showIdolResults$ | async"
   >
+
+  @if (!loadingPeopleAlsoAsked) {
+    @if (showPeopleAlsoAsked){
+      <app-people-also-asked />
+    }
+  }
+
+
     <app-results-count
       [keyword]="searchkeyword"
       [resultsSummary]="idolresultsSummary"
       [resultType]="'IDOL Search'"
     ></app-results-count>
-    <app-search-results [searchResults]="idolresultsItems"></app-search-results>
+    <app-search-results [searchResults]="idolresultsItems" />
   </div>
 </div>

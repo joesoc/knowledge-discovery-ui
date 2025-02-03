@@ -9,7 +9,7 @@ import { lucideThumbsDown, lucideThumbsUp, lucideXCircle } from '@ng-icons/lucid
 import { HttpClient } from '@angular/common/http';
 import { HighlightingService } from 'src/app/services/highlighting/highlighting.service';
 import { toast } from 'ngx-sonner';
-import { catchError, of } from 'rxjs';
+import { catchError, lastValueFrom, of } from 'rxjs';
 
 @Component({
     selector: 'app-answerpane',
@@ -145,20 +145,21 @@ export class AnswerpaneComponent {
     )
   }
 
-  setResponse(response: 'positive' | 'negative' | 'neutral') {
+  async setResponse(response: 'positive' | 'negative' | 'neutral') {
     this.response = response;
-    this.http.post(`/api/answerbank/feedback`, {
-      question: this.question,
-      answer: this.currentAnswer.text,
-    })
-    .pipe(catchError((error) => {
-      console.error(error);
-      toast.error('Something went wrong');
-      return of('Something went wrong');
-    }))
-    .subscribe((response) => {
-      toast(`Registered ${this.response} feedback on the answer.`);
-    });
+    let username = localStorage.getItem('username');
 
+    try {
+      const result = await lastValueFrom(this.http.post(`/api/answerbank/feedback`, {
+        question: this.question,
+        answer: this.currentAnswer.text,
+        username: username,
+        response
+      }));
+
+      toast(`Registered ${this.response} feedback on the answer.`);
+    } catch (e) {
+      toast.error('Something went wrong')
+    }
   }
 }
