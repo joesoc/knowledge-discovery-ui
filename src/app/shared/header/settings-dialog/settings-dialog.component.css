@@ -71,3 +71,6 @@ select:not([size]) {
   print-color-adjust: exact;
   appearance: none;
 }
+.about-version{
+  font-size:small;
+}
