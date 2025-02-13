@@ -15,16 +15,7 @@ export class AnswerBankService {
 
   getRelatedQuestions(question: string): Observable<IAnswerBankResponse> {
     const params = new HttpParams()
-      .set('action', 'Query')
-      .set('text', question)
-      .set('databasematch', 'questionclasses')
-      .set('anylanguage', 'true')
-      .set('FieldRestriction', 'DRETITLE')
-      .set('MinScore', '10')
-      .set('print', 'fields')
-      .set('printfields', 'DRETITLE,ANSWER,STATE,POPULARITY_COUNT,ANSWERSOURCE')
-      .set('responseformat', 'simplejson');
-
+      .set('question', question)
     return this._http.get<IAnswerBankResponse>(this.answerbank_url, { params });
   }
 }

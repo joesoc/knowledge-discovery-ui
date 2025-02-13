@@ -6,7 +6,7 @@ import { lucidePlus, lucideMinus } from '@ng-icons/lucide';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
 import { QuestionService } from '../services/question.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Hit } from '../interfaces/IAnswerBankResponse';
+import { IAnswerBankResponse } from '../interfaces/IAnswerBankResponse';
 import { SettingsService } from '../services/settings.service';
 
 @Component({
@@ -19,7 +19,7 @@ import { SettingsService } from '../services/settings.service';
 export class PeopleAlsoAskedComponent {
   private readonly answerbank = inject(AnswerBankService);
   private readonly questionService = inject(QuestionService);
-  relatedQuestions: Hit[] = [];
+  relatedQuestions: IAnswerBankResponse[] = [];
   hasRelatedQuestions: boolean = false;
   isPeopleAlsoAskedEnabled = false;
 
@@ -30,10 +30,10 @@ export class PeopleAlsoAskedComponent {
       this.isLoading.set(true);
       this.isPeopleAlsoAskedEnabled = localStorage.getItem('peoplealsoaskedEnabled') === 'true';
       this.answerbank.getRelatedQuestions(question).subscribe((response) => {
-        const hits = response?.autnresponse?.responsedata?.hit;
+        const qna_pairs: IAnswerBankResponse[] = Array.isArray(response) ? response : [];
 
-        this.relatedQuestions = hits || [];
-        this.hasRelatedQuestions = hits && hits.length > 0;
+        this.relatedQuestions = qna_pairs;
+        this.hasRelatedQuestions = qna_pairs.length > 0;
         this.isLoading.set(false);
       });
     });

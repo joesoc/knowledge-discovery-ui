@@ -42,7 +42,7 @@
     "logLevel": "debug"
   },
   "/api/answerbank": {
-    "target": "https://answerbankagentstore.idoldemos.net:12200",
+    "target": "https://webui.idoldemos.net/api/peoplealsoasked",
     "secure": false,
     "pathRewrite": { "^/api/answerbank": "" },
     "changeOrigin": true,

@@ -11,7 +11,7 @@
         [attr.id]="'accordion-header-' + index"
         [attr.aria-expanded]="accordionItem.expanded"
         [attr.aria-controls]="'accordion-body-' + index">
-        <span>{{question.content.DOCUMENT[0].DRETITLE}}</span>
+        <span>{{question.Title}}</span>
 
         <ng-icon [name]="accordionItem.expanded ? 'lucideMinus' : 'lucidePlus'" class="text-slate-800 transition-transform duration-300" />
       </button>
@@ -22,10 +22,10 @@
             [style.display]="accordionItem.expanded ? '' : 'none'"
             [attr.id]="'accordion-body-' + index"
             [attr.aria-labelledby]="'accordion-header-' + index">
-          <p>{{question.content.DOCUMENT[0].ANSWER}}</p>
+          <p>{{question.Answer}}</p>
 
-          <a class="text-blue-500 underline" [href]="question.content.DOCUMENT[0].METADATA[0].ANSWERSOURCE[0]">
-            {{question.content.DOCUMENT[0].METADATA[0].ANSWERSOURCE[0]}}
+          <a class="text-blue-500 underline" [href]="question.AnswerSource">
+            {{question.AnswerSource}}
           </a>
         </div>
       }
