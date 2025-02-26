@@ -6,6 +6,11 @@ import { Component, Input } from '@angular/core';
   selector: 'app-typeahead-suggestion',
   imports: [CommonModule],
   templateUrl: './typeahead-suggestion.component.html',
+  styles: `
+    :host {
+      display: block;
+    }
+  `
 })
 export class TypeaheadSuggestionComponent implements Highlightable {
   @Input({ required: true }) value!: string;

@@ -33,7 +33,14 @@ export class PeopleAlsoAskedComponent {
         const qna_pairs: IAnswerBankResponse[] = Array.isArray(response) ? response : [];
 
         this.relatedQuestions = qna_pairs;
-        this.hasRelatedQuestions = qna_pairs.length > 0;
+        if (qna_pairs[0].Title === "No related questions found") {
+          this.hasRelatedQuestions = false;
+          console.log("No related questions found");
+        }
+        else {
+          console.log("Related questions found");
+          this.hasRelatedQuestions = true;
+        }
         this.isLoading.set(false);
       });
     });

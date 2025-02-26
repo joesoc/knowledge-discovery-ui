@@ -1,8 +1,6 @@
-@if (!isLoading()) {
+@if (!isLoading() && this.hasRelatedQuestions) {
 <cdk-accordion class="flex flex-col">
-  @if(this.hasRelatedQuestions) {
     <span class="people-also-asked-header">People also asked:</span>
-  }
   @for (question of relatedQuestions; track question; let index = $index) {
     <cdk-accordion-item #accordionItem="cdkAccordionItem" class="border-b border-slate-200">
       <button class="w-full flex justify-between items-center py-5 text-slate-800" 

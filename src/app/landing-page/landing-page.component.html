@@ -121,10 +121,8 @@
     *ngIf="showIdolResults$ | async"
   >
 
-  @if (!loadingPeopleAlsoAsked) {
-    @if (showPeopleAlsoAsked){
+  @if (!loadingPeopleAlsoAsked && showPeopleAlsoAsked) {
       <app-people-also-asked />
-    }
   }
 
 

@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class SettingsService {
   private previewEnabledSubject = new BehaviorSubject<boolean>(false);
   private vectorSearchEnabledSubject = new BehaviorSubject<boolean>(false);
-  private peopleAlsoAskedEnabledSubject = new BehaviorSubject<boolean>(false);
+  private peopleAlsoAskedEnabledSubject = new BehaviorSubject<boolean>(Boolean(localStorage.getItem('peoplealsoaskedEnabled') ?? false));
   previewEnabled$ = this.previewEnabledSubject.asObservable();
   vectorSearchEnabled$ = this.vectorSearchEnabledSubject.asObservable();
   peopleAlsoAskedEnabled$ = this.peopleAlsoAskedEnabledSubject.asObservable();
@@ -18,6 +18,7 @@ export class SettingsService {
     this.previewEnabledSubject.next(enabled);
   }
   setPeopleAlsoAskedEnabled(enabled: boolean) {
+    localStorage.setItem('peoplealsoaskedEnabled', enabled.toString());
     this.peopleAlsoAskedEnabledSubject.next(enabled);
   }
 }

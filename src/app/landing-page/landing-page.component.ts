@@ -1,5 +1,5 @@
 import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { Store } from '@ngrx/store';
 import { RagAnswer } from '../interfaces/IAnswerServerRAGResponse';

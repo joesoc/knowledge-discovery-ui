@@ -10,6 +10,7 @@
     <div class="flex flex-1 gap-x-2">
       <!-- Search -->
       <div
+        #searchContainer
         class="relative flex-1 focus-within:ring-primary focus-within:hover:ring-primary hidden cursor-text items-center rounded-md bg-white py-1.5 pl-3 pr-3 text-sm leading-6 shadow-sm ring-1 ring-gray-400/20 hover:ring-gray-600/25 lg:flex"
         (click)="searchInput.focus()"
       >
@@ -21,7 +22,6 @@
           (ngModelChange)="fetchSuggestions()"
           (keydown)="onKeydown($event)"
           (focus)="openTypeahead()"
-          (blur)="closeTypeahead()"
           type="text"
           placeholder="Search..."
         />
@@ -55,7 +55,7 @@
 
             <div>
               @for (result of typeaheadResults$ | async; track result; let index = $index) {
-                <app-typeahead-suggestion [value]="result" />
+                <app-typeahead-suggestion [value]="result" (click)="search(result)" (mouseenter)="onTypeaheadSuggestionHover(result, index)" />
               } @empty {
                 @if ((typeaheadLoading$ | async) === false) {
                   <div class="text-sm text-gray-500 py-1.5 px-3 -mx-3">No results found</div>

@@ -5,12 +5,15 @@ import { HttpClient } from '@angular/common/http';
 import {
   Component,
   DestroyRef,
+  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   Output,
   QueryList,
   ViewChildren,
   inject,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -52,6 +55,8 @@ import { TypeaheadSuggestionComponent } from './typeahead-suggestion/typeahead-s
   providers: [provideIcons({ lucideLogOut })],
 })
 export class HeaderComponent {
+
+
   private readonly store = inject(Store);
   private readonly loginService = inject(LoginService);
   private readonly destroyRef = inject(DestroyRef);
@@ -100,6 +105,8 @@ export class HeaderComponent {
   showDropdown = false;
   dropdownOptions = [];
   selectedOptions: string[] = [];
+
+  protected readonly searchContainer = viewChild.required<ElementRef<HTMLElement>>('searchContainer');
 
   constructor(private http: HttpClient) {}
 
@@ -182,8 +189,15 @@ export class HeaderComponent {
     this.store.dispatch(TypeaheadActions.openTypeahead());
   }
 
-  closeTypeahead(): void {
-    this.store.dispatch(TypeaheadActions.closeTypeahead());
+  @HostListener('document:click', ['$event'])
+  closeTypeahead(event: MouseEvent): void {
+    // if the click event is outside of the typeahead or input, close it
+    const target = event.target as HTMLElement;
+
+    if (
+     !this.searchContainer().nativeElement.contains(target)) {
+      this.store.dispatch(TypeaheadActions.closeTypeahead());
+     }
   }
 
   onKeydown(event: KeyboardEvent) {
@@ -193,5 +207,14 @@ export class HeaderComponent {
     if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
       event.preventDefault();
     }
+  }
+
+  search(value: string) {
+    this.searchTerm = value;
+    this.propogateSearchTerm(value);
+  }
+  
+  onTypeaheadSuggestionHover(result: string,index: number) {
+    this.activeDescendantManager?.setActiveItem(index);
   }
 }
