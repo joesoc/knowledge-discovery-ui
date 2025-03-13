@@ -1,6 +1,6 @@
 <div class="px-6 pt-6">
   <div
-    class="rounded-lg border border-gray-200 p-4 bg-gray-100 shadow-sm relative"
+    class="rounded-lg border border-gray-200 p-4 bg-gray-100 shadow-sm relative overflow-hidden"
     *ngIf="totalAnswers > 0"
   >
     <!-- Answer feedback -->
@@ -20,7 +20,7 @@
       </button>
     </div>
 
-    <div class="answer-content">
+    <div class="answer-content overflow-hidden">
       @if (currentAnswer) {
         <span class="text-xs text-gray-500">Question:</span>
         <h3 class="text-base font-medium mb-2">{{ question }}</h3>
@@ -44,10 +44,10 @@
           <!-- Divider -->
           <div class="border-t border-gray-200 my-4"></div>
 
-          <table class="mt-2">
+          <table class="mt-2 w-full table-fixed">
             <thead>
               <tr>
-                <th class="text-left pr-4">Database</th>
+                <th class="text-left pr-4 w-[10%]">Database</th>
                 <th class="text-left pr-4">Title</th>
                 <th class="text-left">Link</th>
               </tr>
@@ -55,7 +55,7 @@
             <tbody>
               @for (source of sources; track source) {
                 <tr>
-                  <td class="pr-4 truncate">{{ source['@database'] }}</td>
+                  <td class="pr-4 truncate w-[10%]">{{ source['@database'] }}</td>
                   <td class="pr-4 truncate">{{ source['@title'] || 'No title' }}</td>
                   <td>
                     <a
