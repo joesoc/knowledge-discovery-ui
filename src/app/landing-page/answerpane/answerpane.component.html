@@ -26,7 +26,8 @@
         <h3 class="text-base font-medium mb-2">{{ question }}</h3>
 
         <span class="text-xs text-gray-500">Answer:</span>
-        <div class="font-medium text-base mb-1" [innerHTML]="currentAnswer.text"></div>
+        <div class="font-medium text-base mb-1" [innerHTML]="stripCodeBlockWrapper(currentAnswer.text)"></div>
+
 
         @if (isStandardAnswer(currentAnswer)) {
           <div

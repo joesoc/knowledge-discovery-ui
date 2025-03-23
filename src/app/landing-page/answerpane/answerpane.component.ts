@@ -43,7 +43,7 @@ export class AnswerpaneComponent {
       this.response = 'neutral';
     }
   }
-
+    
   previewUrl: SafeHtml | undefined;
 
   get sources(): Source[] {
@@ -56,6 +56,14 @@ export class AnswerpaneComponent {
     return (this.currentAnswer.metadata as RagMetadata).sources.source;
   }
 
+  stripCodeBlockWrapper(text: string): string {
+    if (!text) return '';
+    return text
+      .replace(/^```html\s*/i, '')  // remove ```html at the start
+      .replace(/^```\s*/i, '')      // or just ```
+      .replace(/```$/, '')          // remove trailing ```
+      .trim();
+  }
   
 
   get totalAnswers(): number {
