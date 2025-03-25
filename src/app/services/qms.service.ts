@@ -71,7 +71,7 @@ export class QmsService {
     const url = `${environment.qms_api}/`;
     return this.returnResponse(url, params);
   }
-  getResults(query: string, databases: string): Observable<IContentResponse> {
+  getResults(query: string, databases: string, securityInfo: string): Observable<IContentResponse> {
     const explicitUserProfileEnabled =
       localStorage.getItem('explicitUserProfileEnabled') === 'true';
     const username = localStorage.getItem('username') ?? '';
@@ -100,6 +100,7 @@ export class QmsService {
       .set('DefaultOperator', defaultoperator)
       .set('highlight', 'SummaryTerms')
       .set('LanguageType', queryLanguage)
+      .set('securityinfo', securityInfo)
       .set('ExpandQuery', 'True')
       .set('ActionID', 'webui.idoldemos.net')
       .set('StartTag', '<span style="color: black; font-weight:bold;">')

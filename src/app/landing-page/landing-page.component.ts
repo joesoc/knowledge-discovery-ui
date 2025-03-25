@@ -98,8 +98,8 @@ export class LandingPageComponent {
       }
       this.answers = [];
       this.question = question;
-
-      (await this.answerService.ask(question, this.getDatabaseSelection())).subscribe(data => {
+      let securityInfo: string = localStorage.getItem('token')?.toString() || '';
+      (await this.answerService.ask(question, this.getDatabaseSelection(), securityInfo)).subscribe(data => {
         this.answers = data.autnresponse.responsedata.answers
           ? data.autnresponse.responsedata.answers.answer
           : [];
@@ -180,7 +180,8 @@ export class LandingPageComponent {
         this.showPromotions = true;
         this.topPromotions = data;
       });
-    this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection()).subscribe(data => {
+    let securityInfo: string = localStorage.getItem('token')?.toString() || '';
+    this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection(), securityInfo).subscribe(data => {
       this.idolresultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
       this.idolresultsSummary.predicted = data.autnresponse.responsedata.predicted;
       this.idolresultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);

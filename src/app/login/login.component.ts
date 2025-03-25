@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
-
+import { Autnresponse } from '../interfaces/ICommunityUserReadResponse';
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule],
@@ -23,7 +23,7 @@ export class LoginComponent {
     const password = this.form.controls.password.value;
 
     this.loginService.login(username ?? '', password ?? '').subscribe({
-      next: success => {
+      next: (success) => {
         if (success) {
           // Handle successful login, possibly redirecting the user
           this.loginFailed = false;
@@ -39,5 +39,7 @@ export class LoginComponent {
         this.loginFailed = true;
       },
     });
+
+
   }
 }

@@ -51,14 +51,19 @@ export class AnswerService {
       })
     );
   }
-  async ask(question: string, databaseMatch: string) {
+  async ask(question: string, databaseMatch: string, securityInfo: string) {
     let answerSystem: string = localStorage.getItem('selectedSearchAnswerSystem') ?? 'AlbertVector';
     let defaultOperator: string = localStorage.getItem('selectedOperator') ?? 'WNEAR';
+    let customizationData = [{
+      "system_name": answerSystem,
+      "security_info": securityInfo
+    }]
     let params = new HttpParams()
       .set('action', 'ask')
       .set('text', question)
       .set('SystemNames', answerSystem)
       .set('AnyLanguage', 'true')
+      .set('CustomizationData', JSON.stringify(customizationData))
       .set('DefaultOperator', defaultOperator)
       .set('DatabaseMatch', databaseMatch)
       .set('ResponseFormat', 'simplejson');
