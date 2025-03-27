@@ -50,20 +50,18 @@
               <tr>
                 <th class="text-left pr-4 w-[10%]">Database</th>
                 <th class="text-left pr-4">Title</th>
-                <th class="text-left">Link</th>
               </tr>
             </thead>
             <tbody>
               @for (source of sources; track source) {
                 <tr>
                   <td class="pr-4 truncate w-[10%]">{{ source['@database'] }}</td>
-                  <td class="pr-4 truncate">{{ source['@title'] || 'No title' }}</td>
-                  <td>
+                  <td class="pr-4 truncate">
                     <a
-                      class="block text-blue-500 underline text-xs truncate cursor-pointer"
-                      (click)="selectSource(source)"
-                      >{{ source['@ref'] }}</a
-                    >
+                    class="block text-blue-500 underline text-xs truncate cursor-pointer"
+                    (click)="selectSource(source)"
+                    >{{ source['@title'] }}</a
+                  >
                   </td>
                 </tr>
               }
@@ -145,7 +143,7 @@
         <h1 class="text-lg font-medium mb-1">
           Previewing - {{ selectedSource['@title'] || 'No title' }}
         </h1>
-        <a class="block text-sm text-gray-700 mb-2">{{ selectedSource['@ref'] }}</a>
+        <div>{{ previewing_title }}</div>
 
         <button
           class="absolute top-2 right-2 text-gray-500"

@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment.prod';
+import { IContentSingleResponse } from '../interfaces/IcontentSingleResponse';
 import { IContentResponse } from '../interfaces/IcontentResponse';
 import { IQMSModelEncodeResponse } from '../interfaces/Iqmsmodel';
 import { IQMSPromotionResult } from '../interfaces/IQMSPromotionResult';
@@ -36,6 +37,14 @@ export class QmsService {
       })
     );
   }
+  returnSingleResponse(url: string, params: HttpParams): Observable<IContentSingleResponse> {
+    return this.http.get<IContentSingleResponse>(url, { params }).pipe(
+      catchError(error => {
+        console.error('Error fetching data', error);
+        return throwError('Error fetching data');
+      })
+    );
+  }
   returnQMSResponse(url: string, params: HttpParams): Observable<IQMSPromotionResult> {
     return this.http.get<IQMSPromotionResult>(url, { params }).pipe(
       catchError(error => {
@@ -43,6 +52,17 @@ export class QmsService {
         return throwError('Error fetching data');
       })
     );
+  }
+
+  getContent(security_info:string, reference: string): Observable<IContentSingleResponse> {
+    let params = new HttpParams()
+      .set('action', 'GETCONTENT')
+      .set('reference', encodeURIComponent(reference))
+      .set('securityinfo', security_info)
+      .set('ActionID', 'webui.idoldemos.net')
+      .set('ResponseFormat', 'simplejson');
+    const url = `${environment.qms_api}/`;
+    return this.returnSingleResponse(url, params);
   }
   getVectorResults(vector: string, databases: string): Observable<IContentResponse> {
     const summaryOption = localStorage.getItem('selectedSummaryOption') ?? 'Context';

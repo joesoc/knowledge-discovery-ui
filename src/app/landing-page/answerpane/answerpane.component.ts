@@ -10,6 +10,9 @@ import { HttpClient } from '@angular/common/http';
 import { HighlightingService } from 'src/app/services/highlighting/highlighting.service';
 import { toast } from 'ngx-sonner';
 import { catchError, lastValueFrom, of } from 'rxjs';
+import { QmsService } from 'src/app/services/qms.service';
+import { IContentResponse } from 'src/app/interfaces/IcontentResponse';
+import { IContentSingleResponse } from 'src/app/interfaces/IcontentSingleResponse';
 
 @Component({
     selector: 'app-answerpane',
@@ -24,7 +27,7 @@ export class AnswerpaneComponent {
 
   private readonly sanitizer = inject(DomSanitizer);
   private readonly http = inject(HttpClient);
-
+  private readonly qmsService = inject(QmsService);
   currentIndex: number = 0;
   @Input() question:string = "";
   @Input() answers: Answer[] | RagAnswer[] = []; // Add your answers here
@@ -33,7 +36,7 @@ export class AnswerpaneComponent {
 
   showPreview: boolean = false;
   showAllSources = false;
-
+  previewing_title: string = ''
   selectedSource: Source | undefined;
 
   response: 'positive' | 'negative' | 'neutral' = 'neutral';
@@ -137,7 +140,12 @@ export class AnswerpaneComponent {
  if (!this.selectedSource) {
       return;
     }
-
+    let security_info_string = localStorage.getItem('token') ?? '';
+    let ref = this.selectedSource?.['@ref'];
+    this.qmsService.getContent(security_info_string, ref).subscribe((response: IContentSingleResponse) => {
+      let display_url = response.autnresponse.responsedata.hit.reference;
+      this.previewing_title = display_url;
+    });
     let links = this.currentAnswer['text'];
     let text = this.selectedSource?.['text'];
     let url = this.selectedSource?.['@ref'];
@@ -146,11 +154,11 @@ export class AnswerpaneComponent {
     )}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links=${encodeURIComponent(
       links
     )}&Boolean=true&OutputType=HTML&MultiHighlight=False&StartTag=<a id="LinkMark"><span style="background-color: yellow; color: black;"><strong>&EndTag=</strong></span></a>#LinkMark`;
-    console.log("Viewing  URL " + `${environment.view_api}${url}`);
     this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
 
       `${environment.view_api}${url}`
     )
+    
   }
 
   async setResponse(response: 'positive' | 'negative' | 'neutral') {
