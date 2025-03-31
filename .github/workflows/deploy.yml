@@ -30,7 +30,7 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "dist/vector-search-ui/**/*"
+        source: "dist/vector-search-ui/*,dist/vector-search-ui/assets/*"
         target: "/home/vinay/projects/ssl_nifi/nginx/vector-search-ui"
         rm: true
         strip_components: 2
