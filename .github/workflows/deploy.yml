@@ -1,0 +1,44 @@
+name: CI/CD to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '21.4.0'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npx nx run VectorSearchUI:build:production --verbose
+
+    - name: Copy build to server via SSH
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "dist/*"
+        target: "/home/vinay/projects/ssl_nifi/nginx/vector-search-ui"
+
+    - name: Restart Nginx
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /home/vinay/projects/ssl_nifi/
+          ./bounce.sh nginx
