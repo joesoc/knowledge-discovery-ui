@@ -32,7 +32,6 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "dist/vector-search-ui/*,dist/vector-search-ui/assets"
         target: "/home/vinay/projects/ssl_nifi/nginx/vector-search-ui"
-        rm: true
         strip_components: 2
 
     - name: Restart Nginx
