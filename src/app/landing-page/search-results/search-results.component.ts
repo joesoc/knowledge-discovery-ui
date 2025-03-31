@@ -40,9 +40,9 @@ export class SearchResultsComponent {
       return null;
     }
     let params = new URLSearchParams();
-    params.append('reference', item.reference);
+    params.append('Reference', item.autnidentifier);
     params.append('NoACI', 'true');
-    //params.append('SecurityInfo', encodeURIComponent(localStorage.getItem('token') as string));
+    params.append('SecurityInfo', localStorage.getItem('token') as string);
     params.append('EmbedImages', 'true');
     params.append('StripScript', 'true');
     params.append('Links', '');

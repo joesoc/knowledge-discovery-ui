@@ -111,7 +111,7 @@ export class QmsService {
       .set('sort', 'relevance')
       .set('anylanguage', 'true')
       .set('print', 'fields')
-      .set('printfields', 'DRETITLE')
+      .set('printfields', 'DRETITLE,AUTN_IDENTIFIER')
       .set('maxresults', '10')
       .set('Combine', 'Simple')
       .set('totalresults', 'true')

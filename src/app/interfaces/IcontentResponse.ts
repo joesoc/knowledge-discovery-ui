@@ -36,7 +36,7 @@ export interface Hit {
 }
 
 export interface Content {
-  DOCUMENT: Document[];
+  DOCUMENT: Document;
 }
 
 export interface Document {
@@ -44,4 +44,5 @@ export interface Document {
   DRETITLE: string[];
   WIKIPEDIA_CATEGORY?: string[];
   WIKIPEDIA_TOPIC?: string[];
+  AUTN_IDENTIFIER: string;
 }

@@ -192,10 +192,11 @@ export class LandingPageComponent {
           title: this.generateTitle(hit.title, hit.reference),
           reference: hit.reference,
           summary: hit.summary,
-          autnrank: hit.weight, // Add the autnrank property here
-        });
+          autnrank: hit.weight, 
+          autnidentifier: hit.content.DOCUMENT.AUTN_IDENTIFIER || ''
       });
     });
     console.log('Vector Results enabled');
+    });
   }
 }

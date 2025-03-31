@@ -3,4 +3,5 @@ export interface ISearchResultItem {
   summary: string;
   reference: string;
   autnrank: string;
+  autnidentifier: string;
 }
