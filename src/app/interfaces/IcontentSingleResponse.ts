@@ -44,4 +44,5 @@ export interface Document {
   DRETITLE: string[];
   WIKIPEDIA_CATEGORY?: string[];
   WIKIPEDIA_TOPIC?: string[];
+  AUTN_IDENTIFIER: string;
 }
