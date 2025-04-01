@@ -148,9 +148,8 @@ export class AnswerpaneComponent {
     });
     let links = this.currentAnswer['text'];
     let text = this.selectedSource?.['text'];
-    let url = this.selectedSource?.['@ref'];
-    url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(
-      url
+    let url = `?Action=View&NoACI=true&Reference=${encodeURIComponent(
+      ref
     )}&EmbedImages=true&StripScript=true&securityinfo=${encodeURIComponent(security_info_string)}&OriginalBaseURL=true&Links=${encodeURIComponent(
       links
     )}&Boolean=true&OutputType=HTML&MultiHighlight=False&StartTag=<a id="LinkMark"><span style="background-color: yellow; color: black;"><strong>&EndTag=</strong></span></a>#LinkMark`;
