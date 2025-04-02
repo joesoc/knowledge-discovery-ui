@@ -15,6 +15,19 @@ export interface ResponseData {
   totalhits: string;
   totaldbdocs: string;
   totaldbsecs: string;
+  querysummary: string;
+  qs: qs;
+}
+
+export interface qs {
+  element: element[];
+}
+export interface element {
+  "@pdocs": string;
+  "@poccs": string;
+  "@cluster": string;
+  "@docs": string;
+  "$": string;
 }
 
 export interface Hit {

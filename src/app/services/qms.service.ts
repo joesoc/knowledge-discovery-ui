@@ -116,6 +116,7 @@ export class QmsService {
       .set('Combine', 'Simple')
       .set('totalresults', 'true')
       .set('summary', summaryOption)
+      .set('QuerySummary', 'true')
       .set('characters', '250')
       .set('DefaultOperator', defaultoperator)
       .set('highlight', 'SummaryTerms')
