@@ -214,35 +214,41 @@ export class LandingPageComponent {
     this.answers = [];
     this.question = valueEmitted;
     this.fetchAnswer(this.question);
-    this.resultsSummary = {} as IResultSummary;
-    this.resultItems = [];
-    this.idolresultsItems = [];
-    this.idolresultsSummary = {} as IResultSummary;
-    this.searchkeyword = valueEmitted;
-    this.svcQms
-      .getQMSPromotions(this.searchkeyword, this.getDatabaseSelection())
-      .subscribe((data: IQMSPromotionResult) => {
-        this.showPromotions = true;
-        this.topPromotions = data;
+    if (this.question === 'What are the most common topics covered in this set of documents?'){
+      // don't propogate the search term to the results
+    }
+    else{
+      this.resultsSummary = {} as IResultSummary;
+      this.resultItems = [];
+      this.idolresultsItems = [];
+      this.idolresultsSummary = {} as IResultSummary;
+      this.searchkeyword = valueEmitted;
+      this.svcQms
+        .getQMSPromotions(this.searchkeyword, this.getDatabaseSelection())
+        .subscribe((data: IQMSPromotionResult) => {
+          this.showPromotions = true;
+          this.topPromotions = data;
+        });
+      let securityInfo: string = localStorage.getItem('token')?.toString() || '';
+      this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection(), securityInfo).subscribe(data => {
+        this.idolresultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
+        this.idolresultsSummary.predicted = data.autnresponse.responsedata.predicted;
+        this.idolresultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
+        this.idolresultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
+        this.idolresultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
+        data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
+          this.idolresultsItems.push({
+            title: this.generateTitle(hit.title, hit.reference),
+            reference: hit.reference,
+            summary: hit.summary,
+            autnrank: hit.weight, 
+            autnidentifier: hit.content.DOCUMENT.AUTN_IDENTIFIER || ''
+        });
+        this.queryResponseSummary = data.autnresponse.responsedata.qs;
       });
-    let securityInfo: string = localStorage.getItem('token')?.toString() || '';
-    this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection(), securityInfo).subscribe(data => {
-      this.idolresultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
-      this.idolresultsSummary.predicted = data.autnresponse.responsedata.predicted;
-      this.idolresultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
-      this.idolresultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
-      this.idolresultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
-      data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
-        this.idolresultsItems.push({
-          title: this.generateTitle(hit.title, hit.reference),
-          reference: hit.reference,
-          summary: hit.summary,
-          autnrank: hit.weight, 
-          autnidentifier: hit.content.DOCUMENT.AUTN_IDENTIFIER || ''
+      console.log('Vector Results enabled');
       });
-      this.queryResponseSummary = data.autnresponse.responsedata.qs;
-    });
-    console.log('Vector Results enabled');
-    });
-  }
+    }
+    }
+
 }
