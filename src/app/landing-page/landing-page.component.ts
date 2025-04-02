@@ -82,7 +82,7 @@ export class LandingPageComponent {
     const queryLanguage = `${language?.autnresponse.responsedata.language.toLowerCase()}utf8`;
 
     localStorage.setItem('QueryLanguage', queryLanguage);
-
+    
     console.log('Language: ', language?.autnresponse.responsedata.language);
     if (language?.autnresponse.responsedata.language === 'ENGLISH') {
       console.log('Language is English. Proceed with binary classification.');
@@ -95,6 +95,11 @@ export class LandingPageComponent {
       // Add a question mark to the query if it doesn't have one
       if (!question.endsWith('?')) {
         question += '?';
+      }
+
+      // Check if the question matches the specific query
+      if (question === "What are the most common topics covered in this set of documents?") {
+        
       }
       this.answers = [];
       this.question = question;
