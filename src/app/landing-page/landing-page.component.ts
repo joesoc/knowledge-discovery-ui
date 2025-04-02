@@ -2,8 +2,8 @@ import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
 import { Store } from '@ngrx/store';
-import { RagAnswer } from '../interfaces/IAnswerServerRAGResponse';
-import { Answer } from '../interfaces/IAnswerServerResponse';
+import { RagAnswer, RagMetadata, Sources } from '../interfaces/IAnswerServerRAGResponse';
+import { Answer, Classification, Classifications, Context, Metadata, Paragraph, Subject, Windows } from '../interfaces/IAnswerServerResponse';
 import { Hit } from '../interfaces/IcontentResponse';
 import { IQMSPromotionResult } from '../interfaces/IQMSPromotionResult';
 import { ISearchResultItem } from '../interfaces/IsearchResultItem';
@@ -26,6 +26,8 @@ import { ResultsCountComponent } from './results-count/results-count.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { PeopleAlsoAskedComponent } from "../people-also-asked/people-also-asked.component";
 import { SettingsService } from '../services/settings.service';
+import { AgenticService } from '../services/agentic.service';
+import { qs } from '../interfaces/IcontentResponse';
 
 @Component({
   selector: 'app-landing-page',
@@ -48,6 +50,7 @@ import { SettingsService } from '../services/settings.service';
 export class LandingPageComponent {
   private readonly store = inject(Store);
   private readonly llm = inject(LlmService);
+  private readonly agentic_service = inject(AgenticService)
   readonly showVectorResults$ = this.store.select(selectShowVectorSearchResults);
   readonly showIdolResults$ = this.store.select(selectShowIdolSearchResults);
 
@@ -63,6 +66,7 @@ export class LandingPageComponent {
   showPromotions = true;
   loadingPeopleAlsoAsked = false;
   showPeopleAlsoAsked = false;
+  queryResponseSummary: qs = {} as qs;
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
   }
@@ -74,7 +78,6 @@ export class LandingPageComponent {
     this.loading = true;
     this.loading_answer_pane = true;
     this.loadingPeopleAlsoAsked = true;
-
     // Check if the text is actually a question
 
     const language = await this.dahService.getLanguage(question).toPromise();
@@ -99,22 +102,59 @@ export class LandingPageComponent {
 
       // Check if the question matches the specific query
       if (question === "What are the most common topics covered in this set of documents?") {
-        
-      }
-      this.answers = [];
-      this.question = question;
-      let securityInfo: string = localStorage.getItem('token')?.toString() || '';
-      (await this.answerService.ask(question, this.getDatabaseSelection(), securityInfo)).subscribe(data => {
-        this.answers = data.autnresponse.responsedata.answers
-          ? data.autnresponse.responsedata.answers.answer
-          : [];
-        this.questionService.setQuestion(question);
-        // this.questionService.setAnswer(this.answers);
+        this.agentic_service.getTermSummary(this.queryResponseSummary).subscribe((response) => {
+          // Handle the response here if needed
+          response.choices.forEach((choice) => {
+            if (choice.message) {
+              const content = choice.message.content;
+              let answer: Answer & RagAnswer = {
+                '@answer_type': 'text',
+                '@system_name': 'Agentic Summary',
+                text: content,
+                score: '0',
+                interpretation: '0',
+                source: 'Agentic Summary from Mistral',
+                metadata: {
+                  paragraph: { $: "" } as Paragraph,
+                  windows: { window: "" } as Windows,
+                  classifications: {
+                    classification: {
+                      $: ""
+                    } as Classification,
+                  } as Classifications,
+                  context: {
+                    subject: [] as Subject[],
+                  } as Context,
+                  verified_response: 'True',
+                  sources: {} as Sources // Added the required 'sources' property
+                }
+              };
+              this.answers.push(answer);
+            }
+          });
+        })
         this.gotAnswers = true;
         this.loading_answer_pane = false;
         this.loadingPeopleAlsoAsked = false;
         this.duration = performance.now() - start;
-      });
+      }
+      else{
+        this.answers = [];
+        this.question = question;
+        let securityInfo: string = localStorage.getItem('token')?.toString() || '';
+        (await this.answerService.ask(question, this.getDatabaseSelection(), securityInfo)).subscribe(data => {
+          this.answers = data.autnresponse.responsedata.answers
+            ? data.autnresponse.responsedata.answers.answer
+            : [];
+          this.questionService.setQuestion(question);
+          // this.questionService.setAnswer(this.answers);
+          this.gotAnswers = true;
+          this.loading_answer_pane = false;
+          this.loadingPeopleAlsoAsked = false;
+          this.duration = performance.now() - start;
+        });
+      }
+
     } else {
       console.log('Language is not English. Skip binary classification.');
       this.answers = [];
@@ -200,6 +240,7 @@ export class LandingPageComponent {
           autnrank: hit.weight, 
           autnidentifier: hit.content.DOCUMENT.AUTN_IDENTIFIER || ''
       });
+      this.queryResponseSummary = data.autnresponse.responsedata.qs;
     });
     console.log('Vector Results enabled');
     });

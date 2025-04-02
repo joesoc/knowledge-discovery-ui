@@ -12,7 +12,7 @@ export class AgenticService {
   constructor(private http: HttpClient) { } // Inject HttpClient
   getTermSummary(qs: qs ): Observable<ChatCompletion> {
     return this.http.post<ChatCompletion>(`/api/agents/completions`,{
-      agent_id:'',
+      agent_id: "ag:b1a2545d:20250401:untitled-agent:adddfb95",
       messages: [
         {
           role: 'user',
