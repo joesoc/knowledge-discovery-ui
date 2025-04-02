@@ -4,6 +4,7 @@
 >
 </app-header>
 
+
 @if (loading_answer_pane) {
   <div class="flex justify-center">
     <app-loading-indicator />
@@ -100,6 +101,10 @@
     [duration]="duration"
     [gotAnswers]="gotAnswers"
   />
+}
+
+@if (agenticAnswer) {
+  <app-agentic-answer [answer]="agenticAnswer" [question]="question" [duration]="duration" />
 }
 
 

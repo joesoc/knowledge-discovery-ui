@@ -1,0 +1,15 @@
+<div class="px-6 pt-6">
+  <div
+    class="rounded-lg border border-gray-200 p-4 bg-gray-100 shadow-sm relative overflow-hidden"
+  >
+    <div class="answer-content overflow-hidden">
+        <span class="text-xs text-gray-500">Question:</span>
+        <h3 class="text-base font-medium mb-2">{{ question() }}</h3>
+
+        <span class="text-xs text-gray-500">Answer:</span>
+        <div class="font-medium text-base mb-1" [innerHTML]="content()"></div>
+
+        <div class="text-xs text-gray-500 text-right">Retrieved answer in {{ duration()! / 1000 | number: '1.0-3' }} seconds</div>
+    </div>
+  </div>
+</div>

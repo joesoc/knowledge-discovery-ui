@@ -83,10 +83,18 @@ export class HeaderComponent {
 
   activeDescendantManager?: ActiveDescendantKeyManager<TypeaheadSuggestionComponent>;
 
+  lastSearchTerm: string | undefined = undefined;
+
   propogateSearchTerm(value: string) {
     if (!value || value.trim() === '') {
       console.warn('A search term must be supplied.'); // Move this inside the if block
     } else {
+      if (this.lastSearchTerm === value.trim()) {
+        return;
+      }
+
+      this.lastSearchTerm = value.trim();
+     
       const result = this.activeDescendantManager?.activeItem?.value;
 
       this.store.dispatch(TypeaheadActions.closeTypeahead());

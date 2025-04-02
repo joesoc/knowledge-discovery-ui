@@ -28,6 +28,8 @@ import { PeopleAlsoAskedComponent } from "../people-also-asked/people-also-asked
 import { SettingsService } from '../services/settings.service';
 import { AgenticService } from '../services/agentic.service';
 import { qs } from '../interfaces/IcontentResponse';
+import { ChatCompletion } from '../interfaces/IChatCompletionResponse';
+import { AgenticAnswerComponent } from './agentic-answer/agentic-answer.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -44,10 +46,12 @@ import { qs } from '../interfaces/IcontentResponse';
     LoadingIndicatorComponent,
     AsyncPipe,
     QmsPromotionComponent,
-    PeopleAlsoAskedComponent
+    PeopleAlsoAskedComponent,
+    AgenticAnswerComponent
 ],
 })
 export class LandingPageComponent {
+  private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
   private readonly llm = inject(LlmService);
   private readonly agentic_service = inject(AgenticService)
@@ -57,6 +61,7 @@ export class LandingPageComponent {
   topPromotions: IQMSPromotionResult = {} as IQMSPromotionResult;
   searchkeyword: string = '';
   answers: Answer[] | RagAnswer[] = []; // Add your answers here
+  agenticAnswer: ChatCompletion | null = null;
   gotAnswers: boolean = false;
   question: string = '';
   isChatOpen: boolean = false;
@@ -78,67 +83,43 @@ export class LandingPageComponent {
     this.loading = true;
     this.loading_answer_pane = true;
     this.loadingPeopleAlsoAsked = true;
+    this.agenticAnswer = null;
     // Check if the text is actually a question
 
-    const language = await this.dahService.getLanguage(question).toPromise();
-    // Store the result in local storage
-    const queryLanguage = `${language?.autnresponse.responsedata.language.toLowerCase()}utf8`;
-
-    localStorage.setItem('QueryLanguage', queryLanguage);
-    
-    console.log('Language: ', language?.autnresponse.responsedata.language);
-    if (language?.autnresponse.responsedata.language === 'ENGLISH') {
-      console.log('Language is English. Proceed with binary classification.');
-      const isQuestion = await this.llm.verifyInput(question);
-      if (!isQuestion) {
-        this.answers = [];
-        this.loading_answer_pane = false;
-        return;
-      }
-      // Add a question mark to the query if it doesn't have one
-      if (!question.endsWith('?')) {
-        question += '?';
-      }
+   
 
       // Check if the question matches the specific query
       if (question === "What are the most common topics covered in this set of documents?") {
         this.agentic_service.getTermSummary(this.queryResponseSummary).subscribe((response) => {
           // Handle the response here if needed
-          response.choices.forEach((choice) => {
-            if (choice.message) {
-              const content = choice.message.content;
-              let answer: Answer & RagAnswer = {
-                '@answer_type': 'text',
-                '@system_name': 'Agentic Summary',
-                text: content,
-                score: '0',
-                interpretation: '0',
-                source: 'Agentic Summary from Mistral',
-                metadata: {
-                  paragraph: { $: "" } as Paragraph,
-                  windows: { window: "" } as Windows,
-                  classifications: {
-                    classification: {
-                      $: ""
-                    } as Classification,
-                  } as Classifications,
-                  context: {
-                    subject: [] as Subject[],
-                  } as Context,
-                  verified_response: 'True',
-                  sources: {} as Sources // Added the required 'sources' property
-                }
-              };
-              this.answers.push(answer);
-            }
-          });
-        })
+          this.agenticAnswer = response;
+
         this.gotAnswers = true;
         this.loading_answer_pane = false;
         this.loadingPeopleAlsoAsked = false;
         this.duration = performance.now() - start;
+        });
       }
       else{
+        const language = await this.dahService.getLanguage(question).toPromise();
+        // Store the result in local storage
+        const queryLanguage = `${language?.autnresponse.responsedata.language.toLowerCase()}utf8`;
+    
+        localStorage.setItem('QueryLanguage', queryLanguage);
+        
+        console.log('Language: ', language?.autnresponse.responsedata.language);
+        if (language?.autnresponse.responsedata.language === 'ENGLISH') {
+          console.log('Language is English. Proceed with binary classification.');
+          const isQuestion = await this.llm.verifyInput(question);
+          if (!isQuestion) {
+            this.answers = [];
+            this.loading_answer_pane = false;
+            return;
+          }
+          // Add a question mark to the query if it doesn't have one
+          if (!question.endsWith('?')) {
+            question += '?';
+          }
         this.answers = [];
         this.question = question;
         let securityInfo: string = localStorage.getItem('token')?.toString() || '';
@@ -154,13 +135,14 @@ export class LandingPageComponent {
           this.duration = performance.now() - start;
         });
       }
+      else {
+        console.log('Language is not English. Skip binary classification.');
+        this.answers = [];
+        this.loading_answer_pane = false;
+        this.loadingPeopleAlsoAsked = false;
+      }
 
-    } else {
-      console.log('Language is not English. Skip binary classification.');
-      this.answers = [];
-      this.loading_answer_pane = false;
-      this.loadingPeopleAlsoAsked = false;
-    }
+    } 
   }
 
   resultsSummary: IResultSummary = {} as IResultSummary;
