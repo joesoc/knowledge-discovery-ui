@@ -41,6 +41,13 @@
     "changeOrigin": true,
     "logLevel": "debug"
   },
+  "/api/agents": {
+    "target": "https://webui.idoldemos.net/mistral",
+    "secure": false,
+    "pathRewrite": { "^/api/agents": "/agents" },
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
   "/api/answerbank": {
     "target": "https://webui.idoldemos.net/api/peoplealsoasked",
     "secure": false,
