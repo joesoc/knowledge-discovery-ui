@@ -111,7 +111,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
       this.answerService.converse(this.sessionID, '').subscribe(response => {
         let prompts: Prompt[] = response.autnresponse.responsedata.prompts;
         prompts.forEach(prompt => {
-          this.addMessage('Conversation Server', prompt.prompt, false);
+          this.addMessage('Answer Server', prompt.prompt, false);
         });
         this.setLoading(false);
       });
@@ -225,7 +225,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
               duration +
               ' seconds</span>'
           );
-          this.addMessage('Conversation Server', safeMessage, false);
+          this.addMessage('Answer Server', safeMessage, false);
         } else {
           if (prompt.valid_choices) {
             let response = prompt.prompt;
@@ -233,14 +233,14 @@ export class ChatComponent implements OnInit, AfterViewInit {
             let responseHTML = `${response}<br>`;
             let safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(responseHTML);
             this.addMessage(
-              'Conversation Server',
+              'Answer Server',
               safeMessage,
               false,
               prompt.valid_choices.valid_choice
             );
           } else {
             let safeMessage: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(prompt.prompt);
-            this.addMessage('Conversation Server', safeMessage, false);
+            this.addMessage('Answer Server', safeMessage, false);
           }
         }
 
