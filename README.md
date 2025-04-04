@@ -15,6 +15,8 @@ A sleek and intuitive **Angular**-based interface for interacting with OpenText 
 
 ### 🧾 Source Traceability
 - All answers link directly to their **source documents**, ensuring transparency and auditability.
+  ![image](https://github.com/user-attachments/assets/507b24a7-be43-454e-a220-f2f058d4840d)
+
 - Supports deep diving into PDFs and government reports with contextually extracted highlights.
 
 ### 🔐 Mapped Security Integration
