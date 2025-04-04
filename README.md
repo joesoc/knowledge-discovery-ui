@@ -10,6 +10,7 @@ A sleek and intuitive **Angular**-based interface for interacting with OpenText 
 
 ### 🧠 Topic Detection and Analytics
 - Identifies and ranks **frequent topics** across a document set.
+![image](https://github.com/user-attachments/assets/28e59ab2-26a1-4044-8d58-ba14dc0670c0)
 - Displays how many documents and occurrences are linked to each topic (e.g., “Audit of Government Ministries”, “Use of Public Resources”).
 
 ### 🧾 Source Traceability
@@ -25,6 +26,9 @@ A sleek and intuitive **Angular**-based interface for interacting with OpenText 
 - Example: Accurately determines that "Robotics team" attended a conference instead of the "Analytics team."
 
 ### 🤖 People Also Asked
+
+![image](https://github.com/user-attachments/assets/f2c0f475-25b2-48c3-9c25-c58f729853e9)
+
 - Auto-surfaces related questions to extend exploration and simulate a guided Q&A experience.
 - Makes enterprise document interrogation feel like a modern search engine.
 
@@ -39,17 +43,6 @@ A sleek and intuitive **Angular**-based interface for interacting with OpenText 
 - **Document Sources**: SharePoint, Exchange, File System
 - **Integration**: RESTful APIs
 
----
-
-## 📸 Screenshots
-
-1. **Chat-based Audit Q&A**
-
-  ![Results page](./screenshots/Results page.jpg)
-
-2. **Most Common Topics Overview**
-
-   ![Common topics](./screenshots/Common topics.jpg)
 
 ---
 
