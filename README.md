@@ -45,11 +45,11 @@ A sleek and intuitive **Angular**-based interface for interacting with OpenText 
 
 1. **Chat-based Audit Q&A**
 
-  ![Results page](./screenshots/Results page.jpg)
+  ![Results page](.\screenshots\Results page.jpg)
 
 2. **Most Common Topics Overview**
 
-   ![Common topics](./screenshots/Common topics.jpg)
+   ![Common topics](.\screenshots\Common topics.jpg)
 
 ---
 
