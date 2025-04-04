@@ -52,29 +52,40 @@ export class AnswerService {
     );
   }
   async ask(question: string, databaseMatch: string, securityInfo: string) {
-    let answerSystem: string = localStorage.getItem('selectedSearchAnswerSystem') ?? 'AlbertVector';
-    let defaultOperator: string = localStorage.getItem('selectedOperator') ?? 'WNEAR';
-    let customizationData = [{
-      "system_name": answerSystem,
-      "security_info": securityInfo
-    }]
+    const answerSystem: string = localStorage.getItem('selectedSearchAnswerSystem') ?? 'AlbertVector';
+    const defaultOperator: string = localStorage.getItem('selectedOperator') ?? 'WNEAR';
+  
     let params = new HttpParams()
       .set('action', 'ask')
       .set('text', question)
-      .set('SystemNames', answerSystem)
-      .set('AnyLanguage', 'true')
-      .set('CustomizationData', JSON.stringify(customizationData))
-      .set('DefaultOperator', defaultOperator)
-      .set('DatabaseMatch', databaseMatch)
       .set('ResponseFormat', 'simplejson');
+  
+    if (answerSystem === 'AnswerBank') {
+      params = params.set('SystemNames', 'AnswerBank');
+    } else {
+      const customizationData = [{
+        system_name: answerSystem,
+        security_info: securityInfo
+      }];
+  
+      params = params
+        .set('SystemNames', answerSystem)
+        .set('AnyLanguage', 'true')
+        .set('CustomizationData', JSON.stringify(customizationData))
+        .set('DefaultOperator', defaultOperator)
+        .set('DatabaseMatch', databaseMatch);
+    }
+  
     const baseUrl = `${environment.answerserver_api}`;
+  
     return this._http.get<IAnswerServerAskResponse | RAGResponse>(baseUrl, { params }).pipe(
       catchError(error => {
         console.error('Error fetching data', error);
-        return throwError('Error fetching data');
+        return throwError(() => new Error('Error fetching data'));
       })
     );
   }
+  
 
   getAnswerSystems(): Observable<System[]> {
     const baseUrl = `${environment.answerserver_api}`;
