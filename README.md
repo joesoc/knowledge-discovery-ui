@@ -10,6 +10,7 @@ A sleek and intuitive **Angular**-based interface for interacting with OpenText 
 
 ### 🧠 Topic Detection and Analytics
 - Identifies and ranks **frequent topics** across a document set.
+![image](https://github.com/user-attachments/assets/28e59ab2-26a1-4044-8d58-ba14dc0670c0)
 - Displays how many documents and occurrences are linked to each topic (e.g., “Audit of Government Ministries”, “Use of Public Resources”).
 
 ### 🧾 Source Traceability
