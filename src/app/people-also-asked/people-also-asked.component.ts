@@ -28,7 +28,7 @@ export class PeopleAlsoAskedComponent {
   constructor(private readonly settingsService: SettingsService) {
     this.questionService.question$.pipe(takeUntilDestroyed()).subscribe((question) => {
       this.isLoading.set(true);
-      this.isPeopleAlsoAskedEnabled = localStorage.getItem('peoplealsoaskedEnabled') === 'true';
+      this.isPeopleAlsoAskedEnabled = localStorage.getItem('peoplealsoaskedEnabled') === 'false';
       this.answerbank.getRelatedQuestions(question).subscribe((response) => {
         const qna_pairs: IAnswerBankResponse[] = Array.isArray(response) ? response : [];
 

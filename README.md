@@ -1,27 +1,75 @@
-# VectorSearchUI
+# Knowledge Discovery UI
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.4.
+A sleek and intuitive **Angular**-based interface for interacting with OpenText Knowledge Discovery (IDOL), built for enterprise-level unstructured data search and analysis. This application showcases advanced Q&A capabilities, topic mining, secure document access, and contextual insights drawn from official reports and internal documents.
 
-## Development server
+## 🚀 Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### 🔍 Natural Language Q&A
+- Ask questions in plain English and get precise answers extracted from large collections of enterprise documents.
+- Example: "Tell me about waste and fraud in the Singapore government" returns a clear summary backed by official audit sources.
 
-## Code scaffolding
+### 🧠 Topic Detection and Analytics
+- Identifies and ranks **frequent topics** across a document set.
+- Displays how many documents and occurrences are linked to each topic (e.g., “Audit of Government Ministries”, “Use of Public Resources”).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 🧾 Source Traceability
+- All answers link directly to their **source documents**, ensuring transparency and auditability.
+- Supports deep diving into PDFs and government reports with contextually extracted highlights.
 
-## Build
+### 🔐 Mapped Security Integration
+- Implements IDOL's **mapped ACL security**, allowing users to access only the documents permitted by their roles.
+- Supports connectors like SharePoint, Exchange, and File System for real-time ACL recognition.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 📊 Intelligent Disambiguation
+- Distinguishes similar-sounding entities or team names using contextual awareness.
+- Example: Accurately determines that "Robotics team" attended a conference instead of the "Analytics team."
 
-## Running unit tests
+### 🤖 People Also Asked
+- Auto-surfaces related questions to extend exploration and simulate a guided Q&A experience.
+- Makes enterprise document interrogation feel like a modern search engine.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## 🛠️ Tech Stack
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- **Frontend**: Angular
+- **Backend**: OpenText IDOL / Answer Server
+- **Search Engine**: Knowledge Discovery
+- **Authentication**: ACL-based Mapped Security
+- **Document Sources**: SharePoint, Exchange, File System
+- **Integration**: RESTful APIs
 
-## Further help
+---
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## 📸 Screenshots
+
+1. **Chat-based Audit Q&A**
+
+  ![Results page](./screenshots/Results page.jpg)
+
+2. **Most Common Topics Overview**
+
+   ![Common topics](./screenshots/Common topics.jpg)
+
+---
+
+## 📦 Deployment
+
+> _Instructions to be added soon_
+
+Currently deployed in a private demo environment.
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 👤 Maintainer
+
+**Vinay Joseph**  
+📧 vinay@vinayjoseph.com
+
+---

@@ -87,7 +87,7 @@ export class SettingsDialogComponent {
 
     // Retrieve the toggle state from local storage (default to false if not set)
     this.explicitUserProfileEnabled = localStorage.getItem('explicitUserProfileEnabled') === 'true';
-    this.peoplealsoaskedEnabled = localStorage.getItem('peoplealsoaskedEnabled') === 'true';
+    this.peoplealsoaskedEnabled = localStorage.getItem('peoplealsoaskedEnabled') === 'false';
   }
 
   toggleVectorSearchResultsPosition() {
