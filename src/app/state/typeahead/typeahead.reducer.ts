@@ -24,6 +24,7 @@ export const reducer = createReducer(
   on(TypeaheadActions.loadTypeaheadSuccess, (state, action) => ({
     ...state,
     loading: false,
+    isOpen: true,
     results: action.results,
   })),
   on(TypeaheadActions.loadTypeaheadFailure, state => ({

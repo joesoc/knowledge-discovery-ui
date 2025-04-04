@@ -70,7 +70,7 @@ export class LandingPageComponent {
   duration: number = 0;
   showPromotions = true;
   loadingPeopleAlsoAsked = false;
-  showPeopleAlsoAsked = false;
+  showPeopleAlsoAsked = this.settingsService.getPeopleAlsoAskedEnabled();
   queryResponseSummary: qs = {} as qs;
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;

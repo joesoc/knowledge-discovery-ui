@@ -24,11 +24,7 @@ export class SettingsDialogComponent {
   readonly showVectorSearchResults$ = this.store.select(selectShowVectorSearchResults);
   readonly showIdolSearchResults$ = this.store.select(selectShowIdolSearchResults);
   isComparisonSearchDisabled: boolean = true;
-  constructor(private settingsService: SettingsService) {
-    this.settingsService.previewEnabled$.subscribe(enabled => {
-      this.viewEnabled = enabled;
-    });
-  }
+  private settingsService = inject(SettingsService);
 
   @Output() close = new EventEmitter<void>();
   answerSystems: System[] = [];
@@ -65,8 +61,24 @@ export class SettingsDialogComponent {
   selectedSummaryOption?: SummaryOptions;
 
   explicitUserProfileEnabled: boolean = false; // New property
-  viewEnabled: boolean = false;
-  peoplealsoaskedEnabled: boolean = false;
+
+
+  get viewEnabled() {
+    return this.settingsService.getPreviewEnabled()
+  }
+
+  set viewEnabled(value: boolean) {
+    this.settingsService.setPreviewEnabled(value);
+  }
+
+  get peoplealsoaskedEnabled() {
+    return this.settingsService.getPeopleAlsoAskedEnabled()
+  }
+
+  set peoplealsoaskedEnabled(value: boolean) {
+    this.settingsService.setPeopleAlsoAskedEnabled(value);
+  }
+
   ngOnInit() {
     this.answerSystems = localStorage.getItem('answerSystems')
       ? JSON.parse(localStorage.getItem('answerSystems') ?? '[]')
@@ -87,7 +99,6 @@ export class SettingsDialogComponent {
 
     // Retrieve the toggle state from local storage (default to false if not set)
     this.explicitUserProfileEnabled = localStorage.getItem('explicitUserProfileEnabled') === 'true';
-    this.peoplealsoaskedEnabled = localStorage.getItem('peoplealsoaskedEnabled') === 'false';
   }
 
   toggleVectorSearchResultsPosition() {
@@ -125,8 +136,6 @@ export class SettingsDialogComponent {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement && inputElement.checked !== undefined) {
       this.viewEnabled = inputElement.checked;
-      localStorage.setItem('viewEnabled', inputElement.checked.toString());
-      this.settingsService.setPreviewEnabled(inputElement.checked);
     }
   }
   onPeopleAlsoAskedEnabled(event: Event) {
