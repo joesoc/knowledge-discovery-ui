@@ -39,17 +39,6 @@ A sleek and intuitive **Angular**-based interface for interacting with OpenText 
 - **Document Sources**: SharePoint, Exchange, File System
 - **Integration**: RESTful APIs
 
----
-
-## 📸 Screenshots
-
-1. **Chat-based Audit Q&A**
-
-  ![Results page](.\screenshots\Results page.jpg)
-
-2. **Most Common Topics Overview**
-
-   ![Common topics](.\screenshots\Common topics.jpg)
 
 ---
 
