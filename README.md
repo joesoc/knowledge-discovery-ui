@@ -25,6 +25,9 @@ A sleek and intuitive **Angular**-based interface for interacting with OpenText 
 - Example: Accurately determines that "Robotics team" attended a conference instead of the "Analytics team."
 
 ### 🤖 People Also Asked
+
+![image](https://github.com/user-attachments/assets/f2c0f475-25b2-48c3-9c25-c58f729853e9)
+
 - Auto-surfaces related questions to extend exploration and simulate a guided Q&A experience.
 - Makes enterprise document interrogation feel like a modern search engine.
 
