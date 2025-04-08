@@ -18,6 +18,7 @@ export class SettingsService {
 
   setVectorSearchEnabled(enabled: boolean) {
     this.vectorSearchEnabledSubject.next(enabled);
+    console.log('Vector search enabled:', enabled);
   }
 
   getPreviewEnabled() {

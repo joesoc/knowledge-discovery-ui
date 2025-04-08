@@ -30,6 +30,7 @@ import { AgenticService } from '../services/agentic.service';
 import { qs } from '../interfaces/IcontentResponse';
 import { ChatCompletion } from '../interfaces/IChatCompletionResponse';
 import { AgenticAnswerComponent } from './agentic-answer/agentic-answer.component';
+import { NifiService } from '../services/nifi.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -54,6 +55,7 @@ export class LandingPageComponent {
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
   private readonly llm = inject(LlmService);
+  private readonly nifiservice = inject(NifiService);
   private readonly agentic_service = inject(AgenticService)
   readonly showVectorResults$ = this.store.select(selectShowVectorSearchResults);
   readonly showIdolResults$ = this.store.select(selectShowIdolSearchResults);
@@ -195,6 +197,10 @@ export class LandingPageComponent {
     this.loading = true;
     this.answers = [];
     this.question = valueEmitted;
+    let username: string = localStorage.getItem('username')?.toString() || '';
+    this.nifiservice.postAudit(username, this.question).subscribe(data => {
+      console.log('Audit data sent successfully:', data);
+    });
     this.fetchAnswer(this.question);
     if (this.question === 'What are the most common topics covered in this set of documents?'){
       // don't propogate the search term to the results
