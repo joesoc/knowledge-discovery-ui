@@ -13,21 +13,12 @@ module.exports = {
     changeOrigin: true,
     logLevel: "debug"
   },
-  "/api/nifi/audit/search": {
-    target: "https://webui.idoldemos.net/api/nifi/audit/search",
+  "/vector/api/nifi/audit/search": {
+    target: "https://webui.idoldemos.net",
     secure: false,
-    pathRewrite: { "^/api/nifi/audit/search": "" },
+    pathRewrite: { "^/vector/api/nifi/audit/search": "/api/nifi/audit/search" },
     changeOrigin: true,
-    logLevel: "debug",
-    // Optional: Add debugging only to this route
-    onProxyReq: (proxyReq, req, res) => {
-      console.log(`[ProxyReq] ${req.method} ${req.url}`);
-    },
-    onProxyRes: (proxyRes, req, res) => {
-      console.log(`[ProxyRes] ${req.method} ${req.url} -> ${proxyRes.statusCode}`);
-    }
-
-    
+    logLevel: "debug"
   },
   "/api/view": {
     target: "https://view.idoldemos.net:9080",
