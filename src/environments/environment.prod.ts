@@ -8,4 +8,5 @@ export const environment = {
   community_api: 'api/community',
   answerbank_api: 'api/answerbank',
   mistral_api: 'https://llms.idoldemos.net/mistral/v1/completions',
+  nifiAuditUrl: 'api/nifi/audit/search'
 };
