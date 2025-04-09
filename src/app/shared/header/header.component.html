@@ -38,10 +38,10 @@
             <p class="mb-2">Save your search using the label and access them later. Once you save it you can start a conversation with your saved searches.</p>
 
             <h3 class="font-medium text-white mb-1">Name:</h3>
-            <input type="text" autocomplete="off" class="h-8 rounded-md ring-1 ring-white/10 px-3 text-sm bg-transparent focus:ring-blue-300 focus:bg-gray-800 outline-none mb-2" placeholder="Give a name for your saved search" />
+            <input #labelInput type="text" autocomplete="off" class="h-8 rounded-md ring-1 ring-white/10 px-3 text-sm bg-transparent focus:ring-blue-300 focus:bg-gray-800 outline-none mb-2" placeholder="Give a name for your saved search" />
 
             <div class="flex justify-end gap-x-2">
-              <button class="h-8 rounded-md px-3 bg-white text-gray-900 font-medium hover:bg-gray-50">Save</button>
+              <button class="h-8 rounded-md px-3 bg-white text-gray-900 font-medium hover:bg-gray-50" (click)="saveSearch(labelInput.value)">Save</button>
               <button class="h-8 rounded-md px-3 ring-1 ring-white/50 text-white hover:bg-white/10">Cancel</button>
             </div>
           </div>
@@ -189,3 +189,13 @@
     <app-settings-dialog (close)="showSettingsDialog = false" />
   </ng-template>
 </div>
+
+@if (savedSearches.length) {
+<div class="flex border-b border-gray-200 h-12 px-8 items-center" ngpTabset>
+  <div class="flex gap-x-6 h-full" ngpTabList>
+    @for (search of savedSearches; track search.stateId) {
+      <button ngpTabButton [ngpTabButtonValue]="search.label" (click)="loadSavedSearch(search)" class="border-b-2 h-full px-2 -mb-px text-sm py-2 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 border-transparent border-gray-900 hover:bg-gray-100">{{ search.label }}</button>
+    }
+  </div>
+</div>
+}

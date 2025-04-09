@@ -91,7 +91,7 @@ export class QmsService {
     const url = `${environment.qms_api}/`;
     return this.returnResponse(url, params);
   }
-  getResults(query: string, databases: string, securityInfo: string): Observable<IContentResponse> {
+  getResults(query: string, databases: string, securityInfo: string, stateId?: string): Observable<IContentResponse> {
     const explicitUserProfileEnabled =
       localStorage.getItem('explicitUserProfileEnabled') === 'true';
     const username = localStorage.getItem('username') ?? '';
@@ -130,6 +130,11 @@ export class QmsService {
       console.log('Explicit User Profile Enabled: ', explicitUserProfileEnabled);
       params = params.set('ExplicitProfiling', 'True').set('Username', username);
     }
+
+    if (stateId) {
+      params = params.set('StateMatchID', stateId).set('text', '*')
+    }
+
     const url = `${environment.qms_api}/`;
     return this.returnResponse(url, params);
   }

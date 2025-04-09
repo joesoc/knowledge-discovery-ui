@@ -2,6 +2,25 @@ export interface DahResponse {
   autnresponse: Autnresponse;
 }
 
+export interface StoreStateResponse {
+  autnresponse: {
+    action: string;
+    response: string;
+    responsedata: {
+      state: string;
+      numhits: string;
+      predicted: string;
+      totalhits: string;
+      totaldbdocs: string;
+      totaldbsecs: string;
+      engines: {
+        "used": string;
+      }
+    };
+  }
+}
+
+
 export interface Autnresponse {
   action: string;
   response: string;

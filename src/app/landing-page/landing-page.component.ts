@@ -13,7 +13,7 @@ import { DahService } from '../services/dah.service';
 import { LlmService } from '../services/llm.service';
 import { QmsService } from '../services/qms.service';
 import { QuestionService } from '../services/question.service';
-import { HeaderComponent } from '../shared/header/header.component';
+import { HeaderComponent, SavedSearch } from '../shared/header/header.component';
 import { LoadingIndicatorComponent } from '../shared/loading-indicator/loading-indicator.component';
 import {
   selectShowIdolSearchResults,
@@ -52,6 +52,7 @@ import { NifiService } from '../services/nifi.service';
 ],
 })
 export class LandingPageComponent {
+
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
   private readonly llm = inject(LlmService);
@@ -239,4 +240,32 @@ export class LandingPageComponent {
     }
     }
 
+    onSavedSearchClick(search: SavedSearch) {
+      this.showPromotions = false;
+    this.loading = true;
+    this.answers = [];
+      this.resultsSummary = {} as IResultSummary;
+      this.resultItems = [];
+      this.idolresultsItems = [];
+      this.idolresultsSummary = {} as IResultSummary;
+      let securityInfo: string = localStorage.getItem('token')?.toString() || '';
+      this.svcQms.getResults(this.searchkeyword, this.getDatabaseSelection(), securityInfo, search.stateId).subscribe(data => {
+        this.idolresultsSummary.numhits = parseInt(data.autnresponse.responsedata.numhits);
+        this.idolresultsSummary.predicted = data.autnresponse.responsedata.predicted;
+        this.idolresultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
+        this.idolresultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
+        this.idolresultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
+        data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
+          this.idolresultsItems.push({
+            title: this.generateTitle(hit.title, hit.reference),
+            reference: hit.reference,
+            summary: hit.summary,
+            autnrank: hit.weight, 
+            autnidentifier: hit.content.DOCUMENT.AUTN_IDENTIFIER || ''
+        });
+        this.queryResponseSummary = data.autnresponse.responsedata.qs;
+        this.loading = false;
+      });
+      });
+    }
 }

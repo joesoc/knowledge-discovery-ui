@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.prod';
-import { DahResponse, Database } from '../interfaces/IDahResponse';
+import { DahResponse, Database, StoreStateResponse } from '../interfaces/IDahResponse';
 import { LanguageIdentification } from '../interfaces/ILanguageIdentification';
 
 @Injectable({
@@ -29,6 +29,21 @@ export class DahService {
     let params = new HttpParams().set('action', 'GetStatus').set('responseformat', 'simplejson');
     return this.http.get<DahResponse>(this.dahUrl, { params }).pipe(
       map(response => response.autnresponse.responsedata.databases.database) // Adjusted to the correct path
+    );
+  }
+
+  saveSearch(query: string): Observable<StoreStateResponse['autnresponse']['responsedata']> {
+    const params = new HttpParams()
+      .set('action', 'Query')
+      .set('totalresults', 'true')
+      .set('anylanguage', 'true')
+      .set('text', query)
+      .set('storestate', 'true')
+      .set('print', 'NoReults')
+      .set('responseformat', 'simplejson');
+
+    return this.http.get<StoreStateResponse>(this.dahUrl, { params }).pipe(
+      map(response => response.autnresponse.responsedata)
     );
   }
 }

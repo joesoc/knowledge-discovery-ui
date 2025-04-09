@@ -35,6 +35,8 @@ import { selectDatabaseCount, selectDatabases } from '../../state/database/datab
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { TypeaheadSuggestionComponent } from './typeahead-suggestion/typeahead-suggestion.component';
 import { NgpPopover, NgpPopoverTrigger } from 'ng-primitives/popover';
+import { NgpTabList, NgpTabButton, NgpTabset } from 'ng-primitives/tabs';
+import { DahService } from 'src/app/services/dah.service';
 
 @Component({
   selector: 'app-header',
@@ -54,16 +56,16 @@ import { NgpPopover, NgpPopoverTrigger } from 'ng-primitives/popover';
     TypeaheadSuggestionComponent,
     NgIcon,
     NgpPopover,
-    NgpPopoverTrigger
+    NgpPopoverTrigger,
+    NgpTabList, NgpTabButton, NgpTabset
   ],
   providers: [provideIcons({ lucideLogOut, lucideSave })],
 })
 export class HeaderComponent {
-
-
   private readonly store = inject(Store);
   private readonly loginService = inject(LoginService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly dah = inject(DahService);
   readonly selectedDatabases$ = this.store.select(selectDatabases);
   readonly databaseCount$ = this.store.select(selectDatabaseCount);
   readonly typeaheadResults$ = this.store.select(selectTypeaheadResults);
@@ -79,6 +81,7 @@ export class HeaderComponent {
   @Output() selectedDatabasesChanged = new EventEmitter<string[]>();
   @Output() showVectorResultsChanged = new EventEmitter<boolean>();
   @Output() showIDOLResultsChanged = new EventEmitter<boolean>();
+  @Output() savedSearch = new EventEmitter<SavedSearch>();
 
   @ViewChildren(TypeaheadSuggestionComponent) suggestions?: QueryList<TypeaheadSuggestionComponent>;
 
@@ -118,7 +121,13 @@ export class HeaderComponent {
   dropdownOptions = [];
   selectedOptions: string[] = [];
 
+  get savedSearches(): SavedSearch[] {
+    return JSON.parse(localStorage.getItem('savedsearches') ?? '[]');
+  }
+
   protected readonly searchContainer = viewChild.required<ElementRef<HTMLElement>>('searchContainer');
+
+  protected readonly saveSearchTrigger = viewChild(NgpPopoverTrigger);
 
   constructor(private http: HttpClient) {}
 
@@ -229,4 +238,24 @@ export class HeaderComponent {
   onTypeaheadSuggestionHover(result: string,index: number) {
     this.activeDescendantManager?.setActiveItem(index);
   }
+
+  saveSearch(label: string): void {
+      this.dah.saveSearch(this.searchTerm).subscribe(response => {
+        const savedSearches = JSON.parse(localStorage.getItem('savedsearches') ?? '[]') as SavedSearch[];
+
+        savedSearches.push({ label: label, stateId: response.state });
+        localStorage.setItem('savedsearches', JSON.stringify(savedSearches));
+
+        this.saveSearchTrigger()?.hide();
+      })
+  }
+  
+  loadSavedSearch(search: SavedSearch) {
+    this.savedSearch.emit(search);
+  }
+}
+
+export interface SavedSearch {
+  label: string;
+  stateId: string;
 }
