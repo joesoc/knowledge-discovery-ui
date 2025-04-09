@@ -18,7 +18,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideLogOut } from '@ng-icons/lucide';
+import { lucideLogOut, lucideSave } from '@ng-icons/lucide';
 import { Store } from '@ngrx/store';
 import { Subject, debounceTime } from 'rxjs';
 import { TypeaheadActions } from 'src/app/state/typeahead/typeahead.actions';
@@ -34,6 +34,7 @@ import { DatabaseActions } from '../../state/database/database.actions';
 import { selectDatabaseCount, selectDatabases } from '../../state/database/database.selectors';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { TypeaheadSuggestionComponent } from './typeahead-suggestion/typeahead-suggestion.component';
+import { NgpPopover, NgpPopoverTrigger } from 'ng-primitives/popover';
 
 @Component({
   selector: 'app-header',
@@ -51,8 +52,11 @@ import { TypeaheadSuggestionComponent } from './typeahead-suggestion/typeahead-s
     AsyncPipe,
     FormsModule,
     TypeaheadSuggestionComponent,
+    NgIcon,
+    NgpPopover,
+    NgpPopoverTrigger
   ],
-  providers: [provideIcons({ lucideLogOut })],
+  providers: [provideIcons({ lucideLogOut, lucideSave })],
 })
 export class HeaderComponent {
 
