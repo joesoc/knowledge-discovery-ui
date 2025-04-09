@@ -257,7 +257,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   showPreview(url: string) {
     this.rawUrl = url;
-  
+    const token = localStorage.getItem('token');
     // Strip HTML tags from this.answer_text
     const strippedAnswerText = this.answer_text.replace(/<\/?[^>]+(>|$)/g, ""); 
     console.log("Stripped Answer Text: ", strippedAnswerText);
@@ -265,7 +265,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
       url
     )}&EmbedImages=true&StripScript=true&OriginalBaseURL=true&Links=${encodeURIComponent(
       strippedAnswerText
-    )}&Boolean=true&OutputType=HTML#LinkMark`;
+    )}&Boolean=true&SecurityInfo=${encodeURIComponent(token ?? '')}&OutputType=HTML#LinkMark`;
   
     this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       `${environment.view_api}${url}`
