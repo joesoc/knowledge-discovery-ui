@@ -71,7 +71,7 @@ export class HeaderComponent {
   readonly typeaheadResults$ = this.store.select(selectTypeaheadResults);
   readonly typeaheadLoading$ = this.store.select(selectTypeaheadLoading);
   readonly typeaheadShowResults$ = this.store.select(selectTypeaheadShowResults);
-
+  userSavedSearches: SavedSearch[] = [];
   username = localStorage.getItem('username') ?? '';
   searchTerm: string = '';
   readonly didSearch$ = new Subject<string>();
@@ -137,6 +137,7 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
+    this.filterSavedSearches();
     // Subscribe to state changes for selected databases
     this.selectedDatabases$.subscribe(databases => {
       this.selectedOptions = databases;
@@ -167,6 +168,9 @@ export class HeaderComponent {
       });
   }
 
+  filterSavedSearches(){
+    this.userSavedSearches = this.savedSearches.filter((s) => s.username === this.username);
+  }
   ngAfterViewInit() {
     this.activeDescendantManager = new ActiveDescendantKeyManager(this.suggestions!)
       .withVerticalOrientation()
@@ -240,10 +244,11 @@ export class HeaderComponent {
   }
 
   saveSearch(label: string): void {
+      let username = localStorage.getItem('username') ?? '';
       this.dah.saveSearch(this.searchTerm).subscribe(response => {
         const savedSearches = JSON.parse(localStorage.getItem('savedsearches') ?? '[]') as SavedSearch[];
 
-        savedSearches.push({ label: label, stateId: response.state });
+        savedSearches.push({ label: label, stateId: response.state, username: username });
         localStorage.setItem('savedsearches', JSON.stringify(savedSearches));
 
         this.saveSearchTrigger()?.hide();
@@ -258,4 +263,5 @@ export class HeaderComponent {
 export interface SavedSearch {
   label: string;
   stateId: string;
+  username: string
 }

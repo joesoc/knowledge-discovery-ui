@@ -39,6 +39,7 @@ export class DahService {
       .set('anylanguage', 'true')
       .set('text', query)
       .set('storestate', 'true')
+      .set('StoredStateTokenLifetime','-1')
       .set('print', 'NoReults')
       .set('responseformat', 'simplejson');
 

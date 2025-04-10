@@ -41,7 +41,25 @@
         </select>
       </div>
     </div>
+    <div class="flex flex-col gap-y-4">
+      <div class="flex gap-x-4 items-center">
+        <label
+          class="block text-sm font-medium text-gray-900 whitespace-nowrap w-[155px] flex-none"
+          for="chat-settings__answer-server"
+          >Saved Search</label
+        >
 
+        <select
+          class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
+          id="chat-chat-settings__saved-search"
+          name="selectedSavedSearch"
+        >
+          <option *ngFor="let savedSearch of savedSearches" [value]="savedSearch.stateId">
+            {{ savedSearch.label }}
+          </option>
+        </select>
+      </div>
+    </div>
     <!-- Footer -->
     <div class="flex justify-end">
       <button

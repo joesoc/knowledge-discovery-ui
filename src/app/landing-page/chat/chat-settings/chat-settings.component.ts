@@ -6,6 +6,7 @@ import { Database } from 'src/app/interfaces/IDahResponse';
 import { AnswerService } from 'src/app/services/answer.service';
 import { DahService } from 'src/app/services/dah.service';
 import { DataService } from 'src/app/services/data.service';
+import { SavedSearch } from 'src/app/shared/header/header.component';
 
 @Component({
   selector: 'app-chat-settings',
@@ -16,10 +17,12 @@ import { DataService } from 'src/app/services/data.service';
 export class ChatSettingsComponent {
   databases: Database[] = [];
   answerSystems: System[] = [];
+  savedSearches: SavedSearch[] = [];
   loadingDatabase = true;
   selectedDatabase: string = '';
   selectedAnswerSystem: string = '';
   securityinfo: string = '';
+  username: string = '';
 
   constructor(
     private dahService: DahService,
@@ -27,13 +30,18 @@ export class ChatSettingsComponent {
     private dataService: DataService
   ) {
     // populate the databases and answer systems
+    const allSavedSearches = JSON.parse(localStorage.getItem('savedsearches') ?? '[]');
+    console.log('All saved searches:', allSavedSearches);
+    this.username = localStorage.getItem('username') ?? '';
     this.databases = JSON.parse(localStorage.getItem('databases') ?? '[]');
     this.answerSystems = JSON.parse(localStorage.getItem('answerSystems') ?? '[]');
+    this.savedSearches = JSON.parse(localStorage.getItem('savedsearches') ?? '[]')
+          .filter((s: { username: string; }) => s.username === this.username);
+    console.log('Filtered saved searches for user', this.username, ':', this.savedSearches);
     this.securityinfo = localStorage.getItem('token') ?? '';
     this.dahService.getDatabases().subscribe(
       (dbs: Database[]) => {
         this.databases = dbs;
-        console.table(this.databases);
         // cache the databases in local storage
         localStorage.setItem('databases', JSON.stringify(this.databases));
       },

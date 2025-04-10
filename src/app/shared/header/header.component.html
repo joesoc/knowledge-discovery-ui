@@ -189,12 +189,13 @@
     <app-settings-dialog (close)="showSettingsDialog = false" />
   </ng-template>
 </div>
-
-@if (savedSearches.length) {
-<div class="flex border-b border-gray-200 h-12 px-8 items-center" ngpTabset>
-  <div class="flex gap-x-6 h-full" ngpTabList>
+@if (userSavedSearches.length) {
+<div class="flex border-b border-gray-200 h-10 px-8 items-center" ngpTabset>
+  <div class="flex gap-x-2 h-full" ngpTabList>
     @for (search of savedSearches; track search.stateId) {
-      <button ngpTabButton [ngpTabButtonValue]="search.label" (click)="loadSavedSearch(search)" class="border-b-2 h-full px-2 -mb-px text-sm py-2 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 border-transparent border-gray-900 hover:bg-gray-100">{{ search.label }}</button>
+      @if (search.username == this.username){
+        <button ngpTabButton [ngpTabButtonValue]="search.label" (click)="loadSavedSearch(search)" class="border-b-2 h-full px-2 -mb-px text-sm py-2 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 border-transparent border-gray-900 hover:bg-gray-100">{{ search.label }}</button>
+      }
     }
   </div>
 </div>
