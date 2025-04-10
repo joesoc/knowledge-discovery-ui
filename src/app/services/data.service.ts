@@ -12,7 +12,8 @@ export class DataService {
     sessionId: string,
     database: string,
     answerServerSystem: string,
-    securityinfo: string
+    securityinfo: string,
+    selectedSavedSearchStateID: string = ''
   ) {
     const url = `${environment.mlmodels_api}/redis/add`; // Adjust the URL as necessary
     const data = {
@@ -20,6 +21,7 @@ export class DataService {
       database: database,
       answerserversystem: answerServerSystem,
       securityinfo: securityinfo,
+      storedstateid: selectedSavedSearchStateID
     };
 
     this.http.post(url, data).subscribe({

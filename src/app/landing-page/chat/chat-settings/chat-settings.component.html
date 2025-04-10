@@ -52,6 +52,7 @@
         <select
           class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
           id="chat-chat-settings__saved-search"
+          [(ngModel)]="selectedSavedSearchStateID" 
           name="selectedSavedSearch"
         >
           <option *ngFor="let savedSearch of savedSearches" [value]="savedSearch.stateId">

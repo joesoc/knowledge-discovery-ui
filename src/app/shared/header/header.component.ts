@@ -37,6 +37,7 @@ import { TypeaheadSuggestionComponent } from './typeahead-suggestion/typeahead-s
 import { NgpPopover, NgpPopoverTrigger } from 'ng-primitives/popover';
 import { NgpTabList, NgpTabButton, NgpTabset } from 'ng-primitives/tabs';
 import { DahService } from 'src/app/services/dah.service';
+import { IResultSummary } from 'src/app/interfaces/IsearchResultsSummary';
 
 @Component({
   selector: 'app-header',
@@ -121,9 +122,17 @@ export class HeaderComponent {
   dropdownOptions = [];
   selectedOptions: string[] = [];
 
-  get savedSearches(): SavedSearch[] {
-    return JSON.parse(localStorage.getItem('savedsearches') ?? '[]');
+  get getsavedSearches(): SavedSearch[] {
+    try {
+      const raw = localStorage.getItem('savedsearches') ?? '[]';
+      const data: SavedSearch[] = JSON.parse(raw) as SavedSearch[];
+      return data;
+    } catch (e) {
+      console.error('Invalid savedsearches in localStorage:', e);
+      return [];
+    }
   }
+  
 
   protected readonly searchContainer = viewChild.required<ElementRef<HTMLElement>>('searchContainer');
 
@@ -137,12 +146,12 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-    this.filterSavedSearches();
+
     // Subscribe to state changes for selected databases
     this.selectedDatabases$.subscribe(databases => {
       this.selectedOptions = databases;
     });
-
+    this.filterSavedSearches();
     this.http
       .get<IGetStatus>(`${environment.dah_api}/?a=getstatus&responseformat=simplejson`)
       .subscribe(
@@ -168,8 +177,8 @@ export class HeaderComponent {
       });
   }
 
-  filterSavedSearches(){
-    this.userSavedSearches = this.savedSearches.filter((s) => s.username === this.username);
+  filterSavedSearches() {
+    this.userSavedSearches = this.getsavedSearches.filter((s) => s.username === this.username);
   }
   ngAfterViewInit() {
     this.activeDescendantManager = new ActiveDescendantKeyManager(this.suggestions!)
@@ -247,10 +256,16 @@ export class HeaderComponent {
       let username = localStorage.getItem('username') ?? '';
       this.dah.saveSearch(this.searchTerm).subscribe(response => {
         const savedSearches = JSON.parse(localStorage.getItem('savedsearches') ?? '[]') as SavedSearch[];
-
-        savedSearches.push({ label: label, stateId: response.state, username: username });
+        let resultSummarey: IResultSummary = {
+          numhits: 0,
+          predicted: '0',
+          totaldbdocs: 0,
+          totaldbsecs: 0,
+          totalhits: 0,
+        };
+        savedSearches.push({ label: label, stateId: response.state, username: username, searchTerm: this.searchTerm, resultSummary: resultSummarey });
         localStorage.setItem('savedsearches', JSON.stringify(savedSearches));
-
+        this.filterSavedSearches();
         this.saveSearchTrigger()?.hide();
       })
   }
@@ -263,5 +278,7 @@ export class HeaderComponent {
 export interface SavedSearch {
   label: string;
   stateId: string;
-  username: string
+  username: string;
+  searchTerm?: string;
+  resultSummary: IResultSummary
 }

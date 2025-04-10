@@ -5,3 +5,11 @@
 :host ::ng-deep .responded-time {
   @apply text-xs text-gray-500;
 }
+
+.chat-message ::ng-deep pre {
+  white-space: break-spaces;
+}
+
+.chat-message ::ng-deep h4 {
+  @apply font-semibold text-gray-900;
+}

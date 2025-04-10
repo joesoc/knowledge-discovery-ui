@@ -68,6 +68,7 @@ export class LandingPageComponent {
   gotAnswers: boolean = false;
   question: string = '';
   isChatOpen: boolean = false;
+  isLoadingSavedSearch: boolean = false;
   loading: boolean = false;
   loading_answer_pane: boolean = false;
   duration: number = 0;
@@ -241,7 +242,9 @@ export class LandingPageComponent {
     }
 
     onSavedSearchClick(search: SavedSearch) {
-      this.showPromotions = false;
+    this.isLoadingSavedSearch = true;
+    this.showPromotions = false;
+    //this.searchkeyword = search.searchTerm || ''; // Re-enable the assignment
     this.loading = true;
     this.answers = [];
       this.resultsSummary = {} as IResultSummary;
@@ -255,6 +258,8 @@ export class LandingPageComponent {
         this.idolresultsSummary.totaldbdocs = parseInt(data.autnresponse.responsedata.totaldbdocs);
         this.idolresultsSummary.totaldbsecs = parseInt(data.autnresponse.responsedata.totaldbsecs);
         this.idolresultsSummary.totalhits = parseInt(data.autnresponse.responsedata.totalhits);
+        search.resultSummary = this.idolresultsSummary;
+        // localStorage.setItem('savedsearches', JSON.stringify(search));
         data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
           this.idolresultsItems.push({
             title: this.generateTitle(hit.title, hit.reference),
