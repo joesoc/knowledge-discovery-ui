@@ -34,6 +34,13 @@ A sleek and intuitive **Angular**-based interface for interacting with OpenText 
 - Auto-surfaces related questions to extend exploration and simulate a guided Q&A experience.
 - Makes enterprise document interrogation feel like a modern search engine.
 
+### 💾 Saved Searches and Conversations
+### 💡 Saved Searches
+Users can save specific queries and results for future reference.
+
+Each saved search includes the question, and results, making it easy to return to a prior insight. Once a search is saved the user can have a conversation with only documents in the saved search.
+
+Example: A user exploring "budget misuse in 2022" can save the result and revisit it with a single click.
 ---
 
 ## 🛠️ Tech Stack
