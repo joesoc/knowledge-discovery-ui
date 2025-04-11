@@ -18,7 +18,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideLogOut, lucideSave } from '@ng-icons/lucide';
+import { lucideLogOut, lucideSave, lucideX } from '@ng-icons/lucide';
 import { Store } from '@ngrx/store';
 import { Subject, debounceTime } from 'rxjs';
 import { TypeaheadActions } from 'src/app/state/typeahead/typeahead.actions';
@@ -60,9 +60,10 @@ import { IResultSummary } from 'src/app/interfaces/IsearchResultsSummary';
     NgpPopoverTrigger,
     NgpTabList, NgpTabButton, NgpTabset
   ],
-  providers: [provideIcons({ lucideLogOut, lucideSave })],
+  providers: [provideIcons({ lucideLogOut, lucideSave, lucideX })],
 })
 export class HeaderComponent {
+
   private readonly store = inject(Store);
   private readonly loginService = inject(LoginService);
   private readonly destroyRef = inject(DestroyRef);
@@ -72,17 +73,18 @@ export class HeaderComponent {
   readonly typeaheadResults$ = this.store.select(selectTypeaheadResults);
   readonly typeaheadLoading$ = this.store.select(selectTypeaheadLoading);
   readonly typeaheadShowResults$ = this.store.select(selectTypeaheadShowResults);
-  userSavedSearches: SavedSearch[] = [];
   username = localStorage.getItem('username') ?? '';
   searchTerm: string = '';
   readonly didSearch$ = new Subject<string>();
 
   @Input() title: { titleValue: string } | undefined;
+  @Input() selectedSavedSearch: SavedSearch | undefined;
   @Output() searchTermChanged = new EventEmitter<string>();
   @Output() selectedDatabasesChanged = new EventEmitter<string[]>();
   @Output() showVectorResultsChanged = new EventEmitter<boolean>();
   @Output() showIDOLResultsChanged = new EventEmitter<boolean>();
   @Output() savedSearch = new EventEmitter<SavedSearch>();
+  @Output() savedSearchRemoved = new EventEmitter<SavedSearch[]>();
 
   @ViewChildren(TypeaheadSuggestionComponent) suggestions?: QueryList<TypeaheadSuggestionComponent>;
 
@@ -122,11 +124,11 @@ export class HeaderComponent {
   dropdownOptions = [];
   selectedOptions: string[] = [];
 
-  get getsavedSearches(): SavedSearch[] {
+  get getSavedSearches(): SavedSearch[] {
     try {
       const raw = localStorage.getItem('savedsearches') ?? '[]';
       const data: SavedSearch[] = JSON.parse(raw) as SavedSearch[];
-      return data;
+      return data?.filter((s) => s.username === this.username) ?? []
     } catch (e) {
       console.error('Invalid savedsearches in localStorage:', e);
       return [];
@@ -151,7 +153,6 @@ export class HeaderComponent {
     this.selectedDatabases$.subscribe(databases => {
       this.selectedOptions = databases;
     });
-    this.filterSavedSearches();
     this.http
       .get<IGetStatus>(`${environment.dah_api}/?a=getstatus&responseformat=simplejson`)
       .subscribe(
@@ -177,9 +178,6 @@ export class HeaderComponent {
       });
   }
 
-  filterSavedSearches() {
-    this.userSavedSearches = this.getsavedSearches.filter((s) => s.username === this.username);
-  }
   ngAfterViewInit() {
     this.activeDescendantManager = new ActiveDescendantKeyManager(this.suggestions!)
       .withVerticalOrientation()
@@ -265,13 +263,23 @@ export class HeaderComponent {
         };
         savedSearches.push({ label: label, stateId: response.state, username: username, searchTerm: this.searchTerm, resultSummary: resultSummarey });
         localStorage.setItem('savedsearches', JSON.stringify(savedSearches));
-        this.filterSavedSearches();
         this.saveSearchTrigger()?.hide();
       })
   }
   
   loadSavedSearch(search: SavedSearch) {
     this.savedSearch.emit(search);
+    this.searchTerm = '';
+  }
+  
+  removeSavedSearch(search: SavedSearch) {
+    const savedSearches = this.getSavedSearches.filter(s => s.stateId !== search.stateId);
+    localStorage.setItem('savedsearches', JSON.stringify(savedSearches));
+    this.savedSearchRemoved.emit(savedSearches);
+
+    if (savedSearches.length === 0) {
+      this.searchTerm = '';
+    }
   }
 }
 

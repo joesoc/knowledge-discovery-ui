@@ -1,7 +1,9 @@
 <app-header
   (searchTermChanged)="propogateSearchTerm($event)"
   (selectedDatabasesChanged)="propogateDatabaseSelection($event)"
+  [selectedSavedSearch]="selectedSavedSearch"
   (savedSearch)="onSavedSearchClick($event)"
+  (savedSearchRemoved)="onSearchRemoved($event)"
 >
 </app-header>
 
@@ -131,12 +133,14 @@
       <app-people-also-asked />
   }
 
-
+  @if (searchkeyword) {
     <app-results-count
       [keyword]="searchkeyword"
       [resultsSummary]="idolresultsSummary"
       [resultType]="'IDOL Search'"
-    ></app-results-count>
+    />
+  }
+
     <app-search-results [searchResults]="idolresultsItems" />
   </div>
 </div>

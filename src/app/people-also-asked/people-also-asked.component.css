@@ -1,3 +1,7 @@
+:host:empty {
+  display: none;
+}
+
 .paa-container {
   font-family: Arial, sans-serif;
   margin: 10px 0;

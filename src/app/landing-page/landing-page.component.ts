@@ -53,6 +53,7 @@ import { NifiService } from '../services/nifi.service';
 })
 export class LandingPageComponent {
 
+
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
   private readonly llm = inject(LlmService);
@@ -76,6 +77,8 @@ export class LandingPageComponent {
   loadingPeopleAlsoAsked = false;
   showPeopleAlsoAsked = this.settingsService.getPeopleAlsoAskedEnabled();
   queryResponseSummary: qs = {} as qs;
+  selectedSavedSearch: SavedSearch | undefined;
+
   toggleChat() {
     this.isChatOpen = !this.isChatOpen;
   }
@@ -195,6 +198,7 @@ export class LandingPageComponent {
   }
 
   propogateSearchTerm(valueEmitted: any) {
+    this.selectedSavedSearch = undefined;
     this.showPromotions = false;
     this.loading = true;
     this.answers = [];
@@ -242,8 +246,10 @@ export class LandingPageComponent {
     }
 
     onSavedSearchClick(search: SavedSearch) {
+    this.selectedSavedSearch = search;
     this.isLoadingSavedSearch = true;
     this.showPromotions = false;
+    this.searchkeyword = search.searchTerm ?? '';
     //this.searchkeyword = search.searchTerm || ''; // Re-enable the assignment
     this.loading = true;
     this.answers = [];
@@ -272,5 +278,15 @@ export class LandingPageComponent {
         this.loading = false;
       });
       });
+    }
+  
+    onSearchRemoved(searches: SavedSearch[]) {
+      if (searches.length === 0) {
+        this.resultItems = [];
+        this.idolresultsItems = [];
+        this.answers = [];
+        this.searchkeyword = '';
+        this.loading = false;
+      }
     }
 }

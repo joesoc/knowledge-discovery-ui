@@ -189,12 +189,24 @@
     <app-settings-dialog (close)="showSettingsDialog = false" />
   </ng-template>
 </div>
-@if (userSavedSearches.length) {
+@if (getSavedSearches.length) {
 <div class="flex border-b border-gray-200 h-10 px-8 items-center" ngpTabset>
   <div class="flex gap-x-2 h-full" ngpTabList>
-    @for (search of getsavedSearches; track search.stateId) {
+    @for (search of getSavedSearches; track search.stateId) {
       @if (search.username == this.username){
-        <button ngpTabButton [ngpTabButtonValue]="search.label" (click)="loadSavedSearch(search)" class="border-b-2 h-full px-2 -mb-px text-sm py-2 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 border-transparent border-gray-900 hover:bg-gray-100">{{ search.label }}</button>
+        <button ngpTabButton 
+                [ngpTabButtonValue]="search.label" 
+                (click)="loadSavedSearch(search)" 
+                class="inline-flex items-center border-b-2 h-full gap-x-2 px-2 -mb-px text-sm py-2 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-gray-50 border-x border-x-gray-200"
+                [class.border-gray-900]="selectedSavedSearch?.stateId === search.stateId"
+                [class.border-transparent]="selectedSavedSearch?.stateId !== search.stateId">
+          {{ search.label }}
+
+          <div class="inline-flex rounded-full size-6 items-center justify-center font-base hover:bg-gray-100" (click)="removeSavedSearch(search)">
+            <ng-icon name="lucideX" />
+          </div>
+
+        </button>
       }
     }
   </div>
