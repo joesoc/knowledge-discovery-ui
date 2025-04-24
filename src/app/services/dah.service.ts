@@ -33,10 +33,12 @@ export class DahService {
   }
 
   saveSearch(query: string): Observable<StoreStateResponse['autnresponse']['responsedata']> {
+    let token = localStorage.getItem('token');
     const params = new HttpParams()
       .set('action', 'Query')
       .set('totalresults', 'true')
       .set('anylanguage', 'true')
+      .set('SecurityInfo', token || '')
       .set('text', query)
       .set('storestate', 'true')
       .set('StoredStateTokenLifetime','-1')
