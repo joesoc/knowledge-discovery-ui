@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.prod';
 import { DahResponse, Database, StoreStateResponse } from '../interfaces/IDahResponse';
 import { LanguageIdentification } from '../interfaces/ILanguageIdentification';
+import { GetTagNamesResponse, TagName } from '../interfaces/IGetTagNameResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class DahService {
   getDatabases(): Observable<Database[]> {
     let params = new HttpParams().set('action', 'GetStatus').set('responseformat', 'simplejson');
     return this.http.get<DahResponse>(this.dahUrl, { params }).pipe(
-      map(response => response.autnresponse.responsedata.databases.database) // Adjusted to the correct path
+      map(response => response.autnresponse.responsedata.databases.database)
     );
   }
 
@@ -41,12 +42,26 @@ export class DahService {
       .set('SecurityInfo', token || '')
       .set('text', query)
       .set('storestate', 'true')
-      .set('StoredStateTokenLifetime','-1')
-      .set('print', 'NoReults')
+      .set('StoredStateTokenLifetime', '-1')
+      .set('print', 'NoResults')
       .set('responseformat', 'simplejson');
 
     return this.http.get<StoreStateResponse>(this.dahUrl, { params }).pipe(
       map(response => response.autnresponse.responsedata)
     );
   }
+
+  getTagNames(): Observable<TagName[]> {
+    const params = new HttpParams()
+      .set('action', 'GetTagNames')
+      .set('FieldType', 'Parametric,Numeric,NumericDate')
+      .set('MaxValues', 'null')
+      .set('TypeDetails', 'true')
+      .set('responseformat', 'simplejson');
+  
+    return this.http.get<GetTagNamesResponse>(this.dahUrl, { params }).pipe(
+      map(response => response.autnresponse.responsedata.name)
+    );
+  }
+  
 }
