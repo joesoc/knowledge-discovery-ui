@@ -33,24 +33,6 @@ export class DahService {
     );
   }
 
-  saveSearch(query: string): Observable<StoreStateResponse['autnresponse']['responsedata']> {
-    let token = localStorage.getItem('token');
-    const params = new HttpParams()
-      .set('action', 'Query')
-      .set('totalresults', 'true')
-      .set('anylanguage', 'true')
-      .set('SecurityInfo', token || '')
-      .set('text', query)
-      .set('storestate', 'true')
-      .set('StoredStateTokenLifetime', '-1')
-      .set('print', 'NoResults')
-      .set('MaxResults', '100')
-      .set('responseformat', 'simplejson');
-
-    return this.http.get<StoreStateResponse>(this.dahUrl, { params }).pipe(
-      map(response => response.autnresponse.responsedata)
-    );
-  }
 
   getTagNames(): Observable<TagName[]> {
     const params = new HttpParams()
