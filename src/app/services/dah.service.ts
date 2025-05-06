@@ -44,6 +44,7 @@ export class DahService {
       .set('storestate', 'true')
       .set('StoredStateTokenLifetime', '-1')
       .set('print', 'NoResults')
+      .set('MaxResults', '100')
       .set('responseformat', 'simplejson');
 
     return this.http.get<StoreStateResponse>(this.dahUrl, { params }).pipe(

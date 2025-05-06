@@ -1,3 +1,5 @@
+const { LogLevel } = require("@angular/compiler-cli");
+
 module.exports = {
   "/api/answerserver": {
     target: "https://answerserver.idoldemos.net:12000",
@@ -26,6 +28,12 @@ module.exports = {
     pathRewrite: { "^/api/view": "" },
     changeOrigin: true,
     logLevel: "debug"
+  },
+  "api/configure": {
+    target : "https://content3.idoldemos.net:9400",
+    secure: false,
+    LogLevel: "debug",
+    pathRewrite: { "^/api/configure": "" }
   },
   "/api/dah": {
     target: "https://dah.idoldemos.net:9060",
