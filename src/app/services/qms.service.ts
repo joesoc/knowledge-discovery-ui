@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { catchError, map, throwError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment.prod';
 import { IContentSingleResponse } from '../interfaces/IcontentSingleResponse';
@@ -8,6 +8,7 @@ import { IContentResponse } from '../interfaces/IcontentResponse';
 import { IQMSModelEncodeResponse } from '../interfaces/Iqmsmodel';
 import { IQMSPromotionResult } from '../interfaces/IQMSPromotionResult';
 import { DefaultOperator } from '../shared/header/settings-dialog/settings-dialog.component';
+import { StoreStateResponse } from '../interfaces/IDahResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +54,25 @@ export class QmsService {
       })
     );
   }
+  saveSearch(query: string): Observable<StoreStateResponse['autnresponse']['responsedata']> {
+    const url = `${environment.qms_api}/`;
+    let token = localStorage.getItem('token');
+    const params = new HttpParams()
+      .set('action', 'Query')
+      .set('totalresults', 'true')
+      .set('anylanguage', 'true')
+      .set('SecurityInfo', token || '')
+      .set('text', query)
+      .set('storestate', 'true')
+      .set('StoredStateTokenLifetime', '-1')
+      .set('print', 'NoResults')
+      .set('MaxResults', '100')
+      .set('responseformat', 'simplejson');
 
+    return this.http.get<StoreStateResponse>(url, { params }).pipe(
+      map(response => response.autnresponse.responsedata)
+    );
+  }
   getContent(security_info:string, reference: string): Observable<IContentSingleResponse> {
     let params = new HttpParams()
       .set('action', 'GETCONTENT')

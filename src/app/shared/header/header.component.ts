@@ -38,6 +38,7 @@ import { NgpPopover, NgpPopoverTrigger } from 'ng-primitives/popover';
 import { NgpTabList, NgpTabButton, NgpTabset } from 'ng-primitives/tabs';
 import { DahService } from 'src/app/services/dah.service';
 import { IResultSummary } from 'src/app/interfaces/IsearchResultsSummary';
+import { QmsService } from 'src/app/services/qms.service';
 
 @Component({
   selector: 'app-header',
@@ -68,6 +69,7 @@ export class HeaderComponent {
   private readonly loginService = inject(LoginService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly dah = inject(DahService);
+  private readonly qms = inject(QmsService);
   readonly selectedDatabases$ = this.store.select(selectDatabases);
   readonly databaseCount$ = this.store.select(selectDatabaseCount);
   readonly typeaheadResults$ = this.store.select(selectTypeaheadResults);
@@ -252,7 +254,7 @@ export class HeaderComponent {
 
   saveSearch(label: string): void {
       let username = localStorage.getItem('username') ?? '';
-      this.dah.saveSearch(this.searchTerm).subscribe(response => {
+      this.qms.saveSearch(this.searchTerm).subscribe(response => {
         const savedSearches = JSON.parse(localStorage.getItem('savedsearches') ?? '[]') as SavedSearch[];
         let resultSummarey: IResultSummary = {
           numhits: 0,
