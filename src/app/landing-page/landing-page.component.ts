@@ -233,7 +233,7 @@ export class LandingPageComponent {
         data.autnresponse.responsedata.hit?.forEach((hit: Hit) => {
           this.idolresultsItems.push({
             title: this.generateTitle(hit.title, hit.reference),
-            reference: hit.reference,
+            reference: hit.content.DOCUMENT.URL || hit.reference,
             summary: hit.summary,
             autnrank: hit.weight, 
             autnidentifier: hit.content.DOCUMENT.AUTN_IDENTIFIER || ''

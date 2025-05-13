@@ -58,4 +58,5 @@ export interface Document {
   WIKIPEDIA_CATEGORY?: string[];
   WIKIPEDIA_TOPIC?: string[];
   AUTN_IDENTIFIER: string;
+  URL: string;
 }
