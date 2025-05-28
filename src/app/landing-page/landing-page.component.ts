@@ -120,8 +120,8 @@ export class LandingPageComponent {
     
         localStorage.setItem('QueryLanguage', queryLanguage);
         
-        console.log('Language: ', language?.autnresponse.responsedata.language);
-        if (language?.autnresponse.responsedata.language === 'ENGLISH') {
+        console.log('Language: ', queryLanguage);
+        if (queryLanguage === 'ENGLISH') {
           console.log('Language is English. Proceed with binary classification.');
           const isQuestion = await this.llm.verifyInput(question);
           if (!isQuestion) {
