@@ -110,7 +110,16 @@ export class LandingPageComponent {
       else{
         const language = await this.dahService.getLanguage(question).toPromise();
         // Store the result in local storage
-        const queryLanguage = `${language?.autnresponse.responsedata.language.toLowerCase()}utf8`;
+        const lang = language?.autnresponse?.responsedata?.language;
+        if (!lang) {
+          console.error("Language detection failed", language);
+          this.answers = [];
+          this.loading_answer_pane = false;
+          this.loadingPeopleAlsoAsked = false;
+          return;
+        }
+        const queryLanguage = `${lang.toLowerCase()}utf8`;
+
     
         localStorage.setItem('QueryLanguage', queryLanguage);
         
